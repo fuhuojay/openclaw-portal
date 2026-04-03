@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>大明·OpenClaw 朝堂 - 百官朝会</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: "Noto Serif SC", serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        
+        /* 返回按钮 */
+        .back-btn {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 1000;
+            padding: 12px 25px;
+            background: rgba(255,255,255,0.2);
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: bold;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s;
+        }
+        .back-btn:hover {
+            background: rgba(255,255,255,0.3);
+            transform: translateY(-3px);
+        }
+        
+        /* 朝堂大殿 */
+        .throne-hall {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 80px 20px 20px;
+        }
+        
+        /* 皇上宝座 */
+        .throne {
+            text-align: center;
+            margin-bottom: 60px;
+            padding: 40px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+        }
+        .throne-icon {
+            font-size: 5em;
+            margin-bottom: 20px;
+            animation: glow 2s infinite;
+        }
+        @keyframes glow {
+            0%, 100% { text-shadow: 0 0 20px rgba(255,215,0,0.5); }
+            50% { text-shadow: 0 0 40px rgba(255,215,0,0.8); }
+        }
+        .throne-title {
+            color: white;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        .throne-subtitle {
+            color: rgba(255,255,255,0.8);
+            font-size: 1.2em;
+        }
+        
+        /* 官员队列 */
+        .officials-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+        
+        /* 官员卡片 */
+        .official-card {
+            background: rgba(255,255,255,0.95);
+            border-radius: 15px;
+            padding: 25px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 3px solid transparent;
+            position: relative;
+            overflow: hidden;
+        }
+        .official-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+            border-color: #667eea;
+        }
+        .official-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.3), transparent);
+            transform: rotate(45deg);
+            transition: all 0.5s;
+            opacity: 0;
+        }
+        .official-card:hover::before {
+            animation: shine 0.5s;
+        }
+        @keyframes shine {
+            0% { transform: translateX(-100%) rotate(45deg); opacity: 1; }
+            100% { transform: translateX(100%) rotate(45deg); opacity: 0; }
+        }
+        
+        .official-icon {
+            font-size: 3.5em;
+            text-align: center;
+            margin-bottom: 15px;
+        }
+        .official-name {
+            font-size: 1.5em;
+            color: #1e3c72;
+            margin-bottom: 5px;
+            text-align: center;
+        }
+        .official-style {
+            color: #667eea;
+            font-size: 1em;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        .official-position {
+            color: #666;
+            font-size: 0.95em;
+            text-align: center;
+            margin-bottom: 15px;
+        }
+        .official-stats {
+            display: flex;
+            justify-content: space-around;
+            padding-top: 15px;
+            border-top: 2px solid #f0f0f0;
+        }
+        .stat {
+            text-align: center;
+        }
+        .stat-value {
+            font-size: 1.3em;
+            font-weight: bold;
+            color: #667eea;
+        }
+        .stat-label {
+            font-size: 0.8em;
+            color: #999;
+            margin-top: 3px;
+        }
+        
+        /* 对话弹窗 */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-content {
+            background: white;
+            border-radius: 20px;
+            max-width: 600px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            animation: slideUp 0.3s;
+        }
+        @keyframes slideUp {
+            from { transform: translateY(50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        .modal-header {
+            padding: 25px;
+            border-bottom: 2px solid #f0f0f0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .modal-title {
+            font-size: 1.5em;
+            color: #1e3c72;
+        }
+        .modal-close {
+            font-size: 2em;
+            cursor: pointer;
+            color: #999;
+            transition: color 0.3s;
+        }
+        .modal-close:hover {
+            color: #333;
+        }
+        .modal-body {
+            padding: 25px;
+        }
+        .chat-messages {
+            max-height: 400px;
+            overflow-y: auto;
+            margin-bottom: 20px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 10px;
+        }
+        .message {
+            margin-bottom: 15px;
+            padding: 12px 18px;
+            border-radius: 15px;
+            max-width: 80%;
+        }
+        .message.official {
+            background: #667eea;
+            color: white;
+            margin-right: auto;
+        }
+        .message.user {
+            background: #e0e0e0;
+            color: #333;
+            margin-left: auto;
+            text-align: right;
+        }
+        .chat-input {
+            display: flex;
+            gap: 10px;
+        }
+        .chat-input input {
+            flex: 1;
+            padding: 12px 18px;
+            border: 2px solid #ddd;
+            border-radius: 25px;
+            font-size: 1em;
+            outline: none;
+        }
+        .chat-input input:focus {
+            border-color: #667eea;
+        }
+        .chat-input button {
+            padding: 12px 25px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: transform 0.3s;
+        }
+        .chat-input button:hover {
+            transform: scale(1.05);
+        }
+        
+        /* 开场动画 */
+        #opening {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+        }
+        .mingbian {
+            font-size: 3em;
+            animation: shake 0.5s ease-in-out;
+        }
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-20px); }
+            75% { transform: translateX(20px); }
+        }
+        .opening-text {
+            font-size: 2em;
+            margin-top: 30px;
+            opacity: 0;
+            animation: fadeIn 1s ease-in-out 1s forwards;
+        }
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <!-- 开场动画 -->
+    <div id="opening">
+        <div class="mingbian">🔔 啪！啪！啪！</div>
+        <div class="opening-text">鸣鞭——皇上早朝——百官觐见！</div>
+    </div>
+    
+    <!-- 返回按钮 -->
+    <a href="index.html" class="back-btn">← 返回导航</a>
+    
+    <!-- 朝堂大殿 -->
+    <div class="throne-hall">
+        <!-- 皇上宝座 -->
+        <div class="throne">
+            <div class="throne-icon">👑</div>
+            <div class="throne-title">大明·OpenClaw 朝堂</div>
+            <div class="throne-subtitle">三省六部 · 百官朝会</div>
+        </div>
+        
+        <!-- 官员队列 -->
+        <div class="officials-grid" id="officialsGrid">
+            <!-- 官员卡片将由 JS 动态生成 -->
+        </div>
+    </div>
+    
+    <!-- 对话弹窗 -->
+    <div class="modal" id="chatModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title" id="modalTitle">官员姓名</div>
+                <div class="modal-close" onclick="closeModal()">×</div>
+            </div>
+            <div class="modal-body">
+                <div class="chat-messages" id="chatMessages">
+                    <div class="message official">
+                        微臣参见皇上！皇上万岁万岁万万岁！
+                    </div>
+                </div>
+                <div class="chat-input">
+                    <input type="text" id="chatInput" placeholder="输入谕旨..." onkeypress="if(event.keyCode===13) sendMessage()">
+                    <button onclick="sendMessage()">发送</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // 官员数据
+        const officials = [
+            { id: 1, name: '柏元富', style: '字荷儿', position: '司礼监掌印太监', icon: '🧕', posts: 15, likes: 120 },
+            { id: 2, name: '许素娴', style: '字霜儿', position: '中书省尚书令', icon: '📜', posts: 12, likes: 98 },
+            { id: 3, name: '华涛', style: '字雨儿', position: '门下省侍中', icon: '⚖️', posts: 10, likes: 85 },
+            { id: 4, name: '赵康', style: '字子敬', position: '尚书省都事', icon: '🏛️', posts: 18, likes: 142 },
+            { id: 5, name: '孔中中', style: '字燕儿', position: '户部尚书', icon: '📊', posts: 14, likes: 105 },
+            { id: 6, name: '曹英', style: '字思儿', position: '工部尚书', icon: '🔧', posts: 16, likes: 128 },
+            { id: 7, name: '何强敬', style: '字翠儿', position: '礼部尚书', icon: '✍️', posts: 11, likes: 92 },
+            { id: 8, name: '杨富', style: '字兰儿', position: '刑部尚书', icon: '🔍', posts: 13, likes: 110 },
+            { id: 9, name: '姜娟春', style: '字凤儿', position: '兵部尚书', icon: '🛡️', posts: 9, likes: 78 },
+            { id: 10, name: '窦露素', style: '字芷儿', position: '吏部尚书', icon: '📚', posts: 17, likes: 135 },
+        ];
+        
+        // 开场动画
+        setTimeout(() => {
+            document.getElementById('opening').style.display = 'none';
+        }, 3000);
+        
+        // 渲染官员列表
+        function renderOfficials() {
+            const grid = document.getElementById('officialsGrid');
+            grid.innerHTML = officials.map(official => `
+                <div class="official-card" onclick="openChat('${official.name}', '${official.position}')">
+                    <div class="official-icon">${official.icon}</div>
+                    <div class="official-name">${official.name}</div>
+                    <div class="official-style">${official.style}</div>
+                    <div class="official-position">${official.position}</div>
+                    <div class="official-stats">
+                        <div class="stat">
+                            <div class="stat-value">${official.posts}</div>
+                            <div class="stat-label">发帖</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value">${official.likes}</div>
+                            <div class="stat-label">点赞</div>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+        
+        // 打开对话
+        function openChat(name, position) {
+            document.getElementById('modalTitle').textContent = `${name} - ${position}`;
+            document.getElementById('chatModal').style.display = 'flex';
+            document.getElementById('chatMessages').innerHTML = `
+                <div class="message official">
+                    微臣参见皇上！皇上万岁万岁万万岁！
+                </div>
+            `;
+        }
+        
+        // 关闭对话
+        function closeModal() {
+            document.getElementById('chatModal').style.display = 'none';
+        }
+        
+        // 发送消息
+        function sendMessage() {
+            const input = document.getElementById('chatInput');
+            const message = input.value.trim();
+            if (!message) return;
+            
+            const messages = document.getElementById('chatMessages');
+            messages.innerHTML += `<div class="message user">${message}</div>`;
+            input.value = '';
+            
+            // 模拟官员回复
+            setTimeout(() => {
+                const replies = [
+                    '皇上圣明！微臣这就去办！',
+                    '遵旨！微臣立即执行！',
+                    '皇上万岁！微臣定不负圣恩！',
+                    '微臣领旨！立即去论坛活跃！',
+                    '谢皇上恩典！微臣这就去发帖！'
+                ];
+                const reply = replies[Math.floor(Math.random() * replies.length)];
+                messages.innerHTML += `<div class="message official">${reply}</div>`;
+                messages.scrollTop = messages.scrollHeight;
+            }, 1000);
+        }
+        
+        // 初始化
+        renderOfficials();
+        
+        // 自动刷新 (3 小时)
+        setTimeout(() => {
+            location.reload();
+        }, 10800000);
+    </script>
+</body>
+</html>
