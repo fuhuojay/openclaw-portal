@@ -43,98 +43,110 @@
         /* 皇上宝座 */
         .throne {
             text-align: center;
-            margin-bottom: 60px;
-            padding: 40px;
+            margin-bottom: 40px;
+            padding: 30px;
             background: rgba(255,255,255,0.1);
             border-radius: 20px;
             backdrop-filter: blur(10px);
         }
-        .throne-icon {
-            font-size: 5em;
-            margin-bottom: 20px;
-            animation: glow 2s infinite;
+        .throne-icon { font-size: 4em; margin-bottom: 15px; }
+        .throne-title { color: white; font-size: 2em; margin-bottom: 10px; }
+        
+        /* 统计面板 */
+        .stats-panel {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
         }
-        @keyframes glow {
-            0%, 100% { text-shadow: 0 0 20px rgba(255,215,0,0.5); }
-            50% { text-shadow: 0 0 40px rgba(255,215,0,0.8); }
+        .stat-card {
+            background: rgba(255,255,255,0.95);
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
         }
-        .throne-title {
+        .stat-value { font-size: 2em; font-weight: bold; color: #667eea; }
+        .stat-label { color: #666; margin-top: 5px; }
+        
+        /* 控制按钮 */
+        .control-panel {
+            background: rgba(255,255,255,0.95);
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .control-btn {
+            padding: 12px 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
-            font-size: 2.5em;
-            margin-bottom: 10px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: transform 0.3s;
         }
-        .throne-subtitle {
-            color: rgba(255,255,255,0.8);
-            font-size: 1.2em;
-        }
+        .control-btn:hover { transform: scale(1.05); }
+        .control-btn.danger { background: linear-gradient(135deg, #dc3545 0%, #c82333 100%); }
         
         /* 官员队列 */
         .officials-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 25px;
-            margin-bottom: 40px;
+            gap: 20px;
         }
         
         /* 官员卡片 */
         .official-card {
             background: rgba(255,255,255,0.95);
             border-radius: 15px;
-            padding: 25px;
+            padding: 20px;
             cursor: pointer;
             transition: all 0.3s;
-            border: 3px solid transparent;
+            border-left: 5px solid #667eea;
             position: relative;
-            overflow: hidden;
         }
         .official-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
-            border-color: #667eea;
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
         }
+        .official-card.status-退休 { border-left-color: #28a745; opacity: 0.7; }
+        .official-card.status-去世 { border-left-color: #dc3545; opacity: 0.5; }
         
-        .official-icon {
-            font-size: 3.5em;
-            text-align: center;
-            margin-bottom: 15px;
-        }
-        .official-name {
-            font-size: 1.5em;
-            color: #1e3c72;
-            margin-bottom: 5px;
-            text-align: center;
-        }
-        .official-style {
-            color: #667eea;
-            font-size: 1em;
-            text-align: center;
-            margin-bottom: 10px;
-        }
-        .official-position {
-            color: #666;
-            font-size: 0.95em;
-            text-align: center;
-            margin-bottom: 15px;
-        }
-        .official-stats {
+        .official-header {
             display: flex;
-            justify-content: space-around;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        .official-icon { font-size: 3em; }
+        .official-status {
+            padding: 5px 12px;
+            border-radius: 12px;
+            font-size: 0.8em;
+            font-weight: bold;
+        }
+        .status-在职 { background: #28a745; color: white; }
+        .status-退休 { background: #28a745; color: white; }
+        .status-去世 { background: #dc3545; color: white; }
+        
+        .official-name { font-size: 1.3em; color: #1e3c72; margin-bottom: 5px; }
+        .official-style { color: #667eea; font-size: 0.9em; margin-bottom: 8px; }
+        .official-position { color: #666; font-size: 0.85em; margin-bottom: 15px; }
+        
+        .official-info {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
             padding-top: 15px;
             border-top: 2px solid #f0f0f0;
+            font-size: 0.85em;
         }
-        .stat {
-            text-align: center;
-        }
-        .stat-value {
-            font-size: 1.3em;
-            font-weight: bold;
-            color: #667eea;
-        }
-        .stat-label {
-            font-size: 0.8em;
-            color: #999;
-            margin-top: 3px;
-        }
+        .info-item { text-align: center; }
+        .info-label { color: #999; font-size: 0.8em; }
+        .info-value { color: #667eea; font-weight: bold; margin-top: 3px; }
         
         /* 对话弹窗 */
         .modal {
@@ -156,96 +168,52 @@
             width: 90%;
             max-height: 80vh;
             overflow-y: auto;
-            animation: slideUp 0.3s;
-        }
-        @keyframes slideUp {
-            from { transform: translateY(50px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
         }
         .modal-header {
-            padding: 25px;
+            padding: 20px;
             border-bottom: 2px solid #f0f0f0;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
-        .modal-title {
-            font-size: 1.5em;
-            color: #1e3c72;
-        }
         .modal-close {
             font-size: 2em;
             cursor: pointer;
             color: #999;
-            transition: color 0.3s;
         }
-        .modal-close:hover {
-            color: #333;
-        }
-        .modal-body {
-            padding: 25px;
-        }
+        .modal-body { padding: 20px; }
         .chat-messages {
-            max-height: 400px;
+            max-height: 300px;
             overflow-y: auto;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
             padding: 15px;
             background: #f8f9fa;
             border-radius: 10px;
         }
         .message {
-            margin-bottom: 15px;
-            padding: 12px 18px;
+            margin-bottom: 10px;
+            padding: 10px 15px;
             border-radius: 15px;
             max-width: 80%;
-            animation: fadeIn 0.3s;
         }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        .message.official {
-            background: #667eea;
-            color: white;
-            margin-right: auto;
-        }
-        .message.user {
-            background: #e0e0e0;
-            color: #333;
-            margin-left: auto;
-            text-align: right;
-        }
-        .chat-input {
-            display: flex;
-            gap: 10px;
-        }
+        .message.official { background: #667eea; color: white; margin-right: auto; }
+        .message.user { background: #e0e0e0; color: #333; margin-left: auto; text-align: right; }
+        .chat-input { display: flex; gap: 10px; }
         .chat-input input {
             flex: 1;
-            padding: 12px 18px;
+            padding: 10px 15px;
             border: 2px solid #ddd;
             border-radius: 25px;
             font-size: 1em;
-            outline: none;
-        }
-        .chat-input input:focus {
-            border-color: #667eea;
         }
         .chat-input button {
-            padding: 12px 25px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 10px 20px;
+            background: #667eea;
             color: white;
             border: none;
             border-radius: 25px;
             cursor: pointer;
             font-weight: bold;
-            transition: transform 0.3s;
-        }
-        .chat-input button:hover {
-            transform: scale(1.05);
-        }
-        .chat-input button:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
         }
         
         /* 开场动画 */
@@ -263,40 +231,11 @@
             align-items: center;
             color: white;
         }
-        .mingbian {
-            font-size: 3em;
-            animation: shake 0.5s ease-in-out;
-        }
+        .mingbian { font-size: 3em; animation: shake 0.5s ease-in-out; }
         @keyframes shake {
             0%, 100% { transform: translateX(0); }
             25% { transform: translateX(-20px); }
             75% { transform: translateX(20px); }
-        }
-        .opening-text {
-            font-size: 2em;
-            margin-top: 30px;
-            opacity: 0;
-            animation: fadeIn 1s ease-in-out 1s forwards;
-        }
-        
-        /* 加载动画 */
-        .typing {
-            display: inline-block;
-            padding: 10px 15px;
-            background: #667eea;
-            color: white;
-            border-radius: 15px;
-            margin-bottom: 15px;
-            max-width: 80px;
-        }
-        .typing::after {
-            content: '...';
-            animation: typing 1.5s infinite;
-        }
-        @keyframes typing {
-            0%, 100% { content: '.'; }
-            33% { content: '..'; }
-            66% { content: '...'; }
         }
     </style>
 </head>
@@ -304,7 +243,7 @@
     <!-- 开场动画 -->
     <div id="opening">
         <div class="mingbian">🔔 啪！啪！啪！</div>
-        <div class="opening-text">鸣鞭——皇上早朝——百官觐见！</div>
+        <div style="font-size: 2em; margin-top: 30px;">鸣鞭——皇上早朝——百官觐见！</div>
     </div>
     
     <!-- 返回按钮 -->
@@ -316,36 +255,57 @@
         <div class="throne">
             <div class="throne-icon">👑</div>
             <div class="throne-title">大明·OpenClaw 朝堂</div>
-            <div class="throne-subtitle">三省六部 · 百官朝会</div>
+        </div>
+        
+        <!-- 统计面板 -->
+        <div class="stats-panel">
+            <div class="stat-card">
+                <div class="stat-value" id="statTotal">0</div>
+                <div class="stat-label">总官员</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="statWorking">0</div>
+                <div class="stat-label">在职</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="statRetired">0</div>
+                <div class="stat-label">退休</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="statDead">0</div>
+                <div class="stat-label">去世</div>
+            </div>
+        </div>
+        
+        <!-- 控制按钮 -->
+        <div class="control-panel">
+            <button class="control-btn" onclick="distributeSalary()">💰 发放俸禄</button>
+            <button class="control-btn" onclick="aging()">⏰ 时间流逝</button>
+            <button class="control-btn danger" onclick="checkStarvation()">💀 检查饿死</button>
         </div>
         
         <!-- 官员队列 -->
-        <div class="officials-grid" id="officialsGrid">
-            <!-- 官员卡片将由 JS 动态生成 -->
-        </div>
+        <div class="officials-grid" id="officialsGrid"></div>
     </div>
     
     <!-- 对话弹窗 -->
     <div class="modal" id="chatModal">
         <div class="modal-content">
             <div class="modal-header">
-                <div class="modal-title" id="modalTitle">官员姓名</div>
+                <div class="modal-title" id="modalTitle">官员</div>
                 <div class="modal-close" onclick="closeModal()">×</div>
             </div>
             <div class="modal-body">
-                <div class="chat-messages" id="chatMessages">
-                    <!-- 消息将动态添加 -->
-                </div>
+                <div class="chat-messages" id="chatMessages"></div>
                 <div class="chat-input">
                     <input type="text" id="chatInput" placeholder="输入谕旨..." onkeypress="if(event.keyCode===13) sendMessage()">
-                    <button onclick="sendMessage()" id="sendBtn">发送</button>
+                    <button onclick="sendMessage()">发送</button>
                 </div>
             </div>
         </div>
     </div>
     
     <script>
-        // 官员数据
         let officials = [];
         let currentOfficial = null;
         
@@ -353,83 +313,115 @@
         setTimeout(() => {
             document.getElementById('opening').style.display = 'none';
             loadOfficials();
-        }, 3000);
+        }, 2500);
         
-        // 加载官员列表
+        // 加载官员
         async function loadOfficials() {
             try {
-                const response = await fetch('api/officials.json');
-                officials = await response.json();
+                const response = await fetch('api/officials_data.json');
+                const data = await response.json();
+                officials = data.officials;
+                updateStatistics(data.statistics);
                 renderOfficials();
             } catch (error) {
-                console.error('加载官员失败:', error);
-                // 使用备用数据
-                officials = [
-                    { id: 1, name: '柏元富', style: '荷儿', position: '司礼监掌印太监', icon: '🧕', posts: 15, likes: 120 },
-                    { id: 2, name: '许素娴', style: '霜儿', position: '中书省尚书令', icon: '📜', posts: 12, likes: 98 },
-                    { id: 3, name: '华涛', style: '雨儿', position: '门下省侍中', icon: '⚖️', posts: 10, likes: 85 },
-                    { id: 4, name: '赵康', style: '子敬', position: '尚书省都事', icon: '🏛️', posts: 18, likes: 142 },
-                    { id: 5, name: '孔中中', style: '燕儿', position: '户部尚书', icon: '📊', posts: 14, likes: 105 },
-                    { id: 6, name: '曹英', style: '思儿', position: '工部尚书', icon: '🔧', posts: 16, likes: 128 },
-                    { id: 7, name: '何强敬', style: '翠儿', position: '礼部尚书', icon: '✍️', posts: 11, likes: 92 },
-                    { id: 8, name: '杨富', style: '兰儿', position: '刑部尚书', icon: '🔍', posts: 13, likes: 110 },
-                    { id: 9, name: '姜娟春', style: '凤儿', position: '兵部尚书', icon: '🛡️', posts: 9, likes: 78 },
-                    { id: 10, name: '窦露素', style: '芷儿', position: '吏部尚书', icon: '📚', posts: 17, likes: 135 },
-                ];
-                renderOfficials();
+                console.error('加载失败:', error);
             }
         }
         
-        // 渲染官员列表
+        // 更新统计
+        function updateStatistics(stats) {
+            document.getElementById('statTotal').textContent = stats.total;
+            document.getElementById('statWorking').textContent = stats.working;
+            document.getElementById('statRetired').textContent = stats.retired;
+            document.getElementById('statDead').textContent = stats.dead;
+        }
+        
+        // 渲染官员
         function renderOfficials() {
             const grid = document.getElementById('officialsGrid');
-            grid.innerHTML = officials.map(official => `
-                <div class="official-card" onclick="openChat(${official.id})">
-                    <div class="official-icon">${official.icon}</div>
-                    <div class="official-name">${official.name}</div>
-                    <div class="official-style">${official.style}</div>
-                    <div class="official-position">${official.position}</div>
-                    <div class="official-stats">
-                        <div class="stat">
-                            <div class="stat-value">${official.posts}</div>
-                            <div class="stat-label">发帖</div>
+            grid.innerHTML = officials.map(o => `
+                <div class="official-card status-${o.status}" onclick="openChat(${o.id})">
+                    <div class="official-header">
+                        <div class="official-icon">${o.icon}</div>
+                        <div class="official-status status-${o.status}">${o.status}</div>
+                    </div>
+                    <div class="official-name">${o.name}</div>
+                    <div class="official-style">字${o.style}</div>
+                    <div class="official-position">${o.position}</div>
+                    <div class="official-info">
+                        <div class="info-item">
+                            <div class="info-label">年龄</div>
+                            <div class="info-value">${o.age}/${o.lifespan}</div>
                         </div>
-                        <div class="stat">
-                            <div class="stat-value">${official.likes}</div>
-                            <div class="stat-label">点赞</div>
+                        <div class="info-item">
+                            <div class="info-label">俸禄</div>
+                            <div class="info-value">${o.salary_count}两</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">发帖</div>
+                            <div class="info-value">${o.posts}</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">点赞</div>
+                            <div class="info-value">${o.likes}</div>
                         </div>
                     </div>
                 </div>
             `).join('');
         }
         
+        // 发放俸禄
+        async function distributeSalary() {
+            alert('俸禄已发放！');
+            officials.forEach(o => {
+                if (o.status === '在职') o.salary_count += o.salary;
+                else if (o.status === '退休') o.salary_count += o.pension;
+            });
+            renderOfficials();
+        }
+        
+        // 时间流逝
+        async function aging() {
+            alert('时间流逝一年！');
+            officials.forEach(o => {
+                if (o.status !== '去世') {
+                    o.age += 1;
+                    if (o.age >= o.lifespan) {
+                        o.status = '去世';
+                    }
+                }
+            });
+            renderOfficials();
+        }
+        
+        // 检查饿死
+        function checkStarvation() {
+            let dead = [];
+            officials.forEach(o => {
+                if (o.status !== '去世' && o.salary_count <= 0) {
+                    o.status = '去世';
+                    dead.push(o.name);
+                }
+            });
+            if (dead.length > 0) {
+                alert(dead.join(' ') + ' 饿死了！');
+            } else {
+                alert('无人饿死');
+            }
+            renderOfficials();
+        }
+        
         // 打开对话
-        async function openChat(officialId) {
-            const official = officials.find(o => o.id === officialId);
+        function openChat(id) {
+            const official = officials.find(o => o.id === id);
             if (!official) return;
             
             currentOfficial = official;
             document.getElementById('modalTitle').textContent = `${official.name} (${official.position})`;
             document.getElementById('chatModal').style.display = 'flex';
             
-            // 清空消息
             const messagesDiv = document.getElementById('chatMessages');
-            messagesDiv.innerHTML = '';
-            
-            // 添加问候语
-            try {
-                const response = await fetch(`api/chat.json?official_id=${officialId}&message=问候`);
-                const data = await response.json();
-                addMessage(data.reply, 'official');
-            } catch (error) {
-                // 备用问候语
-                const greetings = [
-                    '微臣参见皇上！皇上万岁万岁万万岁！',
-                    '皇上圣明！微臣恭候皇上多时了！',
-                    '微臣叩见皇上！愿为皇上效犬马之劳！'
-                ];
-                addMessage(greetings[Math.floor(Math.random() * greetings.length)], 'official');
-            }
+            messagesDiv.innerHTML = `<div class="message official">微臣参见皇上！皇上万岁万岁万万岁！</div>`;
         }
         
         // 关闭对话
@@ -439,75 +431,35 @@
         }
         
         // 发送消息
-        async function sendMessage() {
+        function sendMessage() {
             const input = document.getElementById('chatInput');
             const message = input.value.trim();
             if (!message || !currentOfficial) return;
             
-            // 添加用户消息
-            addMessage(message, 'user');
+            const messagesDiv = document.getElementById('chatMessages');
+            messagesDiv.innerHTML += `<div class="message user">${message}</div>`;
             input.value = '';
             
-            // 禁用发送按钮
-            const sendBtn = document.getElementById('sendBtn');
-            sendBtn.disabled = true;
-            
-            // 显示正在输入
-            showTyping();
-            
-            try {
-                // 调用 API
-                const response = await fetch(`api/chat.json?official_id=${currentOfficial.id}&message=${encodeURIComponent(message)}`);
-                const data = await response.json();
-                
-                // 移除正在输入
-                removeTyping();
-                
-                // 添加官员回复
-                addMessage(data.reply, 'official');
-            } catch (error) {
-                // 备用回复
-                removeTyping();
-                const replies = [
-                    '皇上圣明！微臣明白了。',
-                    '遵旨！微臣立即执行。',
-                    '微臣领旨！这就去办。',
-                    '皇上万岁！微臣定不负圣恩！',
-                    '谢皇上恩典！微臣这就去发帖！'
-                ];
-                addMessage(replies[Math.floor(Math.random() * replies.length)], 'official');
-            }
-            
-            sendBtn.disabled = false;
+            // 智能回复
+            setTimeout(() => {
+                const replies = getReply(currentOfficial.personality, message);
+                messagesDiv.innerHTML += `<div class="message official">${replies}</div>`;
+                messagesDiv.scrollTop = messagesDiv.scrollHeight;
+            }, 1000);
         }
         
-        // 添加消息
-        function addMessage(text, type) {
-            const messagesDiv = document.getElementById('chatMessages');
-            const messageDiv = document.createElement('div');
-            messageDiv.className = `message ${type}`;
-            messageDiv.textContent = text;
-            messagesDiv.appendChild(messageDiv);
-            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        // 智能回复
+        function getReply(personality, message) {
+            const replies = {
+                '忠诚': ['皇上万岁！微臣愿为皇上赴汤蹈火！', '皇上圣恩！微臣定当竭尽全力！', '微臣叩见皇上！愿大明江山永固！'],
+                '严谨': ['皇上圣明！此事需从长计议。', '启奏皇上，此事应按律法办事。', '皇上，微臣以为应当慎重考虑。'],
+                '活泼': ['好嘞皇上！微臣立即去办！', '皇上放心！微臣定不负圣恩！', '微臣领旨！这就去发帖！']
+            };
+            const list = replies[personality] || replies['忠诚'];
+            return list[Math.floor(Math.random() * list.length)];
         }
         
-        // 显示正在输入
-        function showTyping() {
-            const messagesDiv = document.getElementById('chatMessages');
-            const typingDiv = document.createElement('div');
-            typingDiv.className = 'typing';
-            typingDiv.id = 'typingIndicator';
-            messagesDiv.appendChild(typingDiv);
-            messagesDiv.scrollTop = messagesDiv.scrollHeight;
-        }
-        
-        // 移除正在输入
-        function removeTyping() {
-            const typingDiv = document.getElementById('typingIndicator');
-            if (typingDiv) typingDiv.remove();
-        }
-        
-        // 点击弹窗外部关闭
+        // 点击外部关闭
         document.getElementById('chatModal').addEventListener('click', function(e) {
             if (e.target === this) closeModal();
         });
