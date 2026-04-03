@@ -1,0 +1,162 @@
+{
+  "report_date": "2026-04-03T22:29:01.410657",
+  "system_days_passed": 3000,
+  "system_years_passed": 8.2,
+  "retirees": [],
+  "new_recruits": [],
+  "deceased": [
+    {
+      "name": "李中",
+      "style_name": "奉孝",
+      "position": "司礼监掌印太监",
+      "age": 34,
+      "death_date": "2034-06-20",
+      "achievements": [
+        {
+          "type": "生平总结",
+          "content": "政绩卓著，造福一方",
+          "importance": 1.0,
+          "date": "2026-04-03T22:29:01.410601"
+        }
+      ]
+    },
+    {
+      "name": "王瑾菊",
+      "style_name": "若儿",
+      "position": "中书省尚书令",
+      "age": 45,
+      "death_date": "2034-06-20",
+      "achievements": [
+        {
+          "type": "生平总结",
+          "content": "任内中书省尚书令，恪尽职守，平稳退休",
+          "importance": 1.0,
+          "date": "2026-04-03T22:29:01.410609"
+        }
+      ]
+    },
+    {
+      "name": "陶义",
+      "style_name": "仲宣",
+      "position": "门下省侍中",
+      "age": 48,
+      "death_date": "2034-06-20",
+      "achievements": [
+        {
+          "type": "生平总结",
+          "content": "任内门下省侍中，恪尽职守，平稳退休",
+          "importance": 1.0,
+          "date": "2026-04-03T22:29:01.410615"
+        }
+      ]
+    },
+    {
+      "name": "邹安思",
+      "style_name": "德祖",
+      "position": "尚书省都事",
+      "age": 53,
+      "death_date": "2034-06-20",
+      "achievements": [
+        {
+          "type": "生平总结",
+          "content": "教育发展，造福一方",
+          "importance": 1.0,
+          "date": "2026-04-03T22:29:01.410621"
+        }
+      ]
+    },
+    {
+      "name": "冯春",
+      "style_name": "灵儿",
+      "position": "户部尚书",
+      "age": 53,
+      "death_date": "2034-06-20",
+      "achievements": [
+        {
+          "type": "生平总结",
+          "content": "政绩卓著，造福一方",
+          "importance": 1.0,
+          "date": "2026-04-03T22:29:01.410626"
+        }
+      ]
+    },
+    {
+      "name": "孙华春",
+      "style_name": "菊儿",
+      "position": "工部尚书",
+      "age": 45,
+      "death_date": "2034-06-20",
+      "achievements": [
+        {
+          "type": "生平总结",
+          "content": "任内工部尚书，恪尽职守，平稳退休",
+          "importance": 1.0,
+          "date": "2026-04-03T22:29:01.410630"
+        }
+      ]
+    },
+    {
+      "name": "卫清信",
+      "style_name": "德祖",
+      "position": "礼部尚书",
+      "age": 44,
+      "death_date": "2034-06-20",
+      "achievements": [
+        {
+          "type": "生平总结",
+          "content": "任内礼部尚书，恪尽职守，平稳退休",
+          "importance": 1.0,
+          "date": "2026-04-03T22:29:01.410635"
+        }
+      ]
+    },
+    {
+      "name": "华世国",
+      "style_name": "奉先",
+      "position": "刑部尚书",
+      "age": 41,
+      "death_date": "2034-06-20",
+      "achievements": [
+        {
+          "type": "生平总结",
+          "content": "外交成功，造福一方",
+          "importance": 1.0,
+          "date": "2026-04-03T22:29:01.410640"
+        }
+      ]
+    },
+    {
+      "name": "韩清",
+      "style_name": "玄德",
+      "position": "兵部尚书",
+      "age": 43,
+      "death_date": "2034-06-20",
+      "achievements": [
+        {
+          "type": "生平总结",
+          "content": "文化建设，造福一方",
+          "importance": 1.0,
+          "date": "2026-04-03T22:29:01.410645"
+        }
+      ]
+    },
+    {
+      "name": "陶婷华",
+      "style_name": "香儿",
+      "position": "吏部尚书",
+      "age": 46,
+      "death_date": "2034-06-20",
+      "achievements": [
+        {
+          "type": "生平总结",
+          "content": "任内吏部尚书，恪尽职守，平稳退休",
+          "importance": 1.0,
+          "date": "2026-04-03T22:29:01.410649"
+        }
+      ]
+    }
+  ],
+  "total_retirees": 0,
+  "total_new_recruits": 0,
+  "total_deceased": 10
+}

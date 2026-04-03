@@ -1,0 +1,162 @@
+{
+  "report_date": "2026-04-03T22:27:34.880615",
+  "system_days_passed": 3000,
+  "system_years_passed": 8.2,
+  "retirees": [],
+  "new_recruits": [],
+  "deceased": [
+    {
+      "name": "谢武达",
+      "style_name": "子敬",
+      "position": "司礼监掌印太监",
+      "age": 42,
+      "death_date": "2034-06-20",
+      "achievements": [
+        {
+          "type": "生平总结",
+          "content": "任内司礼监掌印太监，恪尽职守，平稳退休",
+          "importance": 1.0,
+          "date": "2026-04-03T22:27:34.880561"
+        }
+      ]
+    },
+    {
+      "name": "韩国敬",
+      "style_name": "孔明",
+      "position": "中书省尚书令",
+      "age": 35,
+      "death_date": "2034-06-20",
+      "achievements": [
+        {
+          "type": "生平总结",
+          "content": "勤政爱民，造福一方",
+          "importance": 1.0,
+          "date": "2026-04-03T22:27:34.880570"
+        }
+      ]
+    },
+    {
+      "name": "金萍",
+      "style_name": "珠儿",
+      "position": "门下省侍中",
+      "age": 42,
+      "death_date": "2034-06-20",
+      "achievements": [
+        {
+          "type": "生平总结",
+          "content": "任内门下省侍中，恪尽职守，平稳退休",
+          "importance": 1.0,
+          "date": "2026-04-03T22:27:34.880576"
+        }
+      ]
+    },
+    {
+      "name": "严贵义",
+      "style_name": "妙才",
+      "position": "尚书省都事",
+      "age": 40,
+      "death_date": "2034-06-20",
+      "achievements": [
+        {
+          "type": "生平总结",
+          "content": "平反冤狱，造福一方",
+          "importance": 1.0,
+          "date": "2026-04-03T22:27:34.880581"
+        }
+      ]
+    },
+    {
+      "name": "邹力",
+      "style_name": "玄德",
+      "position": "户部尚书",
+      "age": 35,
+      "death_date": "2034-06-20",
+      "achievements": [
+        {
+          "type": "生平总结",
+          "content": "清廉奉公，造福一方",
+          "importance": 1.0,
+          "date": "2026-04-03T22:27:34.880585"
+        }
+      ]
+    },
+    {
+      "name": "施辉",
+      "style_name": "子龙",
+      "position": "工部尚书",
+      "age": 41,
+      "death_date": "2034-06-20",
+      "achievements": [
+        {
+          "type": "生平总结",
+          "content": "任内工部尚书，恪尽职守，平稳退休",
+          "importance": 1.0,
+          "date": "2026-04-03T22:27:34.880590"
+        }
+      ]
+    },
+    {
+      "name": "吕黛",
+      "style_name": "燕儿",
+      "position": "礼部尚书",
+      "age": 51,
+      "death_date": "2034-06-20",
+      "achievements": [
+        {
+          "type": "生平总结",
+          "content": "文化建设，造福一方",
+          "importance": 1.0,
+          "date": "2026-04-03T22:27:34.880594"
+        }
+      ]
+    },
+    {
+      "name": "冯岩",
+      "style_name": "伯约",
+      "position": "刑部尚书",
+      "age": 34,
+      "death_date": "2034-06-20",
+      "achievements": [
+        {
+          "type": "生平总结",
+          "content": "改革有功，造福一方",
+          "importance": 1.0,
+          "date": "2026-04-03T22:27:34.880599"
+        }
+      ]
+    },
+    {
+      "name": "张凡",
+      "style_name": "风儿",
+      "position": "兵部尚书",
+      "age": 53,
+      "death_date": "2034-06-20",
+      "achievements": [
+        {
+          "type": "生平总结",
+          "content": "勤政爱民，造福一方",
+          "importance": 1.0,
+          "date": "2026-04-03T22:27:34.880603"
+        }
+      ]
+    },
+    {
+      "name": "赵叶勤",
+      "style_name": "燕儿",
+      "position": "吏部尚书",
+      "age": 45,
+      "death_date": "2034-06-20",
+      "achievements": [
+        {
+          "type": "生平总结",
+          "content": "任内吏部尚书，恪尽职守，平稳退休",
+          "importance": 1.0,
+          "date": "2026-04-03T22:27:34.880607"
+        }
+      ]
+    }
+  ],
+  "total_retirees": 0,
+  "total_new_recruits": 0,
+  "total_deceased": 10
+}

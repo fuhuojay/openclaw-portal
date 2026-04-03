@@ -1,0 +1,162 @@
+{
+  "report_date": "2026-04-03T22:27:56.744326",
+  "system_days_passed": 3000,
+  "system_years_passed": 8.2,
+  "retirees": [],
+  "new_recruits": [],
+  "deceased": [
+    {
+      "name": "何瑞",
+      "style_name": "莲儿",
+      "position": "司礼监掌印太监",
+      "age": 52,
+      "death_date": "2034-06-20",
+      "achievements": [
+        {
+          "type": "生平总结",
+          "content": "任内司礼监掌印太监，恪尽职守，平稳退休",
+          "importance": 1.0,
+          "date": "2026-04-03T22:27:56.744268"
+        }
+      ]
+    },
+    {
+      "name": "章志",
+      "style_name": "伯言",
+      "position": "中书省尚书令",
+      "age": 53,
+      "death_date": "2034-06-20",
+      "achievements": [
+        {
+          "type": "生平总结",
+          "content": "任内中书省尚书令，恪尽职守，平稳退休",
+          "importance": 1.0,
+          "date": "2026-04-03T22:27:56.744277"
+        }
+      ]
+    },
+    {
+      "name": "章茂",
+      "style_name": "公瑾",
+      "position": "门下省侍中",
+      "age": 48,
+      "death_date": "2034-06-20",
+      "achievements": [
+        {
+          "type": "生平总结",
+          "content": "任内门下省侍中，恪尽职守，平稳退休",
+          "importance": 1.0,
+          "date": "2026-04-03T22:27:56.744283"
+        }
+      ]
+    },
+    {
+      "name": "姜龙岩",
+      "style_name": "元让",
+      "position": "尚书省都事",
+      "age": 42,
+      "death_date": "2034-06-20",
+      "achievements": [
+        {
+          "type": "生平总结",
+          "content": "改革有功，造福一方",
+          "importance": 1.0,
+          "date": "2026-04-03T22:27:56.744289"
+        }
+      ]
+    },
+    {
+      "name": "沈国",
+      "style_name": "子龙",
+      "position": "户部尚书",
+      "age": 41,
+      "death_date": "2034-06-20",
+      "achievements": [
+        {
+          "type": "生平总结",
+          "content": "治水有功，造福一方",
+          "importance": 1.0,
+          "date": "2026-04-03T22:27:56.744294"
+        }
+      ]
+    },
+    {
+      "name": "蒋桂菊",
+      "style_name": "香儿",
+      "position": "工部尚书",
+      "age": 43,
+      "death_date": "2034-06-20",
+      "achievements": [
+        {
+          "type": "生平总结",
+          "content": "改革有功，造福一方",
+          "importance": 1.0,
+          "date": "2026-04-03T22:27:56.744299"
+        }
+      ]
+    },
+    {
+      "name": "秦荣",
+      "style_name": "莺儿",
+      "position": "礼部尚书",
+      "age": 42,
+      "death_date": "2034-06-20",
+      "achievements": [
+        {
+          "type": "生平总结",
+          "content": "任内礼部尚书，恪尽职守，平稳退休",
+          "importance": 1.0,
+          "date": "2026-04-03T22:27:56.744304"
+        }
+      ]
+    },
+    {
+      "name": "曹璧",
+      "style_name": "菊儿",
+      "position": "刑部尚书",
+      "age": 52,
+      "death_date": "2034-06-20",
+      "achievements": [
+        {
+          "type": "生平总结",
+          "content": "赈灾有力，造福一方",
+          "importance": 1.0,
+          "date": "2026-04-03T22:27:56.744308"
+        }
+      ]
+    },
+    {
+      "name": "吕青",
+      "style_name": "风儿",
+      "position": "兵部尚书",
+      "age": 46,
+      "death_date": "2034-06-20",
+      "achievements": [
+        {
+          "type": "生平总结",
+          "content": "清廉奉公，造福一方",
+          "importance": 1.0,
+          "date": "2026-04-03T22:27:56.744313"
+        }
+      ]
+    },
+    {
+      "name": "李惠珊",
+      "style_name": "思儿",
+      "position": "吏部尚书",
+      "age": 46,
+      "death_date": "2034-06-20",
+      "achievements": [
+        {
+          "type": "生平总结",
+          "content": "任内吏部尚书，恪尽职守，平稳退休",
+          "importance": 1.0,
+          "date": "2026-04-03T22:27:56.744318"
+        }
+      ]
+    }
+  ],
+  "total_retirees": 0,
+  "total_new_recruits": 0,
+  "total_deceased": 10
+}

@@ -1,0 +1,162 @@
+{
+  "report_date": "2026-04-03T22:29:20.983306",
+  "system_days_passed": 3000,
+  "system_years_passed": 8.2,
+  "retirees": [],
+  "new_recruits": [],
+  "deceased": [
+    {
+      "name": "金岩彪",
+      "style_name": "伯言",
+      "position": "司礼监掌印太监",
+      "age": 47,
+      "death_date": "2034-06-20",
+      "achievements": [
+        {
+          "type": "生平总结",
+          "content": "赈灾有力，造福一方",
+          "importance": 1.0,
+          "date": "2026-04-03T22:29:20.983253"
+        }
+      ]
+    },
+    {
+      "name": "金生",
+      "style_name": "仲康",
+      "position": "中书省尚书令",
+      "age": 51,
+      "death_date": "2034-06-20",
+      "achievements": [
+        {
+          "type": "生平总结",
+          "content": "平反冤狱，造福一方",
+          "importance": 1.0,
+          "date": "2026-04-03T22:29:20.983260"
+        }
+      ]
+    },
+    {
+      "name": "章凡",
+      "style_name": "风儿",
+      "position": "门下省侍中",
+      "age": 39,
+      "death_date": "2034-06-20",
+      "achievements": [
+        {
+          "type": "生平总结",
+          "content": "任内门下省侍中，恪尽职守，平稳退休",
+          "importance": 1.0,
+          "date": "2026-04-03T22:29:20.983266"
+        }
+      ]
+    },
+    {
+      "name": "吴秋琳",
+      "style_name": "云儿",
+      "position": "尚书省都事",
+      "age": 43,
+      "death_date": "2034-06-20",
+      "achievements": [
+        {
+          "type": "生平总结",
+          "content": "任内尚书省都事，恪尽职守，平稳退休",
+          "importance": 1.0,
+          "date": "2026-04-03T22:29:20.983273"
+        }
+      ]
+    },
+    {
+      "name": "张敬振",
+      "style_name": "奉先",
+      "position": "户部尚书",
+      "age": 51,
+      "death_date": "2034-06-20",
+      "achievements": [
+        {
+          "type": "生平总结",
+          "content": "任内户部尚书，恪尽职守，平稳退休",
+          "importance": 1.0,
+          "date": "2026-04-03T22:29:20.983278"
+        }
+      ]
+    },
+    {
+      "name": "严力",
+      "style_name": "文远",
+      "position": "工部尚书",
+      "age": 39,
+      "death_date": "2034-06-20",
+      "achievements": [
+        {
+          "type": "生平总结",
+          "content": "治水有功，造福一方",
+          "importance": 1.0,
+          "date": "2026-04-03T22:29:20.983283"
+        }
+      ]
+    },
+    {
+      "name": "孙顺",
+      "style_name": "仲宣",
+      "position": "礼部尚书",
+      "age": 45,
+      "death_date": "2034-06-20",
+      "achievements": [
+        {
+          "type": "生平总结",
+          "content": "任内礼部尚书，恪尽职守，平稳退休",
+          "importance": 1.0,
+          "date": "2026-04-03T22:29:20.983287"
+        }
+      ]
+    },
+    {
+      "name": "施武祥",
+      "style_name": "文举",
+      "position": "刑部尚书",
+      "age": 42,
+      "death_date": "2034-06-20",
+      "achievements": [
+        {
+          "type": "生平总结",
+          "content": "任内刑部尚书，恪尽职守，平稳退休",
+          "importance": 1.0,
+          "date": "2026-04-03T22:29:20.983291"
+        }
+      ]
+    },
+    {
+      "name": "王娜翠",
+      "style_name": "梦儿",
+      "position": "兵部尚书",
+      "age": 53,
+      "death_date": "2034-06-20",
+      "achievements": [
+        {
+          "type": "生平总结",
+          "content": "任内兵部尚书，恪尽职守，平稳退休",
+          "importance": 1.0,
+          "date": "2026-04-03T22:29:20.983295"
+        }
+      ]
+    },
+    {
+      "name": "华惠",
+      "style_name": "灵儿",
+      "position": "吏部尚书",
+      "age": 38,
+      "death_date": "2034-06-20",
+      "achievements": [
+        {
+          "type": "生平总结",
+          "content": "任内吏部尚书，恪尽职守，平稳退休",
+          "importance": 1.0,
+          "date": "2026-04-03T22:29:20.983299"
+        }
+      ]
+    }
+  ],
+  "total_retirees": 0,
+  "total_new_recruits": 0,
+  "total_deceased": 10
+}

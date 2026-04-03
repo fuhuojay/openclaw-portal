@@ -1,0 +1,162 @@
+{
+  "report_date": "2026-04-03T22:28:12.256084",
+  "system_days_passed": 3000,
+  "system_years_passed": 8.2,
+  "retirees": [],
+  "new_recruits": [],
+  "deceased": [
+    {
+      "name": "杨嘉",
+      "style_name": "莲儿",
+      "position": "司礼监掌印太监",
+      "age": 50,
+      "death_date": "2034-06-20",
+      "achievements": [
+        {
+          "type": "生平总结",
+          "content": "任内司礼监掌印太监，恪尽职守，平稳退休",
+          "importance": 1.0,
+          "date": "2026-04-03T22:28:12.256020"
+        }
+      ]
+    },
+    {
+      "name": "姜山",
+      "style_name": "仲宣",
+      "position": "中书省尚书令",
+      "age": 42,
+      "death_date": "2034-06-20",
+      "achievements": [
+        {
+          "type": "生平总结",
+          "content": "任内中书省尚书令，恪尽职守，平稳退休",
+          "importance": 1.0,
+          "date": "2026-04-03T22:28:12.256030"
+        }
+      ]
+    },
+    {
+      "name": "褚娥燕",
+      "style_name": "云儿",
+      "position": "门下省侍中",
+      "age": 43,
+      "death_date": "2034-06-20",
+      "achievements": [
+        {
+          "type": "生平总结",
+          "content": "改革有功，造福一方",
+          "importance": 1.0,
+          "date": "2026-04-03T22:28:12.256037"
+        }
+      ]
+    },
+    {
+      "name": "金青",
+      "style_name": "兰儿",
+      "position": "尚书省都事",
+      "age": 44,
+      "death_date": "2034-06-20",
+      "achievements": [
+        {
+          "type": "生平总结",
+          "content": "改革有功，造福一方",
+          "importance": 1.0,
+          "date": "2026-04-03T22:28:12.256043"
+        }
+      ]
+    },
+    {
+      "name": "陈祥",
+      "style_name": "伯约",
+      "position": "户部尚书",
+      "age": 37,
+      "death_date": "2034-06-20",
+      "achievements": [
+        {
+          "type": "生平总结",
+          "content": "军事胜利，造福一方",
+          "importance": 1.0,
+          "date": "2026-04-03T22:28:12.256048"
+        }
+      ]
+    },
+    {
+      "name": "褚洁",
+      "style_name": "梦儿",
+      "position": "工部尚书",
+      "age": 42,
+      "death_date": "2034-06-20",
+      "achievements": [
+        {
+          "type": "生平总结",
+          "content": "教育发展，造福一方",
+          "importance": 1.0,
+          "date": "2026-04-03T22:28:12.256054"
+        }
+      ]
+    },
+    {
+      "name": "张光",
+      "style_name": "子桓",
+      "position": "礼部尚书",
+      "age": 45,
+      "death_date": "2034-06-20",
+      "achievements": [
+        {
+          "type": "生平总结",
+          "content": "教育发展，造福一方",
+          "importance": 1.0,
+          "date": "2026-04-03T22:28:12.256059"
+        }
+      ]
+    },
+    {
+      "name": "蒋利敬",
+      "style_name": "德祖",
+      "position": "刑部尚书",
+      "age": 37,
+      "death_date": "2034-06-20",
+      "achievements": [
+        {
+          "type": "生平总结",
+          "content": "科技进步，造福一方",
+          "importance": 1.0,
+          "date": "2026-04-03T22:28:12.256065"
+        }
+      ]
+    },
+    {
+      "name": "陶军壮",
+      "style_name": "子敬",
+      "position": "兵部尚书",
+      "age": 53,
+      "death_date": "2034-06-20",
+      "achievements": [
+        {
+          "type": "生平总结",
+          "content": "平反冤狱，造福一方",
+          "importance": 1.0,
+          "date": "2026-04-03T22:28:12.256070"
+        }
+      ]
+    },
+    {
+      "name": "钱兴",
+      "style_name": "显甫",
+      "position": "吏部尚书",
+      "age": 49,
+      "death_date": "2034-06-20",
+      "achievements": [
+        {
+          "type": "生平总结",
+          "content": "任内吏部尚书，恪尽职守，平稳退休",
+          "importance": 1.0,
+          "date": "2026-04-03T22:28:12.256075"
+        }
+      ]
+    }
+  ],
+  "total_retirees": 0,
+  "total_new_recruits": 0,
+  "total_deceased": 10
+}
