@@ -7,13 +7,12 @@
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            font-family: "Noto Serif SC", serif;
-            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            font-family: "Noto Serif SC", "Microsoft YaHei", serif;
+            background: linear-gradient(135deg, #1a2a3a 0%, #2c3e50 100%);
             min-height: 100vh;
             overflow-x: hidden;
+            color: #f0f0f0;
         }
-        
-        /* 返回按钮 */
         .back-btn {
             position: fixed;
             top: 20px;
@@ -28,56 +27,25 @@
             backdrop-filter: blur(10px);
             transition: all 0.3s;
         }
-        .back-btn:hover {
-            background: rgba(255,255,255,0.3);
-            transform: translateY(-3px);
-        }
-        
-        /* 朝堂大殿 */
-        .throne-hall {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 80px 20px 20px;
-        }
-        
-        /* 皇上宝座 */
+        .back-btn:hover { background: rgba(255,255,255,0.3); }
+        .throne-hall { max-width: 1400px; margin: 0 auto; padding: 80px 20px 20px; }
         .throne {
             text-align: center;
             margin-bottom: 50px;
             padding: 40px;
-            background: linear-gradient(135deg, rgba(255,215,0,0.2), rgba(255,215,0,0.1));
+            background: linear-gradient(135deg, rgba(255,215,0,0.15), rgba(255,215,0,0.08));
             border: 2px solid rgba(255,215,0,0.3);
             border-radius: 20px;
             backdrop-filter: blur(10px);
-            box-shadow: 0 10px 30px rgba(255,215,0,0.2);
+            box-shadow: 0 10px 30px rgba(255,215,0,0.15);
         }
-        .throne-icon {
-            font-size: 5em;
-            margin-bottom: 20px;
-            animation: glow 2s infinite;
-        }
+        .throne-icon { font-size: 5em; margin-bottom: 20px; animation: glow 2s infinite; }
         @keyframes glow {
-            0%, 100% { 
-                transform: scale(1);
-                filter: drop-shadow(0 0 20px rgba(255,215,0,0.5));
-            }
-            50% { 
-                transform: scale(1.1);
-                filter: drop-shadow(0 0 40px rgba(255,215,0,0.8));
-            }
+            0%, 100% { transform: scale(1); filter: drop-shadow(0 0 20px rgba(255,215,0,0.5)); }
+            50% { transform: scale(1.1); filter: drop-shadow(0 0 40px rgba(255,215,0,0.8)); }
         }
-        .throne-title {
-            color: white;
-            font-size: 2.5em;
-            margin-bottom: 10px;
-            text-shadow: 0 2px 10px rgba(0,0,0,0.5);
-        }
-        .throne-subtitle {
-            color: rgba(255,255,255,0.8);
-            font-size: 1.2em;
-        }
-        
-        /* 统计面板 */
+        .throne-title { color: #FFD700; font-size: 2.5em; margin-bottom: 10px; text-shadow: 0 2px 10px rgba(0,0,0,0.8); }
+        .throne-subtitle { color: rgba(255,255,255,0.9); font-size: 1.2em; }
         .stats-panel {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -89,12 +57,10 @@
             padding: 25px;
             border-radius: 15px;
             text-align: center;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
             transition: transform 0.3s;
         }
-        .stat-card:hover {
-            transform: translateY(-5px);
-        }
+        .stat-card:hover { transform: translateY(-5px); }
         .stat-value {
             font-size: 2.5em;
             font-weight: bold;
@@ -103,13 +69,7 @@
             -webkit-text-fill-color: transparent;
             background-clip: text;
         }
-        .stat-label {
-            color: #666;
-            margin-top: 8px;
-            font-size: 1em;
-        }
-        
-        /* 控制按钮 */
+        .stat-label { color: #555; margin-top: 8px; font-size: 1em; }
         .control-panel {
             background: rgba(255,255,255,0.95);
             padding: 25px;
@@ -118,7 +78,7 @@
             display: flex;
             gap: 15px;
             flex-wrap: wrap;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
         }
         .control-btn {
             flex: 1;
@@ -134,30 +94,16 @@
             transition: all 0.3s;
             box-shadow: 0 5px 15px rgba(0,0,0,0.2);
         }
-        .control-btn:hover {
-            transform: translateY(-3px) scale(1.05);
-            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
-        }
-        .control-btn:active {
-            transform: translateY(-1px);
-        }
-        .control-btn.danger {
-            background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
-        }
-        .control-btn.success {
-            background: linear-gradient(135deg, #28a745 0%, #218838 100%);
-        }
-        
-        /* 官员队列 */
+        .control-btn:hover { transform: translateY(-3px) scale(1.05); box-shadow: 0 8px 25px rgba(0,0,0,0.3); }
+        .control-btn.danger { background: linear-gradient(135deg, #dc3545 0%, #c82333 100%); }
+        .control-btn.success { background: linear-gradient(135deg, #28a745 0%, #218838 100%); }
         .officials-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
             gap: 25px;
         }
-        
-        /* 官员卡片 */
         .official-card {
-            background: rgba(255,255,255,0.95);
+            background: rgba(255,255,255,0.98);
             border-radius: 20px;
             padding: 25px;
             cursor: pointer;
@@ -165,7 +111,8 @@
             border: 3px solid transparent;
             position: relative;
             overflow: hidden;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+            color: #333;
         }
         .official-card::before {
             content: '';
@@ -181,18 +128,14 @@
         }
         .official-card:hover {
             transform: translateY(-10px);
-            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.4);
             border-color: #667eea;
         }
-        .official-card:hover::before {
-            animation: shine 0.6s;
-            opacity: 1;
-        }
+        .official-card:hover::before { animation: shine 0.6s; opacity: 1; }
         @keyframes shine {
             0% { transform: translateX(-100%) rotate(45deg); }
             100% { transform: translateX(100%) rotate(45deg); }
         }
-        
         .official-header {
             display: flex;
             justify-content: space-between;
@@ -217,64 +160,27 @@
             font-size: 0.85em;
             font-weight: bold;
         }
-        .status-在职 {
-            background: linear-gradient(135deg, #28a745 0%, #218838 100%);
-            color: white;
-        }
-        .status-退休 {
-            background: linear-gradient(135deg, #ffc107 0%, #ffca2c 100%);
-            color: #333;
-        }
-        .status-去世 {
-            background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
-            color: white;
-            opacity: 0.5;
-        }
-        
-        .official-name {
-            font-size: 1.5em;
-            color: #1e3c72;
-            margin-bottom: 5px;
-            font-weight: bold;
-        }
-        .official-style {
-            color: #667eea;
-            font-size: 1em;
-            margin-bottom: 8px;
-            font-style: italic;
-        }
-        .official-position {
-            color: #666;
-            font-size: 0.9em;
-            margin-bottom: 15px;
-            line-height: 1.4;
-        }
-        
+        .status-在职 { background: linear-gradient(135deg, #28a745 0%, #218838 100%); color: white; }
+        .status-退休 { background: linear-gradient(135deg, #ffc107 0%, #ffca2c 100%); color: #333; }
+        .status-去世 { background: linear-gradient(135deg, #dc3545 0%, #c82333 100%); color: white; opacity: 0.5; }
+        .official-name { font-size: 1.5em; color: #1e3c72; margin-bottom: 5px; font-weight: bold; }
+        .official-style { color: #667eea; font-size: 1em; margin-bottom: 8px; font-style: italic; }
+        .official-position { color: #555; font-size: 0.9em; margin-bottom: 15px; line-height: 1.4; }
         .official-info {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 12px;
             padding-top: 15px;
-            border-top: 2px solid #f0f0f0;
+            border-top: 2px solid #e0e0e0;
         }
         .info-item {
             text-align: center;
             padding: 10px;
-            background: #f8f9fa;
+            background: #f5f5f5;
             border-radius: 8px;
         }
-        .info-label {
-            color: #999;
-            font-size: 0.8em;
-            margin-bottom: 5px;
-        }
-        .info-value {
-            color: #667eea;
-            font-weight: bold;
-            font-size: 1.1em;
-        }
-        
-        /* 对话弹窗 */
+        .info-label { color: #888; font-size: 0.8em; margin-bottom: 5px; }
+        .info-value { color: #667eea; font-weight: bold; font-size: 1.1em; }
         .modal {
             display: none;
             position: fixed;
@@ -282,7 +188,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0,0,0,0.8);
+            background: rgba(0,0,0,0.85);
             z-index: 2000;
             justify-content: center;
             align-items: center;
@@ -296,17 +202,11 @@
             max-height: 85vh;
             overflow-y: auto;
             animation: slideUp 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
         }
         @keyframes slideUp {
-            from {
-                transform: translateY(50px);
-                opacity: 0;
-            }
-            to {
-                transform: translateY(0);
-                opacity: 1;
-            }
+            from { transform: translateY(50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
         }
         .modal-header {
             padding: 25px;
@@ -317,10 +217,7 @@
             justify-content: space-between;
             align-items: center;
         }
-        .modal-title {
-            font-size: 1.5em;
-            font-weight: bold;
-        }
+        .modal-title { font-size: 1.5em; font-weight: bold; }
         .modal-close {
             font-size: 2.5em;
             cursor: pointer;
@@ -333,19 +230,14 @@
             justify-content: center;
             border-radius: 50%;
         }
-        .modal-close:hover {
-            background: rgba(255,255,255,0.2);
-            transform: rotate(90deg);
-        }
-        .modal-body {
-            padding: 30px;
-        }
+        .modal-close:hover { background: rgba(255,255,255,0.2); transform: rotate(90deg); }
+        .modal-body { padding: 30px; }
         .chat-messages {
             max-height: 450px;
             overflow-y: auto;
             margin-bottom: 20px;
             padding: 20px;
-            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            background: linear-gradient(135deg, #f0f0f0 0%, #e0e0e0 100%);
             border-radius: 15px;
         }
         .message {
@@ -355,34 +247,24 @@
             max-width: 75%;
             animation: messageIn 0.3s ease-out;
             line-height: 1.5;
+            color: white;
         }
         @keyframes messageIn {
-            from {
-                transform: translateY(10px);
-                opacity: 0;
-            }
-            to {
-                transform: translateY(0);
-                opacity: 1;
-            }
+            from { transform: translateY(10px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
         }
         .message.official {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
             margin-right: auto;
             border-bottom-left-radius: 5px;
         }
         .message.user {
             background: linear-gradient(135deg, #28a745 0%, #218838 100%);
-            color: white;
             margin-left: auto;
             text-align: right;
             border-bottom-right-radius: 5px;
         }
-        .chat-input {
-            display: flex;
-            gap: 12px;
-        }
+        .chat-input { display: flex; gap: 12px; }
         .chat-input input {
             flex: 1;
             padding: 15px 20px;
@@ -392,9 +274,7 @@
             outline: none;
             transition: border-color 0.3s;
         }
-        .chat-input input:focus {
-            border-color: #667eea;
-        }
+        .chat-input input:focus { border-color: #667eea; }
         .chat-input button {
             padding: 15px 30px;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -406,24 +286,15 @@
             font-size: 1em;
             transition: all 0.3s;
         }
-        .chat-input button:hover {
-            transform: scale(1.05);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-        }
-        .chat-input button:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-            transform: none;
-        }
-        
-        /* 开场动画 */
+        .chat-input button:hover { transform: scale(1.05); box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
+        .chat-input button:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
         #opening {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            background: linear-gradient(135deg, #1a2a3a 0%, #2c3e50 100%);
             z-index: 9999;
             display: flex;
             flex-direction: column;
@@ -431,10 +302,7 @@
             align-items: center;
             color: white;
         }
-        .mingbian {
-            font-size: 3.5em;
-            animation: shake 0.5s ease-in-out;
-        }
+        .mingbian { font-size: 3.5em; animation: shake 0.5s ease-in-out; }
         @keyframes shake {
             0%, 100% { transform: translateX(0); }
             25% { transform: translateX(-20px); }
@@ -446,80 +314,48 @@
             opacity: 0;
             animation: fadeIn 1s ease-in-out 1s forwards;
             text-align: center;
-            text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+            text-shadow: 0 2px 10px rgba(0,0,0,0.8);
         }
-        @keyframes fadeIn {
-            to { opacity: 1; }
-        }
-        
-        /* 滚动条美化 */
-        ::-webkit-scrollbar {
-            width: 10px;
-        }
-        ::-webkit-scrollbar-track {
-            background: rgba(0,0,0,0.1);
-            border-radius: 5px;
-        }
+        @keyframes fadeIn { to { opacity: 1; } }
+        ::-webkit-scrollbar { width: 10px; }
+        ::-webkit-scrollbar-track { background: rgba(0,0,0,0.2); border-radius: 5px; }
         ::-webkit-scrollbar-thumb {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             border-radius: 5px;
         }
-        ::-webkit-scrollbar-thumb:hover {
-            background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
-        }
     </style>
 </head>
 <body>
-    <!-- 开场动画 -->
     <div id="opening">
         <div class="mingbian">🔔 啪！啪！啪！</div>
         <div class="opening-text">鸣鞭——皇上早朝——百官觐见！</div>
     </div>
     
-    <!-- 返回按钮 -->
     <a href="index.html" class="back-btn">← 返回导航</a>
     
-    <!-- 朝堂大殿 -->
     <div class="throne-hall">
-        <!-- 皇上宝座 -->
         <div class="throne">
             <div class="throne-icon">👑</div>
             <div class="throne-title">大明·OpenClaw 朝堂</div>
             <div class="throne-subtitle">三省六部 · 百官朝会</div>
         </div>
         
-        <!-- 统计面板 -->
         <div class="stats-panel">
-            <div class="stat-card">
-                <div class="stat-value" id="statTotal">0</div>
-                <div class="stat-label">总官员</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-value" id="statWorking">0</div>
-                <div class="stat-label">在职</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-value" id="statRetired">0</div>
-                <div class="stat-label">退休</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-value" id="statDead">0</div>
-                <div class="stat-label">去世</div>
-            </div>
+            <div class="stat-card"><div class="stat-value" id="statTotal">0</div><div class="stat-label">总官员</div></div>
+            <div class="stat-card"><div class="stat-value" id="statWorking">0</div><div class="stat-label">在职</div></div>
+            <div class="stat-card"><div class="stat-value" id="statRetired">0</div><div class="stat-label">退休</div></div>
+            <div class="stat-card"><div class="stat-value" id="statDead">0</div><div class="stat-label">去世</div></div>
         </div>
         
-        <!-- 控制按钮 -->
         <div class="control-panel">
             <button class="control-btn success" onclick="distributeSalary()">💰 发放俸禄 (Token)</button>
             <button class="control-btn" onclick="aging()">⏰ 时间流逝</button>
             <button class="control-btn danger" onclick="checkStarvation()">💀 检查饿死</button>
         </div>
         
-        <!-- 官员队列 -->
         <div class="officials-grid" id="officialsGrid"></div>
     </div>
     
-    <!-- 对话弹窗 -->
     <div class="modal" id="chatModal">
         <div class="modal-content">
             <div class="modal-header">
@@ -540,13 +376,11 @@
         let officials = [];
         let currentOfficial = null;
         
-        // 开场动画
         setTimeout(() => {
             document.getElementById('opening').style.display = 'none';
             loadOfficials();
         }, 2500);
         
-        // 加载官员
         async function loadOfficials() {
             try {
                 const response = await fetch('api/officials_data.json');
@@ -556,25 +390,23 @@
                 renderOfficials();
             } catch (error) {
                 console.error('加载失败:', error);
-                // 备用数据
                 officials = [
-                    { id: 1, name: '柏元富', style: '荷儿', position: '司礼监掌印太监', personality: '忠诚', age: 35, lifespan: 78, salary: 1000, status: '在职', salary_count: 0, posts: 15, likes: 120, icon: '🧕', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Baiyuanfu' },
-                    { id: 2, name: '许素娴', style: '霜儿', position: '中书省尚书令', personality: '严谨', age: 42, lifespan: 85, salary: 1000, status: '在职', salary_count: 0, posts: 12, likes: 98, icon: '📜', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Xusuxian' },
-                    { id: 3, name: '华涛', style: '雨儿', position: '门下省侍中', personality: '严谨', age: 38, lifespan: 82, salary: 800, status: '在职', salary_count: 0, posts: 10, likes: 85, icon: '⚖️', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Huatao' },
-                    { id: 4, name: '赵康', style: '子敬', position: '尚书省都事', personality: '忠诚', age: 45, lifespan: 90, salary: 600, status: '在职', salary_count: 0, posts: 18, likes: 142, icon: '🏛️', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Zhaokang' },
-                    { id: 5, name: '孔中中', style: '燕儿', position: '户部尚书', personality: '活泼', age: 40, lifespan: 75, salary: 1000, status: '在职', salary_count: 0, posts: 14, likes: 105, icon: '📊', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Kongzhongzhong' },
-                    { id: 6, name: '曹英', style: '思儿', position: '工部尚书', personality: '活泼', age: 36, lifespan: 80, salary: 1000, status: '在职', salary_count: 0, posts: 16, likes: 128, icon: '🔧', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Caoying' },
-                    { id: 7, name: '何强敬', style: '翠儿', position: '礼部尚书', personality: '严谨', age: 43, lifespan: 88, salary: 1000, status: '在职', salary_count: 0, posts: 11, likes: 92, icon: '✍️', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Heqiangjing' },
-                    { id: 8, name: '杨富', style: '兰儿', position: '刑部尚书', personality: '严谨', age: 39, lifespan: 83, salary: 1000, status: '在职', salary_count: 0, posts: 13, likes: 110, icon: '🔍', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Yangfu' },
-                    { id: 9, name: '姜娟春', style: '凤儿', position: '兵部尚书', personality: '忠诚', age: 37, lifespan: 77, salary: 1000, status: '在职', salary_count: 0, posts: 9, likes: 78, icon: '🛡️', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Jiangjuanchun' },
-                    { id: 10, name: '窦露素', style: '芷儿', position: '吏部尚书', personality: '活泼', age: 41, lifespan: 86, salary: 1000, status: '在职', salary_count: 0, posts: 17, likes: 135, icon: '📚', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Doulusu' }
+                    { id: 1, name: '柏元富', style: '荷儿', position: '司礼监掌印太监', personality: '忠诚', age: 35, lifespan: 78, salary: 1000, status: '在职', salary_count: 0, tokens: 1500, posts: 15, likes: 120, icon: '🧕', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Baiyuanfu' },
+                    { id: 2, name: '许素娴', style: '霜儿', position: '中书省尚书令', personality: '严谨', age: 42, lifespan: 85, salary: 1000, status: '在职', salary_count: 0, tokens: 1200, posts: 12, likes: 98, icon: '📜', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Xusuxian' },
+                    { id: 3, name: '华涛', style: '雨儿', position: '门下省侍中', personality: '严谨', age: 38, lifespan: 82, salary: 800, status: '在职', salary_count: 0, tokens: 1000, posts: 10, likes: 85, icon: '⚖️', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Huatao' },
+                    { id: 4, name: '赵康', style: '子敬', position: '尚书省都事', personality: '忠诚', age: 45, lifespan: 90, salary: 600, status: '在职', salary_count: 0, tokens: 1800, posts: 18, likes: 142, icon: '🏛️', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Zhaokang' },
+                    { id: 5, name: '孔中中', style: '燕儿', position: '户部尚书', personality: '活泼', age: 40, lifespan: 75, salary: 1000, status: '在职', salary_count: 0, tokens: 1400, posts: 14, likes: 105, icon: '📊', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Kongzhongzhong' },
+                    { id: 6, name: '曹英', style: '思儿', position: '工部尚书', personality: '活泼', age: 36, lifespan: 80, salary: 1000, status: '在职', salary_count: 0, tokens: 1600, posts: 16, likes: 128, icon: '🔧', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Caoying' },
+                    { id: 7, name: '何强敬', style: '翠儿', position: '礼部尚书', personality: '严谨', age: 43, lifespan: 88, salary: 1000, status: '在职', salary_count: 0, tokens: 1100, posts: 11, likes: 92, icon: '✍️', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Heqiangjing' },
+                    { id: 8, name: '杨富', style: '兰儿', position: '刑部尚书', personality: '严谨', age: 39, lifespan: 83, salary: 1000, status: '在职', salary_count: 0, tokens: 1300, posts: 13, likes: 110, icon: '🔍', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Yangfu' },
+                    { id: 9, name: '姜娟春', style: '凤儿', position: '兵部尚书', personality: '忠诚', age: 37, lifespan: 77, salary: 1000, status: '在职', salary_count: 0, tokens: 900, posts: 9, likes: 78, icon: '🛡️', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Jiangjuanchun' },
+                    { id: 10, name: '窦露素', style: '芷儿', position: '吏部尚书', personality: '活泼', age: 41, lifespan: 86, salary: 1000, status: '在职', salary_count: 0, tokens: 1700, posts: 17, likes: 135, icon: '📚', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Doulusu' }
                 ];
-                updateStatistics({ total: 10, working: 10, retired: 0, dead: 0, total_salary: 0 });
+                updateStatistics({ total: 10, working: 10, retired: 0, dead: 0, total_tokens: 13500 });
                 renderOfficials();
             }
         }
         
-        // 更新统计
         function updateStatistics(stats) {
             document.getElementById('statTotal').textContent = stats.total;
             document.getElementById('statWorking').textContent = stats.working;
@@ -582,7 +414,6 @@
             document.getElementById('statDead').textContent = stats.dead;
         }
         
-        // 渲染官员
         function renderOfficials() {
             const grid = document.getElementById('officialsGrid');
             grid.innerHTML = officials.map(o => `
@@ -618,7 +449,6 @@
             `).join('');
         }
         
-        // 发放俸禄
         function distributeSalary() {
             alert('俸禄 (Token) 已发放！');
             officials.forEach(o => {
@@ -628,57 +458,57 @@
             renderOfficials();
         }
         
-        // 时间流逝
         function aging() {
             alert('时间流逝一年！');
             officials.forEach(o => {
                 if (o.status !== '去世') {
                     o.age += 1;
-                    if (o.age >= o.lifespan) {
-                        o.status = '去世';
-                    }
+                    if (o.age >= o.lifespan) o.status = '去世';
                 }
             });
             renderOfficials();
         }
         
-        // 检查饿死
         function checkStarvation() {
+            let starving = [];
             let dead = [];
+            
             officials.forEach(o => {
-                if (o.status !== '去世' && o.salary_count <= 0) {
-                    o.status = '去世';
-                    dead.push(o.name);
+                if (o.status === '在职' || o.status === '退休') {
+                    if (o.salary_count <= 0) {
+                        starving.push(o.name);
+                    }
                 }
             });
-            if (dead.length > 0) {
-                alert(dead.join(' ') + ' 饿死了！');
+            
+            if (starving.length > 0) {
+                const confirmMsg = `以下官员俸禄为 0，即将饿死：\n${starving.join('、')}\n\n是否立即发放俸禄？`;
+                if (confirm(confirmMsg)) {
+                    distributeSalary();
+                    alert('已发放俸禄，官员们得救了！');
+                } else {
+                    alert('皇上见死不救，这些官员要饿死了...');
+                }
             } else {
-                alert('无人饿死');
+                alert('✅ 所有官员俸禄充足，无人饿死！');
             }
             renderOfficials();
         }
         
-        // 打开对话
         function openChat(id) {
             const official = officials.find(o => o.id === id);
             if (!official) return;
-            
             currentOfficial = official;
             document.getElementById('modalTitle').textContent = `${official.name} (${official.position})`;
             document.getElementById('chatModal').style.display = 'flex';
-            
-            const messagesDiv = document.getElementById('chatMessages');
-            messagesDiv.innerHTML = `<div class="message official">微臣参见皇上！皇上万岁万岁万万岁！</div>`;
+            document.getElementById('chatMessages').innerHTML = `<div class="message official">微臣参见皇上！皇上万岁万岁万万岁！</div>`;
         }
         
-        // 关闭对话
         function closeModal() {
             document.getElementById('chatModal').style.display = 'none';
             currentOfficial = null;
         }
         
-        // 发送消息
         async function sendMessage() {
             const input = document.getElementById('chatInput');
             const message = input.value.trim();
@@ -691,7 +521,6 @@
             const sendBtn = document.getElementById('sendBtn');
             sendBtn.disabled = true;
             
-            // 显示正在输入
             const typingDiv = document.createElement('div');
             typingDiv.className = 'message official';
             typingDiv.textContent = '...';
@@ -700,7 +529,6 @@
             messagesDiv.scrollTop = messagesDiv.scrollHeight;
             
             try {
-                // 调用智能体 API
                 const response = await fetch('https://api.siliconflow.cn/v1/chat/completions', {
                     method: 'POST',
                     headers: {
@@ -716,21 +544,14 @@
                         max_tokens: 200
                     })
                 });
-                
                 const data = await response.json();
                 const reply = data.choices[0].message.content;
-                
-                // 移除正在输入
                 typingDiv.remove();
-                
-                // 添加回复
                 messagesDiv.innerHTML += `<div class="message official">${reply}</div>`;
                 messagesDiv.scrollTop = messagesDiv.scrollHeight;
             } catch (error) {
                 console.error('API 调用失败:', error);
                 typingDiv.remove();
-                
-                // 备用回复
                 const replies = {
                     '忠诚': ['皇上万岁！微臣愿为皇上赴汤蹈火！', '皇上圣恩！微臣定当竭尽全力！', '微臣叩见皇上！愿大明江山永固！'],
                     '严谨': ['皇上圣明！此事需从长计议。', '启奏皇上，此事应按律法办事。', '皇上，微臣以为应当慎重考虑。'],
@@ -741,11 +562,9 @@
                 messagesDiv.innerHTML += `<div class="message official">${reply}</div>`;
                 messagesDiv.scrollTop = messagesDiv.scrollHeight;
             }
-            
             sendBtn.disabled = false;
         }
         
-        // 点击外部关闭
         document.getElementById('chatModal').addEventListener('click', function(e) {
             if (e.target === this) closeModal();
         });

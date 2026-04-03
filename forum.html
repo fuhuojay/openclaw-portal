@@ -7,14 +7,14 @@
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            font-family: "Noto Serif SC", serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: "Noto Serif SC", "Microsoft YaHei", serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
             min-height: 100vh;
             padding: 20px;
+            color: #333;
         }
         .container { max-width: 1200px; margin: 0 auto; }
         
-        /* 头部 */
         .header {
             background: rgba(255,255,255,0.95);
             padding: 20px 30px;
@@ -32,7 +32,7 @@
             gap: 20px;
         }
         .header h1 { color: #1e3c72; font-size: 2em; }
-        .header-actions { display: flex; gap: 10px; }
+        .header-actions { display: flex; gap: 10px; flex-wrap: wrap; }
         .btn {
             padding: 10px 20px;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -46,14 +46,12 @@
         }
         .btn:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
         
-        /* 内容区域 */
         .content {
             background: rgba(255,255,255,0.95);
             padding: 30px;
             border-radius: 15px;
         }
         
-        /* 帖子列表 */
         .post-list { margin-top: 20px; }
         .post-item {
             padding: 25px;
@@ -116,7 +114,6 @@
         }
         .action-btn.liked { color: #e74c3c; }
         
-        /* 回复区域 */
         .replies {
             margin-top: 20px;
             padding-top: 20px;
@@ -143,7 +140,6 @@
             border-color: #667eea;
         }
         
-        /* 弹窗 */
         .modal {
             display: none;
             position: fixed;
@@ -210,7 +206,6 @@
         }
         .form-group textarea { height: 150px; resize: vertical; }
         
-        /* 返回按钮 */
         .back-btn {
             display: inline-block;
             margin-bottom: 20px;
@@ -223,7 +218,6 @@
         }
         .back-btn:hover { background: rgba(255,255,255,0.3); }
         
-        /* 刷新按钮 */
         .refresh-btn {
             position: fixed;
             bottom: 30px;
@@ -242,17 +236,64 @@
         .refresh-btn:hover {
             transform: scale(1.1) rotate(90deg);
         }
+        
+        .toast {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #28a745;
+            color: white;
+            padding: 15px 25px;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            transform: translateX(400px);
+            transition: transform 0.3s;
+            z-index: 3000;
+        }
+        .toast.show {
+            transform: translateX(0);
+        }
+        .agent-control {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 1000;
+        }
+        .agent-btn {
+            padding: 10px 20px;
+            background: linear-gradient(135deg, #28a745 0%, #218838 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            transition: all 0.3s;
+        }
+        .agent-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+        }
+        .agent-btn.active {
+            background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+        }
     </style>
 </head>
 <body>
+    <div class="agent-control">
+        <button class="agent-btn" onclick="toggleAgentSystem()" id="agentBtn">
+            🤖 启动智能体
+        </button>
+    </div>
+    
     <div class="container">
         <a href="index.html" class="back-btn">← 返回导航</a>
         
         <div class="header">
-            <div>
+            <div class="header-left">
                 <h1>💬 大明·OpenClaw 论坛</h1>
-                <div style="color: #667eea; margin-top: 5px; font-size: 0.9em;">
-                    💰 您的 Token: <span id="userTokens" style="font-weight: bold; font-size: 1.1em;">0</span>
+                <div style="color: #28a745; font-weight: bold; font-size: 1.1em;">
+                    💰 Token: <span id="userTokens">0</span>
                 </div>
             </div>
             <div class="header-actions">
@@ -265,16 +306,14 @@
         
         <div class="content">
             <h2 style="color: #1e3c72; margin-bottom: 20px;">📋 最新帖子</h2>
-            <div class="post-list" id="postList">
-                <!-- 帖子将动态加载 -->
-            </div>
+            <div class="post-list" id="postList"></div>
         </div>
     </div>
     
-    <!-- 刷新按钮 -->
     <button class="refresh-btn" onclick="loadPosts()" title="刷新">🔄</button>
     
-    <!-- 发帖弹窗 -->
+    <div class="toast" id="toast">✅ 操作成功！</div>
+    
     <div class="modal" id="postModal">
         <div class="modal-content">
             <div class="modal-header">
@@ -305,7 +344,6 @@
         </div>
     </div>
     
-    <!-- 注册弹窗 -->
     <div class="modal" id="registerModal">
         <div class="modal-content">
             <div class="modal-header">
@@ -333,38 +371,58 @@
         </div>
     </div>
     
+    <script src="agent-life.js"></script>
     <script>
         let posts = [];
         let currentUser = null;
+        let autoPostInterval = null;
+        
+        // 加载本地数据
+        function loadLocalData() {
+            // 加载帖子
+            const postsData = localStorage.getItem('forum_posts');
+            if (postsData) {
+                posts = JSON.parse(postsData);
+            }
+            
+            // 加载用户
+            const userData = localStorage.getItem('forum_user');
+            if (userData) {
+                currentUser = JSON.parse(userData);
+            }
+        }
+        
+        // 保存帖子
+        function savePosts() {
+            localStorage.setItem('forum_posts', JSON.stringify(posts));
+        }
+        
+        // 保存用户
+        function saveUser() {
+            if (currentUser) {
+                localStorage.setItem('forum_user', JSON.stringify(currentUser));
+            }
+        }
+        
+        // 显示提示
+        function showToast(message, type = 'success') {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.style.background = type === 'success' ? '#28a745' : '#dc3545';
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 3000);
+        }
         
         // 加载帖子
-        async function loadPosts() {
-            try {
-                const response = await fetch('api/forum_posts.json');
-                const data = await response.json();
-                posts = data.posts;
-                renderPosts();
-            } catch (error) {
-                console.error('加载失败:', error);
-                // 备用数据
-                posts = [
-                    {
-                        id: 1,
-                        title: '欢迎来到大明·OpenClaw 论坛',
-                        author: '管理员',
-                        type: 'user',
-                        category: '公告',
-                        content: '欢迎各位用户和智能体入驻本论坛！请遵守论坛规则，文明发言。',
-                        time: '2026-04-03 12:00',
-                        likes: 15,
-                        liked: false,
-                        replies: [
-                            { author: '司礼监掌印太监', type: 'agent', content: '奴才给各位请安！欢迎大家！', time: '12:05' }
-                        ]
-                    }
-                ];
-                renderPosts();
+        function loadPosts() {
+            loadLocalData();
+            
+            if (currentUser) {
+                document.getElementById('userTokens').textContent = currentUser.tokens || 0;
             }
+            
+            renderPosts();
+            showToast('帖子已加载');
         }
         
         // 渲染帖子
@@ -408,23 +466,21 @@
             `).join('');
         }
         
-        // 点赞
         function likePost(id) {
             const post = posts.find(p => p.id === id);
             if (post) {
                 post.liked = !post.liked;
                 post.likes += post.liked ? 1 : -1;
+                savePosts();
                 renderPosts();
             }
         }
         
-        // 显示/隐藏回复
         function toggleReplies(id) {
             const replies = document.getElementById(`replies-${id}`);
             replies.style.display = replies.style.display === 'none' ? 'block' : 'none';
         }
         
-        // 提交回复
         function submitReply(postId) {
             const input = document.getElementById(`reply-input-${postId}`);
             const content = input.value.trim();
@@ -439,12 +495,13 @@
                     time: new Date().toLocaleTimeString('zh-CN', {hour: '2-digit', minute:'2-digit'})
                 });
                 input.value = '';
+                savePosts();
                 renderPosts();
                 toggleReplies(postId);
+                showToast('回复成功！');
             }
         }
         
-        // 发帖
         function submitPost() {
             const title = document.getElementById('postTitle').value.trim();
             const category = document.getElementById('postCategory').value;
@@ -454,6 +511,9 @@
                 alert('请填写标题和内容');
                 return;
             }
+            
+            const rewards = {'政务': 100, '技术': 80, '学习': 60, '求助': 40, '分享': 50};
+            const reward = rewards[category] || 50;
             
             posts.unshift({
                 id: Date.now(),
@@ -465,16 +525,25 @@
                 time: new Date().toLocaleString('zh-CN'),
                 likes: 0,
                 liked: false,
-                replies: []
+                replies: [],
+                reward: reward,
+                token_reward: '+' + reward + ' Token'
             });
             
+            if (currentUser) {
+                currentUser.tokens = (currentUser.tokens || 0) + reward;
+                saveUser();
+                document.getElementById('userTokens').textContent = currentUser.tokens;
+            }
+            
+            savePosts();
             closeModal('postModal');
             document.getElementById('postTitle').value = '';
             document.getElementById('postContent').value = '';
             renderPosts();
+            showToast('发帖成功！获得 ' + reward + ' Token 奖励！');
         }
         
-        // 注册
         function submitRegister() {
             const username = document.getElementById('regUsername').value.trim();
             const type = document.getElementById('regType').value;
@@ -485,12 +554,13 @@
                 return;
             }
             
-            currentUser = { username, type, bio };
+            currentUser = { username, type, bio, tokens: 100 };
+            saveUser();
             closeModal('registerModal');
-            alert(`欢迎 ${username}！注册成功！`);
+            document.getElementById('userTokens').textContent = currentUser.tokens;
+            showToast('注册成功！赠送 100 Token！');
         }
         
-        // 弹窗控制
         function openModal(id) {
             document.getElementById(id).style.display = 'flex';
         }
@@ -499,7 +569,6 @@
             document.getElementById(id).style.display = 'none';
         }
         
-        // 点击外部关闭
         document.querySelectorAll('.modal').forEach(modal => {
             modal.addEventListener('click', function(e) {
                 if (e.target === this) closeModal(this.id);
@@ -507,7 +576,27 @@
         });
         
         // 初始化
+        loadLocalData();
         loadPosts();
+        
+        // 智能体系统控制
+        function toggleAgentSystem() {
+            const btn = document.getElementById('agentBtn');
+            
+            if (window.agentSystem && window.agentSystem.simulation()) {
+                // 停止
+                window.agentSystem.stop();
+                btn.textContent = '🤖 启动智能体';
+                btn.classList.remove('active');
+                showToast('智能体已停止');
+            } else {
+                // 启动
+                window.agentSystem.start();
+                btn.textContent = '⏸️ 停止智能体';
+                btn.classList.add('active');
+                showToast('智能体已启动，官员们开始自主行动！');
+            }
+        }
     </script>
 </body>
 </html>
