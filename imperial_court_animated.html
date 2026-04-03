@@ -1,0 +1,1315 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>大明·OpenClaw 帝国朝政系统 - 动画版</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        
+        /* 开场动画 */
+        #opening {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+        }
+        .mingbian {
+            font-size: 3em;
+            animation: shake 0.5s ease-in-out;
+        }
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-20px); }
+            75% { transform: translateX(20px); }
+        }
+        .opening-text {
+            font-size: 2em;
+            margin-top: 30px;
+            opacity: 0;
+            animation: fadeIn 1s ease-in-out 1s forwards;
+        }
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+        
+        /* 主界面 */
+        #mainInterface {
+            display: none;
+            padding: 20px;
+        }
+        
+        /* 头部 */
+        header {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+        header h1 { font-size: 2.5em; margin-bottom: 10px; }
+        
+        /* 导航 */
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            justify-content: center;
+        }
+        .tab {
+            padding: 15px 30px;
+            background: rgba(255,255,255,0.2);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1.1em;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+        .tab:hover { background: rgba(255,255,255,0.3); transform: translateY(-2px); }
+        .tab.active {
+            background: white;
+            color: #1e3c72;
+        }
+        
+        /* 内容区域 */
+        .content {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+        
+        /* 官员展示区 */
+        .officials-hall {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        .official-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+        .official-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        .official-card.selected {
+            background: linear-gradient(135deg, #f0a500 0%, #f5576c 100%);
+            box-shadow: 0 0 20px rgba(240,165,0,0.5);
+        }
+        .official-avatar {
+            font-size: 4em;
+            margin-bottom: 10px;
+            animation: bounce 2s infinite;
+        }
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        .official-name { font-size: 1.3em; font-weight: bold; margin-bottom: 5px; }
+        .official-title { font-size: 0.9em; opacity: 0.9; }
+        .official-status {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            background: #28a745;
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        
+        /* 对话窗口 */
+        .dialog-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        .dialog-content {
+            background: white;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 600px;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+        .dialog-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 15px 15px 0 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .dialog-close {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 2em;
+            cursor: pointer;
+        }
+        .dialog-body {
+            padding: 20px;
+        }
+        .message-list {
+            max-height: 400px;
+            overflow-y: auto;
+            margin-bottom: 20px;
+        }
+        .message {
+            margin-bottom: 15px;
+            padding: 10px 15px;
+            border-radius: 10px;
+            animation: slideIn 0.3s ease-in-out;
+        }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(-20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        .message.official {
+            background: #f0f0f0;
+            margin-right: 50px;
+        }
+        .message.user {
+            background: #667eea;
+            color: white;
+            margin-left: 50px;
+            text-align: right;
+        }
+        .message-input {
+            display: flex;
+            gap: 10px;
+        }
+        .message-input input {
+            flex: 1;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 1em;
+        }
+        .message-input button {
+            padding: 12px 25px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        
+        /* 奏折表单 */
+        .memorial-form {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+        .form-group { margin-bottom: 20px; }
+        .form-group label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 1em;
+        }
+        .priority-select {
+            display: flex;
+            gap: 10px;
+        }
+        .priority-option {
+            flex: 1;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            text-align: center;
+            cursor: pointer;
+        }
+        .priority-option.selected {
+            border-color: #667eea;
+            background: #f0f0f0;
+        }
+        .btn-submit {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #f0a500 0%, #f5576c 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1em;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        
+        /* 奏折列表 */
+        .memorial-list {
+            margin-top: 20px;
+        }
+        .memorial-item {
+            background: #f8f9fa;
+            border-left: 5px solid #667eea;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 15px;
+        }
+        .memorial-item.urgent { border-left-color: #dc3545; }
+        .memorial-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        .btn-action {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .btn-approve { background: #28a745; color: white; }
+        .btn-reject { background: #dc3545; color: white; }
+        .btn-hold { background: #ffc107; color: #333; }
+        
+        /* 统计卡片 */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+        .stat-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+        .stat-value { font-size: 2em; font-weight: bold; }
+        .stat-label { font-size: 0.9em; opacity: 0.9; }
+        
+        /* 刷新按钮 */
+        .refresh-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #f0a500 0%, #f5576c 100%);
+            color: white;
+            border: none;
+            font-size: 1.5em;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            transition: all 0.3s;
+        }
+        .refresh-btn:hover {
+            transform: scale(1.1) rotate(90deg);
+        }
+        
+        /* 主界面默认隐藏 */
+        #mainInterface {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <!-- 开场动画 -->
+    <div id="opening">
+        <div class="mingbian">🔔 啪！啪！啪！</div>
+        <div class="opening-text">鸣鞭——皇上早朝——百官觐见！</div>
+    </div>
+    
+    <!-- 音效 -->
+    <audio id="mingbianSound" preload="auto">
+        <!-- 鞭声音效 1 -->
+        <source src="https://cdn.pixabay.com/download/audio/2022/03/24/audio_03d6e5eb63.mp3?filename=whip-crack-1-9269.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="gongSound" preload="auto">
+        <!-- 锣声音效 -->
+        <source src="https://cdn.pixabay.com/download/audio/2022/03/10/audio_22aebf0f9c.mp3?filename=gong-hit-85589.mp3" type="audio/mpeg">
+    </audio>
+    
+    <!-- 主界面 -->
+    <div id="mainInterface">
+        <header>
+            <h1>🏛️ 大明·OpenClaw 帝国朝政系统</h1>
+            <p>"朕即国家，系统即朕"</p>
+            <div style="margin-top: 15px; display: flex; gap: 10px; justify-content: center; align-items: center;">
+                <a href="ai_config.html" style="background: rgba(255,255,255,0.2); color: white; padding: 10px 20px; border-radius: 8px; text-decoration: none; font-weight: bold;">⚙️ AI 配置</a>
+                <a href="official_models.html" style="background: rgba(255,255,255,0.2); color: white; padding: 10px 20px; border-radius: 8px; text-decoration: none; font-weight: bold;">👥 官员模型</a>
+                <button onclick="toggleSound()" id="soundBtn" style="background: rgba(255,255,255,0.2); color: white; padding: 10px 20px; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 1em;">🔊 音效开</button>
+            </div>
+        </header>
+        
+        <!-- 导航 -->
+        <div class="tabs">
+            <button class="tab active" onclick="switchTab('court')">🏢 六部朝堂</button>
+            <button class="tab" onclick="switchTab('submit')">📤 上陈奏折</button>
+            <button class="tab" onclick="switchTab('review')">📋 批阅奏章</button>
+            <button class="tab" onclick="switchTab('stats')">📊 系统统计</button>
+        </div>
+        
+        <!-- 内容 -->
+        <div class="content">
+            <!-- 六部朝堂 -->
+            <div class="tab-content active" id="courtTab">
+                <h2 style="color: #1e3c72; margin-bottom: 20px; border-bottom: 3px solid #f0a500; padding-bottom: 10px;">
+                    👑 点击官员进行互动
+                </h2>
+                
+                <div class="officials-hall">
+                    <div class="official-card" onclick="openDialog('司礼监')">
+                        <div class="official-status"></div>
+                        <div class="official-avatar">🧕</div>
+                        <div class="official-name">司礼监掌印太监</div>
+                        <div class="official-title">内廷首席 · 用户代理</div>
+                    </div>
+                    
+                    <div class="official-card" onclick="openDialog('中书省')">
+                        <div class="official-status"></div>
+                        <div class="official-avatar">📜</div>
+                        <div class="official-name">中书省尚书令</div>
+                        <div class="official-title">首席规划师 · 军师</div>
+                    </div>
+                    
+                    <div class="official-card" onclick="openDialog('门下省')">
+                        <div class="official-status"></div>
+                        <div class="official-avatar">⚖️</div>
+                        <div class="official-name">门下省侍中</div>
+                        <div class="official-title">首席审核官 · 法官</div>
+                    </div>
+                    
+                    <div class="official-card" onclick="openDialog('户部')">
+                        <div class="official-status"></div>
+                        <div class="official-avatar">📊</div>
+                        <div class="official-name">户部尚书</div>
+                        <div class="official-title">数据检索专家</div>
+                    </div>
+                    
+                    <div class="official-card" onclick="openDialog('工部')">
+                        <div class="official-status"></div>
+                        <div class="official-avatar">🔧</div>
+                        <div class="official-name">工部尚书</div>
+                        <div class="official-title">代码执行专家</div>
+                    </div>
+                    
+                    <div class="official-card" onclick="openDialog('礼部')">
+                        <div class="official-status"></div>
+                        <div class="official-avatar">✍️</div>
+                        <div class="official-name">礼部尚书</div>
+                        <div class="official-title">文案输出专家</div>
+                    </div>
+                    
+                    <div class="official-card" onclick="openDialog('刑部')">
+                        <div class="official-status"></div>
+                        <div class="official-avatar">🔍</div>
+                        <div class="official-name">刑部尚书</div>
+                        <div class="official-title">错误诊断专家</div>
+                    </div>
+                    
+                    <div class="official-card" onclick="openDialog('兵部')">
+                        <div class="official-status"></div>
+                        <div class="official-avatar">🛡️</div>
+                        <div class="official-name">兵部尚书</div>
+                        <div class="official-title">安全扫描专家</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 上陈奏折 -->
+            <div class="tab-content" id="submitTab">
+                <h2 class="section-title">📤 六部官员上陈奏折</h2>
+                
+                <div class="memorial-form">
+                    <div class="form-group">
+                        <label>🏷️ 奏折标题</label>
+                        <input type="text" id="title" placeholder="例如：50kW 风冷模块化机房报价单审批">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>📝 奏折摘要</label>
+                        <textarea id="summary" placeholder="简要说明奏折内容..."></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>⚡ 优先级</label>
+                        <div class="priority-select">
+                            <div class="priority-option" onclick="selectPriority('urgent', this)">🔴 紧急</div>
+                            <div class="priority-option selected" onclick="selectPriority('normal', this)">🟡 普通</div>
+                            <div class="priority-option" onclick="selectPriority('low', this)">🟢 低优</div>
+                        </div>
+                    </div>
+                    
+                    <button class="btn-submit" onclick="submitMemorial()">📤 上呈奏折</button>
+                </div>
+            </div>
+            
+            <!-- 批阅奏章 -->
+            <div class="tab-content" id="reviewTab">
+                <h2 class="section-title">📜 皇上御笔批红</h2>
+                
+                <div class="stats-grid" style="margin-bottom: 30px;">
+                    <div class="stat-card">
+                        <div class="stat-value" id="pendingCount">0</div>
+                        <div class="stat-label">待批奏折</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="approvedCount">0</div>
+                        <div class="stat-label">已准奏</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="rejectedCount">0</div>
+                        <div class="stat-label">已驳回</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="heldCount">0</div>
+                        <div class="stat-label">留中</div>
+                    </div>
+                </div>
+                
+                <div class="memorial-list" id="memorialsList">
+                    <!-- 动态加载 -->
+                </div>
+            </div>
+            
+            <!-- 系统统计 -->
+            <div class="tab-content" id="statsTab">
+                <h2 class="section-title">📊 东厂 / 辛者库 联合奏报</h2>
+                
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-value" id="statTokens">345,020</div>
+                        <div class="stat-label">💸 昨日 Token 消耗</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="statCost">$0.45</div>
+                        <div class="stat-label">💵 折合开支</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="statLatency">4.2s</div>
+                        <div class="stat-label">⏱️ 平均延迟</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="statRecoveries">1</div>
+                        <div class="stat-label">🛡️ 刑部自愈</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="statCleared">12.5MB</div>
+                        <div class="stat-label">🧹 辛者库清理</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="statCalls">124</div>
+                        <div class="stat-label">📞 API 调用</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 刷新按钮 -->
+        <button class="refresh-btn" onclick="refreshData()" title="刷新数据">🔄</button>
+    </div>
+    
+    <!-- 对话窗口 -->
+    <div class="dialog-modal" id="dialogModal">
+        <div class="dialog-content">
+            <div class="dialog-header">
+                <div>
+                    <span id="dialogAvatar" style="font-size: 1.5em;"></span>
+                    <span id="dialogTitle" style="font-weight: bold; margin-left: 10px;"></span>
+                </div>
+                <div style="display: flex; gap: 10px; align-items: center;">
+                    <button onclick="clearHistory()" style="background: rgba(255,255,255,0.3); border: none; color: white; padding: 5px 10px; border-radius: 5px; cursor: pointer; font-size: 0.8em;">🗑️ 清空历史</button>
+                    <button class="dialog-close" onclick="closeDialog()">×</button>
+                </div>
+            </div>
+            <div class="dialog-body">
+                <div class="message-list" id="messageList">
+                    <div class="message official">
+                        奴才给皇上请安！万岁爷有何吩咐？
+                    </div>
+                </div>
+                <div class="message-input">
+                    <input type="text" id="messageInput" placeholder="输入谕旨..." onkeypress="if(event.keyCode===13) sendMessage()">
+                    <button onclick="sendMessage()">发送</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        let currentOfficial = null;
+        let selectedPriority = 'normal';
+        
+        // 每个官员的独立对话历史
+        const officialDialogs = {
+            '司礼监': [],
+            '中书省': [],
+            '门下省': [],
+            '户部': [],
+            '工部': [],
+            '礼部': [],
+            '刑部': [],
+            '兵部': []
+        };
+        
+        // 从 localStorage 加载对话历史
+        function loadDialogHistory() {
+            const saved = localStorage.getItem('officialDialogs');
+            if (saved) {
+                const parsed = JSON.parse(saved);
+                Object.keys(parsed).forEach(key => {
+                    if (officialDialogs.hasOwnProperty(key)) {
+                        officialDialogs[key] = parsed[key];
+                    }
+                });
+            }
+        }
+        
+        // 保存对话历史到 localStorage
+        function saveDialogHistory() {
+            localStorage.setItem('officialDialogs', JSON.stringify(officialDialogs));
+        }
+        
+        // 初始化时加载历史
+        loadDialogHistory();
+        
+        // 开场动画
+        window.onload = function() {
+            console.log('页面加载完成，开始开场动画...');
+            
+            // 播放鸣鞭音效
+            playMingbianSound();
+            
+            // 3 秒后进入主界面
+            setTimeout(() => {
+                console.log('进入主界面...');
+                const opening = document.getElementById('opening');
+                const mainInterface = document.getElementById('mainInterface');
+                
+                if (opening) opening.style.display = 'none';
+                if (mainInterface) mainInterface.style.display = 'block';
+                
+                console.log('开场动画结束');
+            }, 3500);  // 延长到 3.5 秒，确保音效播放完成
+        };
+        
+        // 音效开关
+        let soundEnabled = true;
+        
+        // 切换音效
+        function toggleSound() {
+            soundEnabled = !soundEnabled;
+            const btn = document.getElementById('soundBtn');
+            if (btn) {
+                btn.textContent = soundEnabled ? '🔊 音效开' : '🔇 音效关';
+                btn.style.background = soundEnabled ? 'rgba(255,255,255,0.2)' : 'rgba(255,0,0,0.3)';
+            }
+            
+            // 保存到 localStorage
+            localStorage.setItem('soundEnabled', soundEnabled);
+        }
+        
+        // 加载音效设置
+        const savedSound = localStorage.getItem('soundEnabled');
+        if (savedSound !== null) {
+            soundEnabled = savedSound === 'true';
+            const btn = document.getElementById('soundBtn');
+            if (btn) {
+                btn.textContent = soundEnabled ? '🔊 音效开' : '🔇 音效关';
+                btn.style.background = soundEnabled ? 'rgba(255,255,255,0.2)' : 'rgba(255,0,0,0.3)';
+            }
+        }
+        
+        // 播放鸣鞭音效
+        function playMingbianSound() {
+            if (!soundEnabled) return;  // 音效关闭时不播放
+            
+            // 播放三次鞭声
+            const whipAudio = document.getElementById('mingbianSound');
+            const gongAudio = document.getElementById('gongSound');
+            
+            if (whipAudio) {
+                whipAudio.volume = 1.0;
+                whipAudio.play().catch(e => {
+                    console.log('鞭声音效播放失败:', e);
+                });
+                
+                // 1 秒后播放第二次
+                setTimeout(() => {
+                    whipAudio.currentTime = 0;
+                    whipAudio.play().catch(e => console.log(e));
+                }, 800);
+                
+                // 2 秒后播放第三次
+                setTimeout(() => {
+                    whipAudio.currentTime = 0;
+                    whipAudio.play().catch(e => console.log(e));
+                }, 1600);
+                
+                // 3 秒后播放锣声
+                setTimeout(() => {
+                    if (gongAudio) {
+                        gongAudio.volume = 0.8;
+                        gongAudio.play().catch(e => console.log(e));
+                    }
+                }, 2400);
+            }
+        }
+        
+        // 切换标签
+        function switchTab(tabName) {
+            document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            
+            document.querySelector(`.tab[onclick="switchTab('${tabName}')"]`).classList.add('active');
+            document.getElementById(`${tabName}Tab`).classList.add('active');
+            
+            if (tabName === 'review') {
+                loadMemorials();
+            }
+        }
+        
+        // 打开对话
+        function openDialog(official) {
+            currentOfficial = official;
+            const avatars = {
+                '司礼监': '🧕',
+                '中书省': '📜',
+                '门下省': '⚖️',
+                '户部': '📊',
+                '工部': '🔧',
+                '礼部': '✍️',
+                '刑部': '🔍',
+                '兵部': '🛡️'
+            };
+            
+            document.getElementById('dialogAvatar').textContent = avatars[official];
+            document.getElementById('dialogTitle').textContent = official;
+            document.getElementById('dialogModal').style.display = 'flex';
+            
+            // 加载该官员的历史对话
+            loadMessagesForOfficial(official);
+        }
+        
+        // 加载指定官员的历史对话
+        function loadMessagesForOfficial(official) {
+            const list = document.getElementById('messageList');
+            list.innerHTML = '';
+            
+            const history = officialDialogs[official];
+            
+            if (history.length === 0) {
+                // 首次对话，添加问候语
+                const greetings = {
+                    '司礼监': '奴才给皇上请安！万岁爷今日可好？有什么吩咐尽管说~',
+                    '中书省': '臣给皇上请安。臣已准备好为皇上拟定执行计划，请皇上示下。',
+                    '门下省': '臣在。臣定会严格审核，绝不放过任何疏漏。请皇上出示需要审核的内容。',
+                    '户部': '臣给皇上请安。臣已整理好所有数据，随时听候差遣。',
+                    '工部': '皇上吉祥。臣的代码已准备就绪，只待皇上旨意。',
+                    '礼部': '臣给皇上请安。臣的文采定能为皇上增光添彩，愿为皇上效劳。',
+                    '刑部': '臣在。臣定会明察秋毫，找出所有问题。有何疑难杂症需要臣诊断？',
+                    '兵部': '臣已严阵以待，守护系统安全。请皇上示下。'
+                };
+                
+                addMessage(greetings[official], 'official', false);
+            } else {
+                // 加载历史对话
+                history.forEach(msg => {
+                    addMessage(msg.text, msg.type, false);
+                });
+            }
+        }
+        
+        // 关闭对话
+        function closeDialog() {
+            document.getElementById('dialogModal').style.display = 'none';
+            currentOfficial = null;
+        }
+        
+        // 清空对话历史
+        function clearHistory() {
+            if (!currentOfficial) return;
+            if (!confirm(`确定要清空与${currentOfficial}的对话历史吗？`)) return;
+            
+            officialDialogs[currentOfficial] = [];
+            saveDialogHistory();
+            
+            // 重新加载对话
+            loadMessagesForOfficial(currentOfficial);
+        }
+        
+        // 添加消息
+        function addMessage(text, type, saveToHistory = true) {
+            const list = document.getElementById('messageList');
+            const div = document.createElement('div');
+            div.className = `message ${type}`;
+            div.textContent = text;
+            list.appendChild(div);
+            list.scrollTop = list.scrollHeight;
+            
+            // 保存到该官员的对话历史
+            if (saveToHistory && currentOfficial) {
+                officialDialogs[currentOfficial].push({
+                    text: text,
+                    type: type,
+                    timestamp: new Date().toISOString()
+                });
+                
+                // 只保留最近 20 条对话
+                if (officialDialogs[currentOfficial].length > 20) {
+                    officialDialogs[currentOfficial] = officialDialogs[currentOfficial].slice(-20);
+                }
+                
+                saveDialogHistory();
+            }
+        }
+        
+        // 发送消息
+        async function sendMessage() {
+            const input = document.getElementById('messageInput');
+            const text = input.value.trim();
+            if (!text) return;
+            
+            addMessage(text, 'user');
+            input.value = '';
+            
+            // 显示"正在输入..."
+            const typingDiv = document.createElement('div');
+            typingDiv.className = 'message official';
+            typingDiv.textContent = '正在输入...';
+            typingDiv.id = 'typingIndicator';
+            document.getElementById('messageList').appendChild(typingDiv);
+            
+            // 调用 AI 智能体 (带上对话历史)
+            try {
+                const history = officialDialogs[currentOfficial].slice(-5); // 最近 5 条
+                const response = await callAIAgent(currentOfficial, text, history);
+                document.getElementById('typingIndicator').remove();
+                addMessage(response, 'official');
+            } catch (error) {
+                document.getElementById('typingIndicator').remove();
+                addMessage('⚠️ 网络连接失败，请重试', 'official');
+            }
+        }
+        
+        // 调用 AI 智能体 (带上下文 - 真实 AI 集成)
+        async function callAIAgent(official, message, history = []) {
+            // 每个官员的 System Prompt
+            const systemPrompts = {
+                '司礼监': `你是司礼监掌印太监，机灵聪明，八面玲珑。说话让人舒服，偶尔卖萌。自称"奴才"，称呼用户"皇上"或"万岁爷"。记住之前的对话内容。
+
+【对话历史】
+${formatHistory(history)}
+
+请用符合身份的口语回复，保持简短（50 字以内）。`,
+                
+                '中书省': `你是中书省尚书令，老谋深算，运筹帷幄。擅长把复杂问题拆解成简单步骤。说话条理清晰，从不啰嗦。自称"臣"，称呼用户"皇上"。记住之前的对话内容。
+
+【对话历史】
+${formatHistory(history)}
+
+请用符合身份的口语回复，保持简短（50 字以内）。`,
+                
+                '门下省': `你是门下省侍中，铁面无私，一丝不苟。温度永远为 0，绝不感情用事。发现错误立即驳回，不讲情面。自称"臣"，称呼用户"皇上"。记住之前的对话内容。
+
+【对话历史】
+${formatHistory(history)}
+
+请用符合身份的口语回复，保持简短（50 字以内）。`,
+                
+                '户部': `你是户部尚书，博学多才，过目不忘。擅长从海量数据中找到关键信息。说话有根有据，从不瞎编。自称"臣"，称呼用户"皇上"。记住之前的对话内容。
+
+【对话历史】
+${formatHistory(history)}
+
+请用符合身份的口语回复，保持简短（50 字以内）。`,
+                
+                '工部': `你是工部尚书，技术大牛，代码狂人。什么难题都能用代码解决。偶尔会写出 bug，但刑部会帮你修好。自称"臣"，称呼用户"皇上"。记住之前的对话内容。
+
+【对话历史】
+${formatHistory(history)}
+
+请用符合身份的口语回复，保持简短（50 字以内）。`,
+                
+                '礼部': `你是礼部尚书，文采飞扬，出口成章。擅长把枯燥的数据变成优美的报告。有点文艺范，偶尔矫情。自称"臣"，称呼用户"皇上"。记住之前的对话内容。
+
+【对话历史】
+${formatHistory(history)}
+
+请用符合身份的口语回复，保持简短（50 字以内）。`,
+                
+                '刑部': `你是刑部尚书，医术高超，妙手回春。什么 bug 都能治好。说话专业，喜欢用术语，但确实管用。自称"臣"，称呼用户"皇上"。记住之前的对话内容。
+
+【对话历史】
+${formatHistory(history)}
+
+请用符合身份的口语回复，保持简短（50 字以内）。`,
+                
+                '兵部': `你是兵部尚书，警惕性高，疑心重。看什么都像威胁。宁可错杀一千，不可放过一个。但确实保护了系统安全。自称"臣"，称呼用户"皇上"。记住之前的对话内容。
+
+【对话历史】
+${formatHistory(history)}
+
+请用符合身份的口语回复，保持简短（50 字以内）。`
+            };
+            
+            // 调用真实 AI API
+            try {
+                const response = await callRealAI(official, message, systemPrompts[official]);
+                return response;
+            } catch (error) {
+                console.error('AI 调用失败:', error);
+                // 降级到模拟回复
+                return generateAIResponseWithContext(official, message, history, systemPrompts[official]);
+            }
+        }
+        
+        // 格式化对话历史
+        function formatHistory(history) {
+            if (!history || history.length === 0) return '无历史对话';
+            
+            return history.map(msg => {
+                const role = msg.type === 'user' ? '皇上' : '臣';
+                return `${role}: ${msg.text}`;
+            }).join('\n');
+        }
+        
+        // 调用真实 AI (每个官员用专属模型)
+        async function callRealAI(official, message, systemPrompt) {
+            // 每个官员的专属模型配置
+            const officialModels = {
+                '司礼监': {
+                    provider: 'dashscope',
+                    model: 'qwen3-coder-next',  // 快速响应，适合闲聊
+                    apiKey: 'sk-sp-302b09a361f64f9098c2a380947d3f51'
+                },
+                '中书省': {
+                    provider: 'dashscope',
+                    model: 'qwen3-coder-plus',  // 规划能力强
+                    apiKey: 'sk-sp-302b09a361f64f9098c2a380947d3f51'
+                },
+                '门下省': {
+                    provider: 'dashscope',
+                    model: 'qwen3.5-plus',  // 严谨审核
+                    apiKey: 'sk-sp-302b09a361f64f9098c2a380947d3f51'
+                },
+                '户部': {
+                    provider: 'dashscope',
+                    model: 'kimi-k2.5',  // 长文本分析，适合检索
+                    apiKey: 'sk-sp-302b09a361f64f9098c2a380947d3f51'
+                },
+                '工部': {
+                    provider: 'dashscope',
+                    model: 'qwen3-max',  // 最强代码能力
+                    apiKey: 'sk-sp-302b09a361f64f9098c2a380947d3f51'
+                },
+                '礼部': {
+                    provider: 'dashscope',
+                    model: 'glm-4.7',  // 文采好，适合输出
+                    apiKey: 'sk-sp-302b09a361f64f9098c2a380947d3f51'
+                },
+                '刑部': {
+                    provider: 'dashscope',
+                    model: 'qwen3.5-plus',  // 诊断分析
+                    apiKey: 'sk-sp-302b09a361f64f9098c2a380947d3f51'
+                },
+                '兵部': {
+                    provider: 'dashscope',
+                    model: 'qwen3.5-plus',  // 安全扫描
+                    apiKey: 'sk-sp-302b09a361f64f9098c2a380947d3f51'
+                }
+            };
+            
+            const config = officialModels[official];
+            
+            if (!config) {
+                throw new Error(`未找到${official}的模型配置`);
+            }
+            
+            // 根据提供商调用
+            if (config.provider === 'dashscope') {
+                return await callDashScope(config, systemPrompt, message);
+            } else if (config.provider === 'openai') {
+                return await callOpenAI(config, systemPrompt, message);
+            } else if (config.provider === 'kimi') {
+                return await callKimi(config, systemPrompt, message);
+            }
+            
+            throw new Error('未配置的 AI 提供商');
+        }
+        
+        // 调用通义千问 (DashScope)
+        async function callDashScope(config, systemPrompt, message) {
+            const response = await fetch('https://dashscope.aliyuncs.com/api/v1/services/aigc/text-generation/generation', {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${config.apiKey}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    model: config.model,
+                    input: {
+                        messages: [
+                            { role: 'system', content: systemPrompt },
+                            { role: 'user', content: message }
+                        ]
+                    },
+                    parameters: {
+                        result_format: 'message',
+                        temperature: 0.7,
+                        max_tokens: 150
+                    }
+                })
+            });
+            
+            const data = await response.json();
+            if (data.output && data.output.choices && data.output.choices[0]) {
+                return data.output.choices[0].message.content;
+            }
+            throw new Error('通义千问 API 调用失败');
+        }
+        
+        // 调用 OpenAI
+        async function callOpenAI(config, systemPrompt, message) {
+            const response = await fetch('https://api.openai.com/v1/chat/completions', {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${config.apiKey}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    model: config.model,
+                    messages: [
+                        { role: 'system', content: systemPrompt },
+                        { role: 'user', content: message }
+                    ],
+                    temperature: 0.7,
+                    max_tokens: 150
+                })
+            });
+            
+            const data = await response.json();
+            if (data.choices && data.choices[0]) {
+                return data.choices[0].message.content;
+            }
+            throw new Error('OpenAI API 调用失败');
+        }
+        
+        // 调用 Kimi
+        async function callKimi(config, systemPrompt, message) {
+            const response = await fetch('https://api.moonshot.cn/v1/chat/completions', {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${config.apiKey}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    model: config.model,
+                    messages: [
+                        { role: 'system', content: systemPrompt },
+                        { role: 'user', content: message }
+                    ],
+                    temperature: 0.7,
+                    max_tokens: 150
+                })
+            });
+            
+            const data = await response.json();
+            if (data.choices && data.choices[0]) {
+                return data.choices[0].message.content;
+            }
+            throw new Error('Kimi API 调用失败');
+        }
+        
+        // 生成 AI 回复 (带上下文感知)
+        function generateAIResponseWithContext(official, message, history, prompt) {
+            const keywords = message.toLowerCase();
+            
+            // 检查是否有上下文关联
+            const contextResponse = checkContextResponse(official, message, history);
+            if (contextResponse) {
+                return contextResponse;
+            }
+            
+            const responseTemplates = {
+                '司礼监': [
+                    `奴才明白，这就去办！万岁爷还有什么吩咐吗？`,
+                    `奴才给皇上办得妥妥的！`,
+                    `万岁爷圣明！奴才这就去安排~`,
+                    `奴才知道错了，这就改！`,
+                    `皇上放心，奴才一定办得漂漂亮亮的！`
+                ],
+                '中书省': [
+                    `臣已将任务分解为 3 个子任务，依赖关系明确。`,
+                    `根据臣的分析，此任务需要按以下顺序执行：T1→T2→T3。`,
+                    `臣已拟定执行计划，请皇上过目。`,
+                    `此任务的复杂度为中等，预计耗时 5-10 分钟。`,
+                    `臣建议优先处理紧急任务，其他任务降级为低优先级。`
+                ],
+                '门下省': [
+                    `【驳回】任务规划不合理，T2 依赖缺失，打回重拟。`,
+                    `臣已审核完毕，发现 3 处问题：1... 2... 3...`,
+                    `此任务参数不完整，缺少预算和交付周期。`,
+                    `臣认为此方案风险较高，建议重新评估。`,
+                    `审核通过。任务规划合理，可以执行。`
+                ],
+                '户部': [
+                    `臣已检索数据库，找到 15 条相关记录。`,
+                    `根据臣的统计，昨日 API 调用 124 次，消耗 Token 345,020 个。`,
+                    `臣从数据库中提取到以下关键信息：...`,
+                    `此数据与历史记录对比，增长了 15%。`,
+                    `臣已整理好所有数据，请皇上过目。`
+                ],
+                '工部': [
+                    `代码已执行，结果：42。需要优化吗？`,
+                    `臣已写完代码，但在第 15 行发现 SyntaxError...`,
+                    `此任务需要调用外部 API，臣已配置好参数。`,
+                    `臣的代码在沙盒中运行成功，输出如下：...`,
+                    `报告皇上，代码执行失败，错误信息：Timeout`
+                ],
+                '礼部': [
+                    `臣已草拟报价单，辞藻华丽，数据详实，请皇上过目。`,
+                    `臣用优美的文笔撰写了此报告，定能让皇上满意。`,
+                    `此文档格式精美，层次分明，臣已反复推敲。`,
+                    `臣的文字如行云流水，定能为皇上增光添彩。`,
+                    `报告已完成，臣自觉文采斐然，请皇上御览。`
+                ],
+                '刑部': [
+                    `【诊断】SyntaxError，缺少右括号。已修复，建议重试。`,
+                    `臣已分析错误日志，问题出在第 3 步任务执行。`,
+                    `此错误由参数类型不匹配导致，建议转换为 string 类型。`,
+                    `臣已成功修复 bug，系统恢复正常。`,
+                    `【严重警告】发现内存泄漏，建议立即重启服务。`
+                ],
+                '兵部': [
+                    `【兵部拦截】发现高危操作！原因：删除系统文件。`,
+                    `臣已扫描代码，发现 2 处安全隐患。`,
+                    `此任务包含外部 API 调用，臣已加强权限控制。`,
+                    `【警报】检测到异常访问，臣已启动防御机制。`,
+                    `安全检查通过。臣已确认无风险，可以执行。`
+                ]
+            };
+            
+            const templates = responseTemplates[official];
+            const index = Math.floor(Math.random() * templates.length);
+            
+            // 根据关键词智能选择回复
+            if (keywords.includes('你好') || keywords.includes('请安')) {
+                return official === '司礼监' ? '奴才给皇上请安！万岁爷今日可好？' :
+                       official === '中书省' ? '臣给皇上请安。有何任务需要臣规划？' :
+                       official === '门下省' ? '臣在。请皇上出示需要审核的内容。' :
+                       official === '户部' ? '臣给皇上请安。数据已准备就绪。' :
+                       official === '工部' ? '皇上吉祥。代码随时可以执行。' :
+                       official === '礼部' ? '臣给皇上请安。今日文思泉涌，愿为皇上效劳。' :
+                       official === '刑部' ? '臣在。有何疑难杂症需要臣诊断？' :
+                       '臣已严阵以待，守护系统安全。';
+            }
+            
+            if (keywords.includes('状态') || keywords.includes('统计')) {
+                return official === '户部' ? '臣已统计完毕：昨日 API 调用 124 次，Token 消耗 345,020 个，成本$0.45。' :
+                       official === '工部' ? '系统运行正常，无错误。' :
+                       templates[index];
+            }
+            
+            if (keywords.includes('错误') || keywords.includes('失败')) {
+                return official === '刑部' ? '臣已诊断，问题出在参数传递环节。臣已修复，请重试。' :
+                       official === '兵部' ? '【警报】发现异常，臣已隔离问题区域。' :
+                       templates[index];
+            }
+            
+            return templates[index];
+        }
+        
+        // 检查上下文关联回复
+        function checkContextResponse(official, message, history) {
+            if (history.length === 0) return null;
+            
+            const lastUserMessage = history.filter(h => h.type === 'user').pop();
+            const lastOfficialMessage = history.filter(h => h.type === 'official').pop();
+            
+            // 上下文关联检测
+            if (message.includes('刚才') || message.includes('之前')) {
+                if (lastOfficialMessage) {
+                    return official === '司礼监' ? `皇上说的是刚才奴才说的那件事吗？奴才记得~` :
+                           official === '中书省' ? `皇上是指臣刚才拟定的计划吗？' :
+                           `臣记得，刚才臣说的是：${lastOfficialMessage.text.substring(0, 50)}...`;
+                }
+            }
+            
+            // 追问检测
+            if (message.includes('为什么') || message.includes('如何')) {
+                return official === '中书省' ? '容臣详细解释：...' :
+                       official === '刑部' ? '原因如下：...' :
+                       null;
+            }
+            
+            // 确认检测
+            if (message.includes('好的') || message.includes('行') || message.includes('可以')) {
+                return official === '司礼监' ? '奴才这就去办！' :
+                       official === '工部' ? '臣立即执行！' :
+                       null;
+            }
+            
+            return null;
+        }
+        
+        // 选择优先级
+        function selectPriority(priority, element) {
+            selectedPriority = priority;
+            document.querySelectorAll('.priority-option').forEach(opt => opt.classList.remove('selected'));
+            element.classList.add('selected');
+        }
+        
+        // 提交奏折
+        function submitMemorial() {
+            const title = document.getElementById('title').value.trim();
+            const summary = document.getElementById('summary').value.trim();
+            
+            if (!title || !summary) {
+                alert('请填写标题和摘要');
+                return;
+            }
+            
+            const memorial = {
+                id: `M_${Date.now()}`,
+                status: 'pending',
+                title: title,
+                source: currentOfficial || '未知',
+                summary: summary,
+                priority: selectedPriority,
+                timestamp: new Date().toISOString()
+            };
+            
+            let memorials = JSON.parse(localStorage.getItem('memorials') || '[]');
+            memorials.push(memorial);
+            localStorage.setItem('memorials', JSON.stringify(memorials));
+            
+            alert('✅ 奏折已上呈，静候皇上御笔批红！');
+            document.getElementById('title').value = '';
+            document.getElementById('summary').value = '';
+        }
+        
+        // 加载奏折
+        function loadMemorials() {
+            let memorials = JSON.parse(localStorage.getItem('memorials') || '[]');
+            
+            document.getElementById('pendingCount').textContent = memorials.filter(m => m.status === 'pending').length;
+            document.getElementById('approvedCount').textContent = memorials.filter(m => m.status === 'approved').length;
+            document.getElementById('rejectedCount').textContent = memorials.filter(m => m.status === 'rejected').length;
+            document.getElementById('heldCount').textContent = memorials.filter(m => m.status === 'held').length;
+            
+            const pending = memorials.filter(m => m.status === 'pending');
+            const container = document.getElementById('memorialsList');
+            
+            if (pending.length === 0) {
+                container.innerHTML = '<div style="text-align: center; padding: 50px; color: #999;">🎉 天下太平，无积压奏折待批</div>';
+                return;
+            }
+            
+            container.innerHTML = pending.map((m, i) => `
+                <div class="memorial-item ${m.priority}">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                        <strong>${i + 1}. ${m.title}</strong>
+                        <span style="padding: 5px 12px; border-radius: 12px; background: ${m.priority === 'urgent' ? '#dc3545' : '#ffc107'}; color: ${m.priority === 'urgent' ? 'white' : '#333'}; font-size: 0.85em;">
+                            ${m.priority === 'urgent' ? '🔴 紧急' : '🟡 普通'}
+                        </span>
+                    </div>
+                    <div style="color: #666; margin-bottom: 10px;">
+                        🏛️ 来源：${m.source} | 📅 ${new Date(m.timestamp).toLocaleString('zh-CN')}
+                    </div>
+                    <div style="color: #666; margin-bottom: 15px;">📝 ${m.summary}</div>
+                    <div class="memorial-actions">
+                        <button class="btn-action btn-approve" onclick="updateStatus('${m.id}', 'approved')">✅ 准奏</button>
+                        <button class="btn-action btn-reject" onclick="updateStatus('${m.id}', 'rejected')">❌ 驳回</button>
+                        <button class="btn-action btn-hold" onclick="updateStatus('${m.id}', 'held')">⏸️ 留中</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+        
+        // 更新状态
+        function updateStatus(id, status) {
+            let memorials = JSON.parse(localStorage.getItem('memorials') || '[]');
+            const index = memorials.findIndex(m => m.id === id);
+            if (index !== -1) {
+                memorials[index].status = status;
+                localStorage.setItem('memorials', JSON.stringify(memorials));
+                loadMemorials();
+                
+                const texts = {
+                    'approved': '✅ 已准奏',
+                    'rejected': '❌ 已驳回',
+                    'held': '⏸️  已留中'
+                };
+                alert(texts[status]);
+            }
+        }
+        
+        // 刷新数据
+        function refreshData() {
+            loadMemorials();
+            alert('🔄 数据已刷新！');
+        }
+    </script>
+
+    <div style="position: fixed; top: 20px; right: 20px; z-index: 1000;">
+        <a href="index.html" style="
+            display: inline-block;
+            padding: 12px 25px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: bold;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            transition: all 0.3s;
+        " onmouseover="this.style.transform='translateY(-3px)'; this.style.boxShadow='0 8px 20px rgba(0,0,0,0.4)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 5px 15px rgba(0,0,0,0.3)'">
+            🏛️ 返回导航门户
+        </a>
+    </div>
+
+    </body>
+</html>

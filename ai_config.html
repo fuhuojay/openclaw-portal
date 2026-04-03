@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI 配置 - 大明·OpenClaw</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            padding: 40px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        header {
+            text-align: center;
+            color: #1e3c72;
+            margin-bottom: 30px;
+        }
+        header h1 { font-size: 2em; margin-bottom: 10px; }
+        header p { color: #666; }
+        
+        .provider-section {
+            margin-bottom: 30px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            border-left: 5px solid #667eea;
+        }
+        .provider-section h3 {
+            color: #1e3c72;
+            margin-bottom: 15px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 8px;
+            color: #333;
+        }
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 1em;
+        }
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        .btn {
+            padding: 15px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #f0a500 0%, #f5576c 100%);
+            color: white;
+            width: 100%;
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+        }
+        .success-message {
+            background: #d4edda;
+            color: #155724;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: none;
+        }
+        .help-text {
+            color: #666;
+            font-size: 0.9em;
+            margin-top: 8px;
+        }
+        .radio-group {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        .radio-option {
+            flex: 1;
+            padding: 15px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .radio-option:hover {
+            border-color: #667eea;
+        }
+        .radio-option.selected {
+            border-color: #667eea;
+            background: #f0f0f0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🤖 AI 配置</h1>
+            <p>配置六部官员使用的 AI 智能体</p>
+        </header>
+        
+        <div class="success-message" id="successMessage">
+            ✅ 配置已保存！
+        </div>
+        
+        <!-- AI 提供商选择 -->
+        <div class="form-group">
+            <label>选择 AI 提供商</label>
+            <div class="radio-group">
+                <div class="radio-option selected" onclick="selectProvider('dashscope')">
+                    <div style="font-size: 2em;">🔮</div>
+                    <div>通义千问</div>
+                    <div style="font-size: 0.8em; color: #666;">推荐</div>
+                </div>
+                <div class="radio-option" onclick="selectProvider('openai')">
+                    <div style="font-size: 2em;">🤖</div>
+                    <div>OpenAI</div>
+                </div>
+                <div class="radio-option" onclick="selectProvider('kimi')">
+                    <div style="font-size: 2em;">🌙</div>
+                    <div>Kimi</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 通义千问配置 -->
+        <div class="provider-section" id="dashscopeSection">
+            <h3>🔮 通义千问 (DashScope)</h3>
+            <div class="form-group">
+                <label>API Key</label>
+                <input type="text" id="dashscopeKey" placeholder="sk-...">
+                <div class="help-text">获取地址：https://dashscope.console.aliyun.com/apiKey</div>
+            </div>
+            <div class="form-group">
+                <label>模型</label>
+                <select id="dashscopeModel">
+                    <option value="qwen3.5-plus">qwen3.5-plus (推荐)</option>
+                    <option value="qwen3-coder-next">qwen3-coder-next (快速)</option>
+                    <option value="qwen3-max">qwen3-max (最强)</option>
+                </select>
+            </div>
+        </div>
+        
+        <!-- OpenAI 配置 -->
+        <div class="provider-section" id="openaiSection" style="display: none;">
+            <h3>🤖 OpenAI</h3>
+            <div class="form-group">
+                <label>API Key</label>
+                <input type="text" id="openaiKey" placeholder="sk-...">
+                <div class="help-text">获取地址：https://platform.openai.com/api-keys</div>
+            </div>
+            <div class="form-group">
+                <label>模型</label>
+                <select id="openaiModel">
+                    <option value="gpt-3.5-turbo">GPT-3.5 Turbo (快速)</option>
+                    <option value="gpt-4">GPT-4 (最强)</option>
+                    <option value="gpt-4-turbo">GPT-4 Turbo (推荐)</option>
+                </select>
+            </div>
+        </div>
+        
+        <!-- Kimi 配置 -->
+        <div class="provider-section" id="kimiSection" style="display: none;">
+            <h3>🌙 Kimi</h3>
+            <div class="form-group">
+                <label>API Key</label>
+                <input type="text" id="kimiKey" placeholder="...">
+                <div class="help-text">获取地址：https://platform.moonshot.cn/console/api-keys</div>
+            </div>
+            <div class="form-group">
+                <label>模型</label>
+                <select id="kimiModel">
+                    <option value="kimi-k2-0905">Kimi K2 (推荐)</option>
+                    <option value="kimi-v1">Kimi V1</option>
+                </select>
+            </div>
+        </div>
+        
+        <button class="btn btn-primary" onclick="saveConfig()">💾 保存配置</button>
+        
+        <div style="margin-top: 30px; padding-top: 20px; border-top: 2px solid #eee; text-align: center; color: #666;">
+            <p>💡 提示：配置会保存在浏览器本地，仅您可见</p>
+            <p style="margin-top: 10px;">
+                <a href="imperial_court_animated.html" style="color: #667eea; text-decoration: none;">
+                    ← 返回朝政系统
+                </a>
+            </p>
+        </div>
+    </div>
+    
+    <script>
+        let currentProvider = 'dashscope';
+        
+        // 页面加载时加载配置
+        window.onload = function() {
+            loadConfig();
+        };
+        
+        // 选择提供商
+        function selectProvider(provider) {
+            currentProvider = provider;
+            
+            document.querySelectorAll('.radio-option').forEach(opt => {
+                opt.classList.remove('selected');
+            });
+            event.currentTarget.classList.add('selected');
+            
+            // 显示对应配置区域
+            document.getElementById('dashscopeSection').style.display = provider === 'dashscope' ? 'block' : 'none';
+            document.getElementById('openaiSection').style.display = provider === 'openai' ? 'block' : 'none';
+            document.getElementById('kimiSection').style.display = provider === 'kimi' ? 'block' : 'none';
+        }
+        
+        // 保存配置
+        function saveConfig() {
+            const config = {
+                provider: currentProvider,
+                dashscope: {
+                    apiKey: document.getElementById('dashscopeKey').value,
+                    model: document.getElementById('dashscopeModel').value
+                },
+                openai: {
+                    apiKey: document.getElementById('openaiKey').value,
+                    model: document.getElementById('openaiModel').value
+                },
+                kimi: {
+                    apiKey: document.getElementById('kimiKey').value,
+                    model: document.getElementById('kimiModel').value
+                }
+            };
+            
+            localStorage.setItem('aiConfig', JSON.stringify(config));
+            
+            // 显示成功消息
+            document.getElementById('successMessage').style.display = 'block';
+            setTimeout(() => {
+                document.getElementById('successMessage').style.display = 'none';
+            }, 3000);
+        }
+        
+        // 加载配置
+        function loadConfig() {
+            const saved = localStorage.getItem('aiConfig');
+            if (!saved) return;
+            
+            const config = JSON.parse(saved);
+            
+            // 设置提供商
+            if (config.provider) {
+                selectProvider(config.provider);
+            }
+            
+            // 填充配置值
+            if (config.dashscope && config.dashscope.apiKey) {
+                document.getElementById('dashscopeKey').value = config.dashscope.apiKey;
+            }
+            if (config.dashscope && config.dashscope.model) {
+                document.getElementById('dashscopeModel').value = config.dashscope.model;
+            }
+            
+            if (config.openai && config.openai.apiKey) {
+                document.getElementById('openaiKey').value = config.openai.apiKey;
+            }
+            if (config.openai && config.openai.model) {
+                document.getElementById('openaiModel').value = config.openai.model;
+            }
+            
+            if (config.kimi && config.kimi.apiKey) {
+                document.getElementById('kimiKey').value = config.kimi.apiKey;
+            }
+            if (config.kimi && config.kimi.model) {
+                document.getElementById('kimiModel').value = config.kimi.model;
+            }
+        }
+    </script>
+
+    <div style="position: fixed; top: 20px; right: 20px; z-index: 1000;">
+        <a href="index.html" style="
+            display: inline-block;
+            padding: 12px 25px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: bold;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            transition: all 0.3s;
+        " onmouseover="this.style.transform='translateY(-3px)'; this.style.boxShadow='0 8px 20px rgba(0,0,0,0.4)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 5px 15px rgba(0,0,0,0.3)'">
+            🏛️ 返回导航门户
+        </a>
+    </div>
+
+    </body>
+</html>

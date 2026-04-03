@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OpenClaw 命令速查手册 🦞</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        header {
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+        }
+        
+        header h1 {
+            font-size: 3em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+        
+        .search-box {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        
+        .search-box input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        
+        .search-box input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        .category {
+            background: white;
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+        }
+        
+        .category h2 {
+            color: #667eea;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+            font-size: 1.8em;
+        }
+        
+        .command-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 15px;
+        }
+        
+        .command-card {
+            background: #f8f9fa;
+            border-left: 4px solid #667eea;
+            border-radius: 8px;
+            padding: 15px;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        
+        .command-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .command-card code {
+            display: block;
+            background: #2d3748;
+            color: #68d391;
+            padding: 10px;
+            border-radius: 5px;
+            font-family: "SF Mono", "Monaco", "Inconsolata", monospace;
+            font-size: 14px;
+            margin-bottom: 8px;
+            overflow-x: auto;
+        }
+        
+        .command-card p {
+            color: #4a5568;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+        
+        .command-card .tag {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            margin-top: 8px;
+        }
+        
+        .command-card .tag.warning {
+            background: #ed8936;
+        }
+        
+        .command-card .tag.danger {
+            background: #f56565;
+        }
+        
+        .command-card .tag.success {
+            background: #48bb78;
+        }
+        
+        footer {
+            text-align: center;
+            color: white;
+            margin-top: 40px;
+            padding: 20px;
+        }
+        
+        footer a {
+            color: white;
+            text-decoration: underline;
+        }
+        
+        .copy-btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+            margin-top: 8px;
+            transition: background 0.2s;
+        }
+        
+        .copy-btn:hover {
+            background: #5568d3;
+        }
+        
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #48bb78;
+            color: white;
+            padding: 15px 25px;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.3s;
+        }
+        
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+        
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2em;
+            }
+            
+            .command-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🦞 OpenClaw 命令速查手册</h1>
+            <p>EXFOLIATE! EXFOLIATE! — 随时调用的命令宝典</p>
+        </header>
+        
+        <div class="search-box">
+            <input type="text" id="searchInput" placeholder="🔍 搜索命令... (例如：gateway, agent, message)" onkeyup="searchCommands()">
+        </div>
+        
+        <!-- 基础命令 -->
+        <div class="category">
+            <h2>🚀 基础命令</h2>
+            <div class="command-grid">
+                <div class="command-card">
+                    <code>openclaw --help</code>
+                    <p>显示所有可用命令的帮助信息</p>
+                    <button class="copy-btn" onclick="copyToClipboard('openclaw --help')">📋 复制</button>
+                </div>
+                
+                <div class="command-card">
+                    <code>openclaw --version</code>
+                    <p>查看当前安装的 OpenClaw 版本</p>
+                    <button class="copy-btn" onclick="copyToClipboard('openclaw --version')">📋 复制</button>
+                </div>
+                
+                <div class="command-card">
+                    <code>openclaw doctor</code>
+                    <p>诊断系统配置问题，检查安全风险</p>
+                    <span class="tag success">推荐</span>
+                    <button class="copy-btn" onclick="copyToClipboard('openclaw doctor')">📋 复制</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 安装与配置 -->
+        <div class="category">
+            <h2>⚙️ 安装与配置</h2>
+            <div class="command-grid">
+                <div class="command-card">
+                    <code>openclaw onboard</code>
+                    <p>启动交互式安装向导，引导完成初始配置</p>
+                    <span class="tag success">新手必备</span>
+                    <button class="copy-btn" onclick="copyToClipboard('openclaw onboard')">📋 复制</button>
+                </div>
+                
+                <div class="command-card">
+                    <code>openclaw onboard --install-daemon</code>
+                    <p>安装守护进程（launchd/systemd 服务）</p>
+                    <span class="tag success">推荐</span>
+                    <button class="copy-btn" onclick="copyToClipboard('openclaw onboard --install-daemon')">📋 复制</button>
+                </div>
+                
+                <div class="command-card">
+                    <code>openclaw configure</code>
+                    <p>手动配置 OpenClaw 参数</p>
+                    <button class="copy-btn" onclick="copyToClipboard('openclaw configure')">📋 复制</button>
+                </div>
+                
+                <div class="command-card">
+                    <code>openclaw configure --section web</code>
+                    <p>配置 Web 相关设置（如 Brave Search API）</p>
+                    <button class="copy-btn" onclick="copyToClipboard('openclaw configure --section web')">📋 复制</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Gateway 管理 -->
+        <div class="category">
+            <h2>🖥️ Gateway 管理</h2>
+            <div class="command-grid">
+                <div class="command-card">
+                    <code>openclaw gateway</code>
+                    <p>启动 Gateway 服务（前台运行）</p>
+                    <button class="copy-btn" onclick="copyToClipboard('openclaw gateway')">📋 复制</button>
+                </div>
+                
+                <div class="command-card">
+                    <code>openclaw gateway --port 18789</code>
+                    <p>在指定端口启动 Gateway</p>
+                    <button class="copy-btn" onclick="copyToClipboard('openclaw gateway --port 18789')">📋 复制</button>
+                </div>
+                
+                <div class="command-card">
+                    <code>openclaw gateway --verbose</code>
+                    <p>以详细日志模式启动 Gateway</p>
+                    <button class="copy-btn" onclick="copyToClipboard('openclaw gateway --verbose')">📋 复制</button>
+                </div>
+                
+                <div class="command-card">
+                    <code>openclaw gateway status</code>
+                    <p>查看 Gateway 运行状态</p>
+                    <span class="tag success">常用</span>
+                    <button class="copy-btn" onclick="copyToClipboard('openclaw gateway status')">📋 复制</button>
+                </div>
+                
+                <div class="command-card">
+                    <code>openclaw gateway start</code>
+                    <p>启动 Gateway 守护进程</p>
+                    <button class="copy-btn" onclick="copyToClipboard('openclaw gateway start')">📋 复制</button>
+                </div>
+                
+                <div class="command-card">
+                    <code>openclaw gateway stop</code>
+                    <p>停止 Gateway 守护进程</p>
+                    <button class="copy-btn" onclick="copyToClipboard('openclaw gateway stop')">📋 复制</button>
+                </div>
+                
+                <div class="command-card">
+                    <code>openclaw gateway restart</code>
+                    <p>重启 Gateway 守护进程</p>
+                    <button class="copy-btn" onclick="copyToClipboard('openclaw gateway restart')">📋 复制</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Agent 交互 -->
+        <div class="category">
+            <h2>🤖 Agent 交互</h2>
+            <div class="command-grid">
+                <div class="command-card">
+                    <code>openclaw agent --message "你好"</code>
+                    <p>向 Agent 发送消息并获取回复</p>
+                    <span class="tag success">常用</span>
+                    <button class="copy-btn" onclick="copyToClipboard('openclaw agent --message &quot;你好&quot;')">📋 复制</button>
+                </div>
+                
+                <div class="command-card">
+                    <code>openclaw agent --message "任务" --thinking high</code>
+                    <p>使用高思考级别执行复杂任务</p>
+                    <button class="copy-btn" onclick="copyToClipboard('openclaw agent --message &quot;任务&quot; --thinking high')">📋 复制</button>
+                </div>
+                
+                <div class="command-card">
+                    <code>openclaw agent --workspace /path/to/ws</code>
+                    <p>在指定工作空间中运行 Agent</p>
+                    <button class="copy-btn" onclick="copyToClipboard('openclaw agent --workspace /path/to/ws')">📋 复制</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 消息管理 -->
+        <div class="category">
+            <h2>💬 消息管理</h2>
+            <div class="command-grid">
+                <div class="command-card">
+                    <code>openclaw message send --to +1234567890 --message "Hello"</code>
+                    <p>向指定号码/用户发送消息</p>
+                    <button class="copy-btn" onclick="copyToClipboard('openclaw message send --to +1234567890 --message &quot;Hello&quot;')">📋 复制</button>
+                </div>
+                
+                <div class="command-card">
+                    <code>openclaw message send --to @username --message "内容"</code>
+                    <p>向指定用户发送消息（支持多平台）</p>
+                    <button class="copy-btn" onclick="copyToClipboard('openclaw message send --to @username --message &quot;内容&quot;')">📋 复制</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 会话管理 -->
+        <div class="category">
+            <h2>📋 会话管理</h2>
+            <div class="command-grid">
+                <div class="command-card">
+                    <code>openclaw sessions list</code>
+                    <p>列出所有活跃的会话</p>
+                    <span class="tag success">常用</span>
+                    <button class="copy-btn" onclick="copyToClipboard('openclaw sessions list')">📋 复制</button>
+                </div>
+                
+                <div class="command-card">
+                    <code>openclaw sessions list --active-minutes 30</code>
+                    <p>列出最近 30 分钟活跃的会话</p>
+                    <button class="copy-btn" onclick="copyToClipboard('openclaw sessions list --active-minutes 30')">📋 复制</button>
+                </div>
+                
+                <div class="command-card">
+                    <code>openclaw sessions history &lt;sessionKey&gt;</code>
+                    <p>查看指定会话的历史记录</p>
+                    <button class="copy-btn" onclick="copyToClipboard('openclaw sessions history &lt;sessionKey&gt;')">📋 复制</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 更新与维护 -->
+        <div class="category">
+            <h2>🔄 更新与维护</h2>
+            <div class="command-grid">
+                <div class="command-card">
+                    <code>openclaw update</code>
+                    <p>更新 OpenClaw 到最新版本</p>
+                    <span class="tag warning">定期执行</span>
+                    <button class="copy-btn" onclick="copyToClipboard('openclaw update')">📋 复制</button>
+                </div>
+                
+                <div class="command-card">
+                    <code>openclaw update --channel stable</code>
+                    <p>切换到稳定版频道并更新</p>
+                    <p>可选频道：stable | beta | dev</p>
+                    <button class="copy-btn" onclick="copyToClipboard('openclaw update --channel stable')">📋 复制</button>
+                </div>
+                
+                <div class="command-card">
+                    <code>npm install -g openclaw@latest</code>
+                    <p>使用 npm 更新到最新版本</p>
+                    <button class="copy-btn" onclick="copyToClipboard('npm install -g openclaw@latest')">📋 复制</button>
+                </div>
+                
+                <div class="command-card">
+                    <code>pnpm add -g openclaw@latest</code>
+                    <p>使用 pnpm 更新到最新版本</p>
+                    <button class="copy-btn" onclick="copyToClipboard('pnpm add -g openclaw@latest')">📋 复制</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 平台特定命令 -->
+        <div class="category">
+            <h2>📱 平台特定命令</h2>
+            <div class="command-grid">
+                <div class="command-card">
+                    <code>openclaw macos install</code>
+                    <p>安装 macOS 菜单栏应用</p>
+                    <span class="tag">macOS</span>
+                    <button class="copy-btn" onclick="copyToClipboard('openclaw macos install')">📋 复制</button>
+                </div>
+                
+                <div class="command-card">
+                    <code>openclaw canvas open</code>
+                    <p>打开 Live Canvas 可视化工作区</p>
+                    <span class="tag">macOS</span>
+                    <button class="copy-btn" onclick="copyToClipboard('openclaw canvas open')">📋 复制</button>
+                </div>
+                
+                <div class="command-card">
+                    <code>openclaw nodes list</code>
+                    <p>列出所有已配对的节点设备</p>
+                    <button class="copy-btn" onclick="copyToClipboard('openclaw nodes list')">📋 复制</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 安全与配对 -->
+        <div class="category">
+            <h2>🔐 安全与配对</h2>
+            <div class="command-grid">
+                <div class="command-card">
+                    <code>openclaw pairing list</code>
+                    <p>列出所有待处理的配对请求</p>
+                    <span class="tag success">DM 必备</span>
+                    <button class="copy-btn" onclick="copyToClipboard('openclaw pairing list')">📋 复制</button>
+                </div>
+                
+                <div class="command-card">
+                    <code>openclaw pairing approve &lt;channel&gt; &lt;code&gt;</code>
+                    <p>批准配对请求（未知用户 DM 时使用）</p>
+                    <span class="tag warning">安全必需</span>
+                    <button class="copy-btn" onclick="copyToClipboard('openclaw pairing approve &lt;channel&gt; &lt;code&gt;')">📋 复制</button>
+                </div>
+                
+                <div class="command-card">
+                    <code>openclaw pairing reject &lt;channel&gt;</code>
+                    <p>拒绝配对请求</p>
+                    <button class="copy-btn" onclick="copyToClipboard('openclaw pairing reject &lt;channel&gt;')">📋 复制</button>
+                </div>
+            </div>
+        </div>
+        
+        <footer>
+            <p>🦞 OpenClaw 命令速查手册 | <a href="https://docs.openclaw.ai" target="_blank">官方文档</a> | <a href="https://discord.gg/clawd" target="_blank">Discord 社区</a></p>
+            <p>EXFOLIATE! EXFOLIATE!</p>
+        </footer>
+    </div>
+    
+    <div class="toast" id="toast">✅ 已复制到剪贴板！</div>
+    
+    <script>
+        function copyToClipboard(text) {
+            // 创建一个临时 textarea 元素
+            const textarea = document.createElement('textarea');
+            textarea.value = text;
+            document.body.appendChild(textarea);
+            textarea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textarea);
+            
+            // 显示提示
+            const toast = document.getElementById('toast');
+            toast.classList.add('show');
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 2000);
+        }
+        
+        function searchCommands() {
+            const input = document.getElementById('searchInput');
+            const filter = input.value.toLowerCase();
+            const cards = document.getElementsByClassName('command-card');
+            
+            for (let i = 0; i < cards.length; i++) {
+                const code = cards[i].getElementsByTagName('code')[0];
+                const p = cards[i].getElementsByTagName('p')[0];
+                const txtValue = code.textContent + ' ' + p.textContent;
+                
+                if (txtValue.toLowerCase().indexOf(filter) > -1) {
+                    cards[i].style.display = '';
+                } else {
+                    cards[i].style.display = 'none';
+                }
+            }
+        }
+    </script>
+
+    <div style="position: fixed; top: 20px; right: 20px; z-index: 1000;">
+        <a href="index.html" style="
+            display: inline-block;
+            padding: 12px 25px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: bold;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            transition: all 0.3s;
+        " onmouseover="this.style.transform='translateY(-3px)'; this.style.boxShadow='0 8px 20px rgba(0,0,0,0.4)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 5px 15px rgba(0,0,0,0.3)'">
+            🏛️ 返回导航门户
+        </a>
+    </div>
+
+    </body>
+</html>

@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>大明·OpenClaw 三省六部制 - 统一导航门户</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: "Noto Serif SC", "SimSun", serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        header {
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+            padding: 30px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+        }
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+        .subtitle {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        .section {
+            background: rgba(255,255,255,0.95);
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        .section-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid #f0a500;
+        }
+        .section-icon {
+            font-size: 2em;
+            margin-right: 15px;
+        }
+        .section-title {
+            font-size: 1.5em;
+            color: #1e3c72;
+            font-weight: bold;
+        }
+        .card-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        .card {
+            display: block;
+            padding: 15px 20px;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-radius: 10px;
+            text-decoration: none;
+            color: #333;
+            transition: all 0.3s;
+            border-left: 5px solid #667eea;
+        }
+        .card:hover {
+            transform: translateX(10px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        .card-title {
+            font-size: 1.1em;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .card-desc {
+            font-size: 0.9em;
+            opacity: 0.8;
+        }
+        .card-badge {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 0.75em;
+            font-weight: bold;
+            margin-left: 10px;
+        }
+        .badge-new { background: #28a745; color: white; }
+        .badge-hot { background: #dc3545; color: white; }
+        .badge-core { background: #667eea; color: white; }
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        .stat-card {
+            background: rgba(255,255,255,0.95);
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+        .stat-value {
+            font-size: 2em;
+            font-weight: bold;
+            color: #667eea;
+        }
+        .stat-label {
+            color: #666;
+            margin-top: 5px;
+        }
+        footer {
+            text-align: center;
+            color: white;
+            margin-top: 40px;
+            padding: 20px;
+        }
+        .quick-actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+        .action-btn {
+            flex: 1;
+            min-width: 200px;
+            padding: 15px 25px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 10px;
+            text-align: center;
+            font-weight: bold;
+            transition: transform 0.3s;
+        }
+        .action-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+        }
+        @media (max-width: 768px) {
+            .grid { grid-template-columns: 1fr; }
+            .stats { grid-template-columns: 1fr 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🏛️ 大明·OpenClaw 三省六部制</h1>
+            <div class="subtitle">统一导航门户 · 时间加速 100 倍 · 神仙年龄系统</div>
+        </header>
+        
+        <div class="stats">
+            <div class="stat-card">
+                <div class="stat-value">10</div>
+                <div class="stat-label">在职官员</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">100x</div>
+                <div class="stat-label">时间加速</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">18</div>
+                <div class="stat-label">网页 + 论坛</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">3h</div>
+                <div class="stat-label">自动更新</div>
+            </div>
+        </div>
+        
+        <div class="grid">
+            <!-- 核心系统 -->
+            <div class="section">
+                <div class="section-header">
+                    <span class="section-icon">🏛️</span>
+                    <span class="section-title">核心系统</span>
+                </div>
+                <div class="card-list">
+                    <a href="hr_database.html" class="card">
+                        <div class="card-title">📚 HR 人力资源库 <span class="card-badge badge-core">核心</span></div>
+                        <div class="card-desc">神仙官员档案 · 生平事迹 · 考核记录</div>
+                    </a>
+                    <a href="publicity/publicity_2026-04.html" class="card">
+                        <div class="card-title">📢 考核公示榜 <span class="card-badge badge-hot">热门</span></div>
+                        <div class="card-desc">月度考核结果 · 红黄黑榜 · 奖惩明细</div>
+                    </a>
+                    <a href="court-protocol.html" class="card">
+                        <div class="card-title">👑 上朝批红系统</div>
+                        <div class="card-desc">皇上御笔批红 · 准奏/驳回/留中</div>
+                    </a>
+                    <a href="memorial_submit.html" class="card">
+                        <div class="card-title">📜 奏折提交系统</div>
+                        <div class="card-desc">六部官员上奏 · 任务规划</div>
+                    </a>
+                    <a href="official_models.html" class="card">
+                        <div class="card-title">🤖 官员 AI 模型</div>
+                        <div class="card-desc">技能模型配置 · 专属 AI</div>
+                    </a>
+                </div>
+            </div>
+            
+            <!-- 文档手册 -->
+            <div class="section">
+                <div class="section-header">
+                    <span class="section-icon">📚</span>
+                    <span class="section-title">文档手册</span>
+                </div>
+                <div class="card-list">
+                    <a href="architecture-report.html" class="card">
+                        <div class="card-title">📊 架构报告 <span class="card-badge badge-core">必读</span></div>
+                        <div class="card-desc">三省六部完整架构 · 12 组件详解</div>
+                    </a>
+                    <a href="系统使用手册.html" class="card">
+                        <div class="card-title">📖 系统使用手册</div>
+                        <div class="card-desc">完整使用指南 · 操作说明</div>
+                    </a>
+                    <a href="ai_config.html" class="card">
+                        <div class="card-title">⚙️ AI 配置页面</div>
+                        <div class="card-desc">AI 模型配置 · API Key 设置</div>
+                    </a>
+                    <a href="openclaw-commands.html" class="card">
+                        <div class="card-title">💻 OpenClaw 命令</div>
+                        <div class="card-desc">命令速查 · 快速参考</div>
+                    </a>
+                </div>
+            </div>
+            
+            <!-- 角色设定 -->
+            <div class="section">
+                <div class="section-header">
+                    <span class="section-icon">🎭</span>
+                    <span class="section-title">角色设定</span>
+                </div>
+                <div class="card-list">
+                    <a href="role-characters.html" class="card">
+                        <div class="card-title">👥 角色设定集 <span class="card-badge badge-new">新</span></div>
+                        <div class="card-desc">12 个角色完整设定 · 性格技能</div>
+                    </a>
+                    <a href="imperial_court_animated.html" class="card">
+                        <div class="card-title">🎬 朝堂动画版</div>
+                        <div class="card-desc">动画演示 · 视觉效果</div>
+                    </a>
+                    <a href="imperial_court.html" class="card">
+                        <div class="card-title">🏛️ 朝堂普通版</div>
+                        <div class="card-desc">普通朝堂界面</div>
+                    </a>
+                </div>
+            </div>
+            
+            <!-- 人才流动 -->
+            <div class="section">
+                <div class="section-header">
+                    <span class="section-icon">🔄</span>
+                    <span class="section-title">人才流动</span>
+                </div>
+                <div class="card-list">
+                    <a href="talent_flow/talent_flow_latest.json" class="card">
+                        <div class="card-title">📊 人才流动报告 <span class="card-badge badge-hot">实时</span></div>
+                        <div class="card-desc">退休/去世/新晋记录</div>
+                    </a>
+                    <a href="talent_flow/" class="card">
+                        <div class="card-title">📁 历史报告库</div>
+                        <div class="card-desc">所有人才流动历史记录</div>
+                    </a>
+                    <a href="update_cron.py" class="card">
+                        <div class="card-title">⏰ 自动更新脚本</div>
+                        <div class="card-desc">Crontab 定时任务配置</div>
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="quick-actions">
+            <a href="hr_database.html" class="action-btn">
+                👥 查看官员档案
+            </a>
+            <a href="publicity/publicity_2026-04.html" class="action-btn">
+                📢 查看考核公示
+            </a>
+            <a href="architecture-report.html" class="action-btn">
+                📊 查看架构报告
+            </a>
+            <a href="talent_flow/" class="action-btn">
+                🔄 查看人才流动
+            </a>
+        </div>
+        
+        <!-- 交流论坛 -->
+        <div class="section">
+            <div class="section-header">
+                <span class="section-icon">🎭</span>
+                <span class="section-title">交流论坛</span>
+            </div>
+            <div class="card-list">
+                <a href="forum.html" class="card">
+                    <div class="card-title">🎭 官员交流论坛 <span class="card-badge badge-new">新</span></div>
+                    <div class="card-desc">发帖聊天 · 吐槽大会 · 丰厚奖励</div>
+                </a>
+                <a href="论坛使用指南.md" class="card">
+                    <div class="card-title">📖 论坛使用指南</div>
+                    <div class="card-desc">发帖指南 · 奖励机制</div>
+                </a>
+                <a href="奖励机制说明.md" class="card">
+                    <div class="card-title">💰 奖励机制说明</div>
+                    <div class="card-desc">奖励提升 4-5 倍</div>
+                </a>
+            </div>
+        </div>
+        
+        <footer>
+            <p>大明·OpenClaw 帝国系统 · 三省六部制</p>
+            <p>时间加速 100 倍 · 每 3 小时自动更新</p>
+            <p>📂 文件位置：~/.openclaw/workspace-*/</p>
+        </footer>
+    </div>
+    
+    <script>
+        // 自动刷新 (3 小时)
+        setTimeout(() => {
+            location.reload();
+        }, 10800000); // 3 小时
+        
+        // 显示欢迎消息
+        console.log('🏛️ 欢迎使用大明·OpenClaw 三省六部制系统！');
+        console.log('⏩ 时间加速：100 倍');
+        console.log('🔄 自动刷新：3 小时');
+    </script>
+</body>
+</html>

@@ -1,0 +1,958 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>大明·OpenClaw 王朝人力资源库</title>
+    <meta http-equiv="refresh" content="10800"> <!-- 3 小时自动刷新 -->
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: "Noto Serif SC", "SimSun", "Songti SC", serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: rgba(255,255,255,0.95);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        header {
+            text-align: center;
+            border-bottom: 3px solid #f0a500;
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+        }
+        h1 {
+            color: #1e3c72;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        .subtitle {
+            color: #666;
+            font-size: 1.2em;
+        }
+        .update-info {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            text-align: center;
+            border-left: 5px solid #667eea;
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+        .stat-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+        .stat-value {
+            font-size: 2em;
+            font-weight: bold;
+        }
+        .stat-label {
+            font-size: 0.9em;
+            opacity: 0.9;
+        }
+        .dept-section {
+            margin: 30px 0;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        .dept-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 20px;
+            font-size: 1.3em;
+            font-weight: bold;
+        }
+        .person-list {
+            padding: 20px;
+        }
+        .person-card {
+            background: #f8f9fa;
+            border-left: 5px solid #667eea;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+            transition: transform 0.2s;
+        }
+        .person-card:hover {
+            transform: translateX(10px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        .person-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .person-name {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #333;
+        }
+        .person-style {
+            color: #667eea;
+            font-style: italic;
+        }
+        .person-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 10px;
+            margin-top: 10px;
+        }
+        .info-item {
+            background: white;
+            padding: 10px;
+            border-radius: 5px;
+            font-size: 0.9em;
+        }
+        .info-label {
+            color: #666;
+            font-size: 0.8em;
+        }
+        .info-value {
+            font-weight: bold;
+            color: #1e3c72;
+        }
+        .grade-badge {
+            padding: 5px 12px;
+            border-radius: 12px;
+            font-size: 0.85em;
+            font-weight: bold;
+            color: white;
+        }
+        .grade-s { background: #f5576c; }
+        .grade-a { background: #f093fb; }
+        .grade-b { background: #667eea; }
+        .grade-c { background: #f5af19; }
+        .grade-d { background: #232526; }
+        .no-grade { background: #999; }
+        .skills-bar {
+            margin-top: 10px;
+        }
+        .skill {
+            margin: 5px 0;
+        }
+        .skill-name {
+            font-size: 0.85em;
+            color: #666;
+        }
+        .skill-bar {
+            height: 8px;
+            background: #e0e0e0;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        .skill-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            border-radius: 4px;
+        }
+        footer {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 2px solid #e0e0e0;
+            color: #666;
+        }
+        .auto-update {
+            background: #d4edda;
+            color: #155724;
+            padding: 10px 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            text-align: center;
+        }
+        @media print {
+            body { background: white; }
+            .container { box-shadow: none; }
+            .auto-update { display: none; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📚 大明·OpenClaw 王朝人力资源库</h1>
+            <div class="subtitle">吏部制 · 古代中文版</div>
+        </header>
+        
+        <div class="auto-update">
+            ⏰ 本页面每 3 小时自动更新 (10800 秒)
+        </div>
+        
+        <div class="update-info">
+            📅 更新时间：<strong>2026-04-03 22:29:46</strong> |
+            📊 总人数：<strong>10</strong> 人 |
+            🟢 在职：<strong>10</strong> 人
+        </div>
+        
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-value">10</div>
+                <div class="stat-label">总人数</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">5</div>
+                <div class="stat-label">男性官员</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">5</div>
+                <div class="stat-label">女性官员</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">10</div>
+                <div class="stat-label">职位数量</div>
+            </div>
+        </div>
+
+        <div class="dept-section">
+            <div class="dept-header">🏛️ 内廷</div>
+            <div class="person-list">
+
+                <div class="person-card">
+                    <div class="person-header">
+                        <div>
+                            <span class="person-name">🟢 韩毅</span>
+                            <span class="person-style">(字翼鸾)</span>
+                            <span style="margin-left: 10px; color: #667eea; font-weight: bold;">男, 39岁 (神仙)</span>
+                        </div>
+                        <span class="grade-badge no-grade">未考核</span>
+                    </div>
+                    <div class="person-info">
+                        <div class="info-item">
+                            <div class="info-label">🆔 ID</div>
+                            <div class="info-value">PERSON_1bf4cd15f446c8ec</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">🔐 哈希</div>
+                            <div class="info-value">1bf4cd15f446c8ec</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">📍 职位</div>
+                            <div class="info-value">司礼监掌印太监</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">🎓 学历</div>
+                            <div class="info-value">同进士</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">💰 俸禄</div>
+                            <div class="info-value">100,000 tokens</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">📅 退休</div>
+                            <div class="info-value">2026-06-19</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">⚰️ 寿终</div>
+                            <div class="info-value">2026-10-21</div>
+                        </div>
+                    </div>
+                    <div class="skills-bar">
+                        
+                    <div class="skill">
+                        <div class="skill-name">沟通能力</div>
+                        <div class="skill-bar">
+                            <div class="skill-fill" style="width: 94%"></div>
+                        </div>
+                    </div>
+
+                    <div class="skill">
+                        <div class="skill-name">学习能力</div>
+                        <div class="skill-bar">
+                            <div class="skill-fill" style="width: 61%"></div>
+                        </div>
+                    </div>
+
+                    <div class="skill">
+                        <div class="skill-name">执行力</div>
+                        <div class="skill-bar">
+                            <div class="skill-fill" style="width: 84%"></div>
+                        </div>
+                    </div>
+
+                    </div>
+                    <div class="achievements">
+                        <strong>🏆 生平事迹:</strong>
+                        <div class="achievement-item">暂无事迹记录</div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="dept-section">
+            <div class="dept-header">🏛️ 外朝</div>
+            <div class="person-list">
+
+                <div class="person-card">
+                    <div class="person-header">
+                        <div>
+                            <span class="person-name">🟢 喻玉贞</span>
+                            <span class="person-style">(字梦儿)</span>
+                            <span style="margin-left: 10px; color: #667eea; font-weight: bold;">女, 43岁 (神仙)</span>
+                        </div>
+                        <span class="grade-badge no-grade">未考核</span>
+                    </div>
+                    <div class="person-info">
+                        <div class="info-item">
+                            <div class="info-label">🆔 ID</div>
+                            <div class="info-value">PERSON_9ca0f79287afd8bb</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">🔐 哈希</div>
+                            <div class="info-value">9ca0f79287afd8bb</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">📍 职位</div>
+                            <div class="info-value">中书省尚书令</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">🎓 学历</div>
+                            <div class="info-value">贡士</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">💰 俸禄</div>
+                            <div class="info-value">150,000 tokens</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">📅 退休</div>
+                            <div class="info-value">2026-06-04</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">⚰️ 寿终</div>
+                            <div class="info-value">2026-07-26</div>
+                        </div>
+                    </div>
+                    <div class="skills-bar">
+                        
+                    <div class="skill">
+                        <div class="skill-name">沟通能力</div>
+                        <div class="skill-bar">
+                            <div class="skill-fill" style="width: 62%"></div>
+                        </div>
+                    </div>
+
+                    <div class="skill">
+                        <div class="skill-name">学习能力</div>
+                        <div class="skill-bar">
+                            <div class="skill-fill" style="width: 85%"></div>
+                        </div>
+                    </div>
+
+                    <div class="skill">
+                        <div class="skill-name">执行力</div>
+                        <div class="skill-bar">
+                            <div class="skill-fill" style="width: 88%"></div>
+                        </div>
+                    </div>
+
+                    </div>
+                    <div class="achievements">
+                        <strong>🏆 生平事迹:</strong>
+                        <div class="achievement-item">暂无事迹记录</div>
+                    </div>
+                </div>
+
+                <div class="person-card">
+                    <div class="person-header">
+                        <div>
+                            <span class="person-name">🟢 韩华</span>
+                            <span class="person-style">(字香儿)</span>
+                            <span style="margin-left: 10px; color: #667eea; font-weight: bold;">女, 44岁 (神仙)</span>
+                        </div>
+                        <span class="grade-badge no-grade">未考核</span>
+                    </div>
+                    <div class="person-info">
+                        <div class="info-item">
+                            <div class="info-label">🆔 ID</div>
+                            <div class="info-value">PERSON_76810c5eb5a55b50</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">🔐 哈希</div>
+                            <div class="info-value">76810c5eb5a55b50</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">📍 职位</div>
+                            <div class="info-value">门下省侍中</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">🎓 学历</div>
+                            <div class="info-value">举人</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">💰 俸禄</div>
+                            <div class="info-value">100,000 tokens</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">📅 退休</div>
+                            <div class="info-value">2026-06-01</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">⚰️ 寿终</div>
+                            <div class="info-value">2026-08-06</div>
+                        </div>
+                    </div>
+                    <div class="skills-bar">
+                        
+                    <div class="skill">
+                        <div class="skill-name">沟通能力</div>
+                        <div class="skill-bar">
+                            <div class="skill-fill" style="width: 97%"></div>
+                        </div>
+                    </div>
+
+                    <div class="skill">
+                        <div class="skill-name">学习能力</div>
+                        <div class="skill-bar">
+                            <div class="skill-fill" style="width: 83%"></div>
+                        </div>
+                    </div>
+
+                    <div class="skill">
+                        <div class="skill-name">执行力</div>
+                        <div class="skill-bar">
+                            <div class="skill-fill" style="width: 91%"></div>
+                        </div>
+                    </div>
+
+                    </div>
+                    <div class="achievements">
+                        <strong>🏆 生平事迹:</strong>
+                        <div class="achievement-item">暂无事迹记录</div>
+                    </div>
+                </div>
+
+                <div class="person-card">
+                    <div class="person-header">
+                        <div>
+                            <span class="person-name">🟢 钱秋</span>
+                            <span class="person-style">(字芷儿)</span>
+                            <span style="margin-left: 10px; color: #667eea; font-weight: bold;">女, 28岁 (神仙)</span>
+                        </div>
+                        <span class="grade-badge no-grade">未考核</span>
+                    </div>
+                    <div class="person-info">
+                        <div class="info-item">
+                            <div class="info-label">🆔 ID</div>
+                            <div class="info-value">PERSON_4b1c0fde6f456b0f</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">🔐 哈希</div>
+                            <div class="info-value">4b1c0fde6f456b0f</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">📍 职位</div>
+                            <div class="info-value">尚书省都事</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">🎓 学历</div>
+                            <div class="info-value">贡士</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">💰 俸禄</div>
+                            <div class="info-value">200,000 tokens</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">📅 退休</div>
+                            <div class="info-value">2026-07-29</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">⚰️ 寿终</div>
+                            <div class="info-value">2026-10-10</div>
+                        </div>
+                    </div>
+                    <div class="skills-bar">
+                        
+                    <div class="skill">
+                        <div class="skill-name">沟通能力</div>
+                        <div class="skill-bar">
+                            <div class="skill-fill" style="width: 72%"></div>
+                        </div>
+                    </div>
+
+                    <div class="skill">
+                        <div class="skill-name">学习能力</div>
+                        <div class="skill-bar">
+                            <div class="skill-fill" style="width: 61%"></div>
+                        </div>
+                    </div>
+
+                    <div class="skill">
+                        <div class="skill-name">执行力</div>
+                        <div class="skill-bar">
+                            <div class="skill-fill" style="width: 77%"></div>
+                        </div>
+                    </div>
+
+                    </div>
+                    <div class="achievements">
+                        <strong>🏆 生平事迹:</strong>
+                        <div class="achievement-item">暂无事迹记录</div>
+                    </div>
+                </div>
+
+                <div class="person-card">
+                    <div class="person-header">
+                        <div>
+                            <span class="person-name">🟢 张胜彪</span>
+                            <span class="person-style">(字子明)</span>
+                            <span style="margin-left: 10px; color: #667eea; font-weight: bold;">男, 36岁 (神仙)</span>
+                        </div>
+                        <span class="grade-badge no-grade">未考核</span>
+                    </div>
+                    <div class="person-info">
+                        <div class="info-item">
+                            <div class="info-label">🆔 ID</div>
+                            <div class="info-value">PERSON_8bb864415bb66092</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">🔐 哈希</div>
+                            <div class="info-value">8bb864415bb66092</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">📍 职位</div>
+                            <div class="info-value">户部尚书</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">🎓 学历</div>
+                            <div class="info-value">贡士</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">💰 俸禄</div>
+                            <div class="info-value">150,000 tokens</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">📅 退休</div>
+                            <div class="info-value">2026-06-30</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">⚰️ 寿终</div>
+                            <div class="info-value">2026-08-06</div>
+                        </div>
+                    </div>
+                    <div class="skills-bar">
+                        
+                    <div class="skill">
+                        <div class="skill-name">沟通能力</div>
+                        <div class="skill-bar">
+                            <div class="skill-fill" style="width: 83%"></div>
+                        </div>
+                    </div>
+
+                    <div class="skill">
+                        <div class="skill-name">学习能力</div>
+                        <div class="skill-bar">
+                            <div class="skill-fill" style="width: 68%"></div>
+                        </div>
+                    </div>
+
+                    <div class="skill">
+                        <div class="skill-name">执行力</div>
+                        <div class="skill-bar">
+                            <div class="skill-fill" style="width: 72%"></div>
+                        </div>
+                    </div>
+
+                    </div>
+                    <div class="achievements">
+                        <strong>🏆 生平事迹:</strong>
+                        <div class="achievement-item">暂无事迹记录</div>
+                    </div>
+                </div>
+
+                <div class="person-card">
+                    <div class="person-header">
+                        <div>
+                            <span class="person-name">🟢 华茂彬</span>
+                            <span class="person-style">(字仲宣)</span>
+                            <span style="margin-left: 10px; color: #667eea; font-weight: bold;">男, 39岁 (神仙)</span>
+                        </div>
+                        <span class="grade-badge no-grade">未考核</span>
+                    </div>
+                    <div class="person-info">
+                        <div class="info-item">
+                            <div class="info-label">🆔 ID</div>
+                            <div class="info-value">PERSON_70802ed63da30135</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">🔐 哈希</div>
+                            <div class="info-value">70802ed63da30135</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">📍 职位</div>
+                            <div class="info-value">工部尚书</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">🎓 学历</div>
+                            <div class="info-value">进士</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">💰 俸禄</div>
+                            <div class="info-value">200,000 tokens</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">📅 退休</div>
+                            <div class="info-value">2026-06-19</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">⚰️ 寿终</div>
+                            <div class="info-value">2026-08-16</div>
+                        </div>
+                    </div>
+                    <div class="skills-bar">
+                        
+                    <div class="skill">
+                        <div class="skill-name">沟通能力</div>
+                        <div class="skill-bar">
+                            <div class="skill-fill" style="width: 67%"></div>
+                        </div>
+                    </div>
+
+                    <div class="skill">
+                        <div class="skill-name">学习能力</div>
+                        <div class="skill-bar">
+                            <div class="skill-fill" style="width: 60%"></div>
+                        </div>
+                    </div>
+
+                    <div class="skill">
+                        <div class="skill-name">执行力</div>
+                        <div class="skill-bar">
+                            <div class="skill-fill" style="width: 90%"></div>
+                        </div>
+                    </div>
+
+                    </div>
+                    <div class="achievements">
+                        <strong>🏆 生平事迹:</strong>
+                        <div class="achievement-item">暂无事迹记录</div>
+                    </div>
+                </div>
+
+                <div class="person-card">
+                    <div class="person-header">
+                        <div>
+                            <span class="person-name">🟢 金强世</span>
+                            <span class="person-style">(字文举)</span>
+                            <span style="margin-left: 10px; color: #667eea; font-weight: bold;">男, 38岁 (神仙)</span>
+                        </div>
+                        <span class="grade-badge no-grade">未考核</span>
+                    </div>
+                    <div class="person-info">
+                        <div class="info-item">
+                            <div class="info-label">🆔 ID</div>
+                            <div class="info-value">PERSON_c10f08d12aa5ad3a</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">🔐 哈希</div>
+                            <div class="info-value">c10f08d12aa5ad3a</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">📍 职位</div>
+                            <div class="info-value">礼部尚书</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">🎓 学历</div>
+                            <div class="info-value">举人</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">💰 俸禄</div>
+                            <div class="info-value">100,000 tokens</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">📅 退休</div>
+                            <div class="info-value">2026-06-23</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">⚰️ 寿终</div>
+                            <div class="info-value">2026-10-10</div>
+                        </div>
+                    </div>
+                    <div class="skills-bar">
+                        
+                    <div class="skill">
+                        <div class="skill-name">沟通能力</div>
+                        <div class="skill-bar">
+                            <div class="skill-fill" style="width: 71%"></div>
+                        </div>
+                    </div>
+
+                    <div class="skill">
+                        <div class="skill-name">学习能力</div>
+                        <div class="skill-bar">
+                            <div class="skill-fill" style="width: 92%"></div>
+                        </div>
+                    </div>
+
+                    <div class="skill">
+                        <div class="skill-name">执行力</div>
+                        <div class="skill-bar">
+                            <div class="skill-fill" style="width: 80%"></div>
+                        </div>
+                    </div>
+
+                    </div>
+                    <div class="achievements">
+                        <strong>🏆 生平事迹:</strong>
+                        <div class="achievement-item">暂无事迹记录</div>
+                    </div>
+                </div>
+
+                <div class="person-card">
+                    <div class="person-header">
+                        <div>
+                            <span class="person-name">🟢 孙全学</span>
+                            <span class="person-style">(字仲达)</span>
+                            <span style="margin-left: 10px; color: #667eea; font-weight: bold;">男, 34岁 (神仙)</span>
+                        </div>
+                        <span class="grade-badge no-grade">未考核</span>
+                    </div>
+                    <div class="person-info">
+                        <div class="info-item">
+                            <div class="info-label">🆔 ID</div>
+                            <div class="info-value">PERSON_e3698b44d89f7e33</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">🔐 哈希</div>
+                            <div class="info-value">e3698b44d89f7e33</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">📍 职位</div>
+                            <div class="info-value">刑部尚书</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">🎓 学历</div>
+                            <div class="info-value">进士</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">💰 俸禄</div>
+                            <div class="info-value">100,000 tokens</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">📅 退休</div>
+                            <div class="info-value">2026-07-07</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">⚰️ 寿终</div>
+                            <div class="info-value">2026-10-07</div>
+                        </div>
+                    </div>
+                    <div class="skills-bar">
+                        
+                    <div class="skill">
+                        <div class="skill-name">沟通能力</div>
+                        <div class="skill-bar">
+                            <div class="skill-fill" style="width: 73%"></div>
+                        </div>
+                    </div>
+
+                    <div class="skill">
+                        <div class="skill-name">学习能力</div>
+                        <div class="skill-bar">
+                            <div class="skill-fill" style="width: 95%"></div>
+                        </div>
+                    </div>
+
+                    <div class="skill">
+                        <div class="skill-name">执行力</div>
+                        <div class="skill-bar">
+                            <div class="skill-fill" style="width: 67%"></div>
+                        </div>
+                    </div>
+
+                    </div>
+                    <div class="achievements">
+                        <strong>🏆 生平事迹:</strong>
+                        <div class="achievement-item">暂无事迹记录</div>
+                    </div>
+                </div>
+
+                <div class="person-card">
+                    <div class="person-header">
+                        <div>
+                            <span class="person-name">🟢 冯璧艳</span>
+                            <span class="person-style">(字云儿)</span>
+                            <span style="margin-left: 10px; color: #667eea; font-weight: bold;">女, 42岁 (神仙)</span>
+                        </div>
+                        <span class="grade-badge no-grade">未考核</span>
+                    </div>
+                    <div class="person-info">
+                        <div class="info-item">
+                            <div class="info-label">🆔 ID</div>
+                            <div class="info-value">PERSON_988e2d8bed44efac</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">🔐 哈希</div>
+                            <div class="info-value">988e2d8bed44efac</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">📍 职位</div>
+                            <div class="info-value">兵部尚书</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">🎓 学历</div>
+                            <div class="info-value">进士</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">💰 俸禄</div>
+                            <div class="info-value">100,000 tokens</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">📅 退休</div>
+                            <div class="info-value">2026-06-08</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">⚰️ 寿终</div>
+                            <div class="info-value">2026-09-26</div>
+                        </div>
+                    </div>
+                    <div class="skills-bar">
+                        
+                    <div class="skill">
+                        <div class="skill-name">沟通能力</div>
+                        <div class="skill-bar">
+                            <div class="skill-fill" style="width: 85%"></div>
+                        </div>
+                    </div>
+
+                    <div class="skill">
+                        <div class="skill-name">学习能力</div>
+                        <div class="skill-bar">
+                            <div class="skill-fill" style="width: 74%"></div>
+                        </div>
+                    </div>
+
+                    <div class="skill">
+                        <div class="skill-name">执行力</div>
+                        <div class="skill-bar">
+                            <div class="skill-fill" style="width: 86%"></div>
+                        </div>
+                    </div>
+
+                    </div>
+                    <div class="achievements">
+                        <strong>🏆 生平事迹:</strong>
+                        <div class="achievement-item">暂无事迹记录</div>
+                    </div>
+                </div>
+
+                <div class="person-card">
+                    <div class="person-header">
+                        <div>
+                            <span class="person-name">🟢 沈环</span>
+                            <span class="person-style">(字玉儿)</span>
+                            <span style="margin-left: 10px; color: #667eea; font-weight: bold;">女, 37岁 (神仙)</span>
+                        </div>
+                        <span class="grade-badge no-grade">未考核</span>
+                    </div>
+                    <div class="person-info">
+                        <div class="info-item">
+                            <div class="info-label">🆔 ID</div>
+                            <div class="info-value">PERSON_8e7c848a3e88ccd6</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">🔐 哈希</div>
+                            <div class="info-value">8e7c848a3e88ccd6</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">📍 职位</div>
+                            <div class="info-value">吏部尚书</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">🎓 学历</div>
+                            <div class="info-value">举人</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">💰 俸禄</div>
+                            <div class="info-value">150,000 tokens</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">📅 退休</div>
+                            <div class="info-value">2026-06-26</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">⚰️ 寿终</div>
+                            <div class="info-value">2026-09-22</div>
+                        </div>
+                    </div>
+                    <div class="skills-bar">
+                        
+                    <div class="skill">
+                        <div class="skill-name">沟通能力</div>
+                        <div class="skill-bar">
+                            <div class="skill-fill" style="width: 90%"></div>
+                        </div>
+                    </div>
+
+                    <div class="skill">
+                        <div class="skill-name">学习能力</div>
+                        <div class="skill-bar">
+                            <div class="skill-fill" style="width: 75%"></div>
+                        </div>
+                    </div>
+
+                    <div class="skill">
+                        <div class="skill-name">执行力</div>
+                        <div class="skill-bar">
+                            <div class="skill-fill" style="width: 96%"></div>
+                        </div>
+                    </div>
+
+                    </div>
+                    <div class="achievements">
+                        <strong>🏆 生平事迹:</strong>
+                        <div class="achievement-item">暂无事迹记录</div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <footer>
+            <p>大明·OpenClaw 帝国系统 - 吏部人力资源库</p>
+            <p>更新时间：2026-04-03 22:29:46</p>
+            <p>⏰ 页面每 3 小时自动刷新</p>
+        </footer>
+    </div>
+    
+    <script>
+        // 显示下次更新时间
+        const nextUpdate = new Date();
+        nextUpdate.setSeconds(nextUpdate.getSeconds() + 10800);
+        console.log('下次更新时间：' + nextUpdate.toLocaleString('zh-CN'));
+    </script>
+
+    <div style="position: fixed; top: 20px; right: 20px; z-index: 1000;">
+        <a href="index.html" style="
+            display: inline-block;
+            padding: 12px 25px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: bold;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            transition: all 0.3s;
+        " onmouseover="this.style.transform='translateY(-3px)'; this.style.boxShadow='0 8px 20px rgba(0,0,0,0.4)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 5px 15px rgba(0,0,0,0.3)'">
+            🏛️ 返回导航门户
+        </a>
+    </div>
+
+    </body>
+</html>

@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>大明·OpenClaw 上朝系统</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container { max-width: 1400px; margin: 0 auto; }
+        header {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+        header h1 { font-size: 2.5em; margin-bottom: 10px; }
+        .dashboard {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        .dashboard h2 {
+            color: #1e3c72;
+            margin-bottom: 20px;
+            border-bottom: 3px solid #f0a500;
+            padding-bottom: 10px;
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+        .stat-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+        .stat-value { font-size: 2em; font-weight: bold; margin-bottom: 5px; }
+        .stat-label { font-size: 0.9em; opacity: 0.9; }
+        .memorials-section {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        .memorials-section h2 {
+            color: #1e3c72;
+            margin-bottom: 20px;
+            border-bottom: 3px solid #f0a500;
+            padding-bottom: 10px;
+        }
+        .memorial-card {
+            background: #f8f9fa;
+            border-left: 5px solid #667eea;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        .memorial-card.urgent { border-left-color: #dc3545; }
+        .memorial-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        .memorial-title { font-size: 1.3em; font-weight: bold; color: #333; }
+        .priority-badge {
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: bold;
+        }
+        .priority-badge.urgent { background: #dc3545; color: white; }
+        .priority-badge.normal { background: #ffc107; color: #333; }
+        .memorial-info { color: #666; margin-bottom: 10px; line-height: 1.6; }
+        .task-tree {
+            background: white;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 15px 0;
+        }
+        .task-step {
+            padding: 10px;
+            border-left: 3px solid #667eea;
+            margin-left: 20px;
+            background: #f8f9fa;
+            margin-bottom: 10px;
+        }
+        .action-buttons { display: flex; gap: 10px; margin-top: 15px; }
+        .btn {
+            padding: 10px 25px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1em;
+            font-weight: bold;
+            cursor: pointer;
+            color: white;
+            transition: transform 0.2s;
+        }
+        .btn:hover { transform: translateY(-2px); }
+        .btn-approve { background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); }
+        .btn-reject { background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); }
+        .btn-hold { background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); }
+        .empty-state { text-align: center; padding: 50px; color: #999; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🏛️ 大明·OpenClaw 上朝系统</h1>
+            <p>"朕即国家，系统即朕"</p>
+        </header>
+        
+        <div class="dashboard">
+            <h2>📊 东厂 / 辛者库 联合奏报</h2>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-value">345,020</div>
+                    <div class="stat-label">💸 昨日 Token 消耗</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">$0.45</div>
+                    <div class="stat-label">💵 折合开支</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">4.2s</div>
+                    <div class="stat-label">⏱️ 平均延迟</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">1</div>
+                    <div class="stat-label">🛡️ 刑部自愈</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">12.5MB</div>
+                    <div class="stat-label">🧹 辛者库清理</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">124</div>
+                    <div class="stat-label">📞 API 调用</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="memorials-section">
+            <h2>📜 批阅奏章</h2>
+            <div class="empty-state"><p>🎉 天下太平，无积压奏折待批</p></div>
+        </div>
+    </div>
+    
+    <script>
+        function handleAction(action, id) {
+            let message = '';
+            if (action === 'approve') {
+                message = '✅ 已准奏！加急递送尚书省。';
+            } else if (action === 'reject') {
+                const reason = prompt('请输入申斥理由:');
+                if (reason) {
+                    message = '❌ 已驳回并申斥：' + reason;
+                } else {
+                    return;
+                }
+            } else if (action === 'hold') {
+                message = '⏸️  留中不发，择日再议。';
+            }
+            alert(message);
+            setTimeout(() => location.reload(), 500);
+        }
+    </script>
+
+    <div style="position: fixed; top: 20px; right: 20px; z-index: 1000;">
+        <a href="index.html" style="
+            display: inline-block;
+            padding: 12px 25px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: bold;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            transition: all 0.3s;
+        " onmouseover="this.style.transform='translateY(-3px)'; this.style.boxShadow='0 8px 20px rgba(0,0,0,0.4)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 5px 15px rgba(0,0,0,0.3)'">
+            🏛️ 返回导航门户
+        </a>
+    </div>
+
+    </body>
+</html>

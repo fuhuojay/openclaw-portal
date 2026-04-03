@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>考核公示榜 - 2026-04</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        header {
+            text-align: center;
+            border-bottom: 3px solid #f0a500;
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+        }
+        h1 { color: #1e3c72; margin-bottom: 10px; }
+        .subtitle { color: #666; }
+        
+        .section {
+            margin: 30px 0;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        .section-header {
+            padding: 15px 20px;
+            color: white;
+            font-size: 1.2em;
+            font-weight: bold;
+        }
+        .section-red { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); }
+        .section-yellow { background: linear-gradient(135deg, #f5af19 0%, #f12711 100%); }
+        .section-black { background: linear-gradient(135deg, #232526 0%, #414345 100%); }
+        .section-blue { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+        
+        .dept-list {
+            padding: 20px;
+        }
+        .dept-item {
+            padding: 15px;
+            margin: 10px 0;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border-left: 5px solid #667eea;
+        }
+        .dept-item.s-grade { border-left-color: #f5576c; }
+        .dept-item.a-grade { border-left-color: #f093fb; }
+        .dept-item.b-grade { border-left-color: #667eea; }
+        .dept-item.c-grade { border-left-color: #f5af19; }
+        .dept-item.d-grade { border-left-color: #232526; }
+        
+        .dept-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .dept-name {
+            font-size: 1.1em;
+            font-weight: bold;
+            color: #333;
+        }
+        .dept-grade {
+            padding: 5px 12px;
+            border-radius: 12px;
+            font-size: 0.85em;
+            font-weight: bold;
+            color: white;
+        }
+        .grade-s { background: #f5576c; }
+        .grade-a { background: #f093fb; }
+        .grade-b { background: #667eea; }
+        .grade-c { background: #f5af19; }
+        .grade-d { background: #232526; }
+        
+        .dept-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 10px;
+            margin-top: 10px;
+        }
+        .stat {
+            background: white;
+            padding: 10px;
+            border-radius: 5px;
+            text-align: center;
+        }
+        .stat-value {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #667eea;
+        }
+        .stat-label {
+            font-size: 0.85em;
+            color: #666;
+        }
+        
+        .reward-item, .punishment-item {
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 8px;
+        }
+        .reward-item {
+            background: #d4edda;
+            border-left: 5px solid #28a745;
+        }
+        .punishment-item {
+            background: #f8d7da;
+            border-left: 5px solid #dc3545;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        .stat-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+        .stat-card-value {
+            font-size: 2em;
+            font-weight: bold;
+        }
+        .stat-card-label {
+            font-size: 0.9em;
+            opacity: 0.9;
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 2px solid #e0e0e0;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📊 大明·OpenClaw 帝国系统 - 考核公示榜</h1>
+            <div class="subtitle">公示月份：2026-04 | 发布时间：2026-04-03T21:49:18.873822</div>
+        </header>
+        
+        <!-- 红榜 -->
+        <div class="section">
+            <div class="section-header section-red">🎉 红榜 - 优秀部门</div>
+            <div class="dept-list">
+
+            </div>
+        </div>
+        
+        <!-- 黄榜 -->
+        <div class="section">
+            <div class="section-header section-yellow">⚠️ 黄榜 - 中等部门</div>
+            <div class="dept-list">
+
+                <div class="dept-item b-grade">
+                    <div class="dept-header">
+                        <div class="dept-name">司礼监</div>
+                        <div class="dept-grade grade-b">B级 (中级)</div>
+                    </div>
+                    <div class="dept-stats">
+                        <div class="stat">
+                            <div class="stat-value">0.0</div>
+                            <div class="stat-label">评分</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value">100,000</div>
+                            <div class="stat-label">俸禄 (tokens)</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value">1.0x</div>
+                            <div class="stat-label">系数</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dept-item b-grade">
+                    <div class="dept-header">
+                        <div class="dept-name">中书省</div>
+                        <div class="dept-grade grade-b">B级 (中级)</div>
+                    </div>
+                    <div class="dept-stats">
+                        <div class="stat">
+                            <div class="stat-value">0.0</div>
+                            <div class="stat-label">评分</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value">150,000</div>
+                            <div class="stat-label">俸禄 (tokens)</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value">1.0x</div>
+                            <div class="stat-label">系数</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dept-item b-grade">
+                    <div class="dept-header">
+                        <div class="dept-name">门下省</div>
+                        <div class="dept-grade grade-b">B级 (中级)</div>
+                    </div>
+                    <div class="dept-stats">
+                        <div class="stat">
+                            <div class="stat-value">0.0</div>
+                            <div class="stat-label">评分</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value">100,000</div>
+                            <div class="stat-label">俸禄 (tokens)</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value">1.0x</div>
+                            <div class="stat-label">系数</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dept-item b-grade">
+                    <div class="dept-header">
+                        <div class="dept-name">尚书省</div>
+                        <div class="dept-grade grade-b">B级 (中级)</div>
+                    </div>
+                    <div class="dept-stats">
+                        <div class="stat">
+                            <div class="stat-value">0.0</div>
+                            <div class="stat-label">评分</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value">200,000</div>
+                            <div class="stat-label">俸禄 (tokens)</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value">1.0x</div>
+                            <div class="stat-label">系数</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dept-item b-grade">
+                    <div class="dept-header">
+                        <div class="dept-name">户部</div>
+                        <div class="dept-grade grade-b">B级 (中级)</div>
+                    </div>
+                    <div class="dept-stats">
+                        <div class="stat">
+                            <div class="stat-value">0.0</div>
+                            <div class="stat-label">评分</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value">150,000</div>
+                            <div class="stat-label">俸禄 (tokens)</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value">1.0x</div>
+                            <div class="stat-label">系数</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dept-item b-grade">
+                    <div class="dept-header">
+                        <div class="dept-name">工部</div>
+                        <div class="dept-grade grade-b">B级 (中级)</div>
+                    </div>
+                    <div class="dept-stats">
+                        <div class="stat">
+                            <div class="stat-value">0.0</div>
+                            <div class="stat-label">评分</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value">200,000</div>
+                            <div class="stat-label">俸禄 (tokens)</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value">1.0x</div>
+                            <div class="stat-label">系数</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dept-item b-grade">
+                    <div class="dept-header">
+                        <div class="dept-name">礼部</div>
+                        <div class="dept-grade grade-b">B级 (中级)</div>
+                    </div>
+                    <div class="dept-stats">
+                        <div class="stat">
+                            <div class="stat-value">0.0</div>
+                            <div class="stat-label">评分</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value">100,000</div>
+                            <div class="stat-label">俸禄 (tokens)</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value">1.0x</div>
+                            <div class="stat-label">系数</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dept-item b-grade">
+                    <div class="dept-header">
+                        <div class="dept-name">刑部</div>
+                        <div class="dept-grade grade-b">B级 (中级)</div>
+                    </div>
+                    <div class="dept-stats">
+                        <div class="stat">
+                            <div class="stat-value">0.0</div>
+                            <div class="stat-label">评分</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value">100,000</div>
+                            <div class="stat-label">俸禄 (tokens)</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value">1.0x</div>
+                            <div class="stat-label">系数</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dept-item b-grade">
+                    <div class="dept-header">
+                        <div class="dept-name">兵部</div>
+                        <div class="dept-grade grade-b">B级 (中级)</div>
+                    </div>
+                    <div class="dept-stats">
+                        <div class="stat">
+                            <div class="stat-value">0.0</div>
+                            <div class="stat-label">评分</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value">100,000</div>
+                            <div class="stat-label">俸禄 (tokens)</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value">1.0x</div>
+                            <div class="stat-label">系数</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dept-item b-grade">
+                    <div class="dept-header">
+                        <div class="dept-name">吏部</div>
+                        <div class="dept-grade grade-b">B级 (中级)</div>
+                    </div>
+                    <div class="dept-stats">
+                        <div class="stat">
+                            <div class="stat-value">0.0</div>
+                            <div class="stat-label">评分</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value">150,000</div>
+                            <div class="stat-label">俸禄 (tokens)</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value">1.0x</div>
+                            <div class="stat-label">系数</div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        
+        <!-- 黑榜 -->
+        <div class="section">
+            <div class="section-header section-black">🔴 黑榜 - 需改进部门</div>
+            <div class="dept-list">
+
+            </div>
+        </div>
+        
+        <!-- 奖惩明细 -->
+        <div class="section">
+            <div class="section-header section-blue">💰 奖惩明细</div>
+            <div class="dept-list">
+<p>本月无奖惩记录</p>
+            </div>
+        </div>
+        
+        <!-- 统计信息 -->
+        <div class="section">
+            <div class="section-header section-blue">📈 统计信息</div>
+            <div class="dept-list">
+                <div class="stats-grid">
+
+                    <div class="stat-card">
+                        <div class="stat-card-value">0</div>
+                        <div class="stat-card-label">S 级 (专家)</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-card-value">0</div>
+                        <div class="stat-card-label">A 级 (高级)</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-card-value">10</div>
+                        <div class="stat-card-label">B 级 (中级)</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-card-value">0</div>
+                        <div class="stat-card-label">C 级 (初级)</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-card-value">0</div>
+                        <div class="stat-card-label">D 级 (实习生)</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-card-value">1,350,000</div>
+                        <div class="stat-card-label">总俸禄 (tokens)</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <footer>
+            <p>大明·OpenClaw 帝国系统 - 吏部公示</p>
+            <p>发布时间：2026-04-03T21:49:18.873822</p>
+        </footer>
+    </div>
+
+    <div style="position: fixed; top: 20px; right: 20px; z-index: 1000;">
+        <a href="index.html" style="
+            display: inline-block;
+            padding: 12px 25px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: bold;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            transition: all 0.3s;
+        " onmouseover="this.style.transform='translateY(-3px)'; this.style.boxShadow='0 8px 20px rgba(0,0,0,0.4)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 5px 15px rgba(0,0,0,0.3)'">
+            🏛️ 返回导航门户
+        </a>
+    </div>
+
+    </body>
+</html>

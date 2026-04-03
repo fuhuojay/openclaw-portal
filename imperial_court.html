@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>大明·OpenClaw 帝国朝政系统</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #333;
+        }
+        .container { max-width: 1600px; margin: 0 auto; }
+        
+        /* 头部 */
+        header {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+        header h1 { font-size: 2.5em; margin-bottom: 10px; }
+        header p { font-size: 1.2em; opacity: 0.9; }
+        
+        /* 导航标签 */
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .tab {
+            flex: 1;
+            padding: 15px;
+            background: rgba(255,255,255,0.2);
+            color: white;
+            border: none;
+            border-radius: 10px 10px 0 0;
+            cursor: pointer;
+            font-size: 1.1em;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+        .tab:hover { background: rgba(255,255,255,0.3); }
+        .tab.active {
+            background: white;
+            color: #1e3c72;
+        }
+        
+        /* 内容区域 */
+        .content {
+            background: white;
+            border-radius: 15px 15px 15px 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+        
+        .section-title {
+            color: #1e3c72;
+            font-size: 1.8em;
+            margin-bottom: 20px;
+            border-bottom: 3px solid #f0a500;
+            padding-bottom: 10px;
+        }
+        
+        /* 部门选择 */
+        .dept-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        .dept-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        .dept-card:hover { transform: translateY(-5px); }
+        .dept-card.selected {
+            background: linear-gradient(135deg, #f0a500 0%, #f5576c 100%);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+        .dept-icon { font-size: 2.5em; margin-bottom: 10px; }
+        .dept-name { font-size: 1.1em; font-weight: bold; }
+        
+        /* 表单 */
+        .form-group { margin-bottom: 20px; }
+        .form-group label {
+            display: block;
+            color: #333;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 1em;
+            font-family: inherit;
+        }
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        .form-group textarea { height: 120px; resize: vertical; }
+        
+        /* 优先级选择 */
+        .priority-select {
+            display: flex;
+            gap: 10px;
+        }
+        .priority-option {
+            flex: 1;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .priority-option:hover { border-color: #667eea; }
+        .priority-option.selected {
+            border-color: #f0a500;
+            background: #fff3cd;
+        }
+        .priority-option.urgent.selected {
+            border-color: #dc3545;
+            background: #f8d7da;
+        }
+        .priority-option.normal.selected {
+            border-color: #ffc107;
+            background: #fff3cd;
+        }
+        .priority-option.low.selected {
+            border-color: #28a745;
+            background: #d4edda;
+        }
+        
+        /* 按钮 */
+        .btn {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        .btn:hover { transform: translateY(-2px); }
+        .btn-submit {
+            background: linear-gradient(135deg, #f0a500 0%, #f5576c 100%);
+            color: white;
+            width: 100%;
+            padding: 15px;
+            font-size: 1.1em;
+        }
+        .btn-approve {
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+            color: white;
+        }
+        .btn-reject {
+            background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+            color: white;
+        }
+        .btn-hold {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+        }
+        .btn-sm {
+            padding: 8px 15px;
+            font-size: 0.9em;
+        }
+        
+        /* 奏折卡片 */
+        .memorial-card {
+            background: #f8f9fa;
+            border-left: 5px solid #667eea;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        .memorial-card.urgent { border-left-color: #dc3545; }
+        .memorial-card.normal { border-left-color: #ffc107; }
+        .memorial-card.low { border-left-color: #28a745; }
+        .memorial-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .memorial-title { font-size: 1.3em; font-weight: bold; color: #333; }
+        .priority-badge {
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: bold;
+        }
+        .priority-badge.urgent { background: #dc3545; color: white; }
+        .priority-badge.normal { background: #ffc107; color: #333; }
+        .priority-badge.low { background: #28a745; color: white; }
+        .memorial-info { color: #666; margin-bottom: 10px; line-height: 1.6; }
+        .task-tree {
+            background: white;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 15px 0;
+        }
+        .task-step {
+            padding: 10px;
+            border-left: 3px solid #667eea;
+            margin-left: 20px;
+            background: #f8f9fa;
+            margin-bottom: 10px;
+        }
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        /* 统计卡片 */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        .stat-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+        .stat-value { font-size: 2em; font-weight: bold; margin-bottom: 5px; }
+        .stat-label { font-size: 0.9em; opacity: 0.9; }
+        
+        /* 状态徽章 */
+        .status-badge {
+            padding: 5px 12px;
+            border-radius: 12px;
+            font-size: 0.85em;
+            font-weight: bold;
+        }
+        .status-pending { background: #ffc107; color: #333; }
+        .status-approved { background: #28a745; color: white; }
+        .status-rejected { background: #dc3545; color: white; }
+        .status-held { background: #6c757d; color: white; }
+        
+        /* 成功提示 */
+        .success-message {
+            background: #d4edda;
+            color: #155724;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: none;
+            text-align: center;
+        }
+        
+        /* 空状态 */
+        .empty-state {
+            text-align: center;
+            padding: 50px;
+            color: #999;
+        }
+        
+        /* 任务步骤 */
+        .task-step-container { margin-bottom: 10px; }
+        .task-step-container input,
+        .task-step-container textarea {
+            margin-bottom: 5px;
+        }
+        .btn-add-task {
+            background: #667eea;
+            color: white;
+            padding: 8px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        .btn-remove {
+            background: #dc3545;
+            color: white;
+            padding: 5px 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 5px;
+        }
+        
+        /* 刷新按钮 */
+        .refresh-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #f0a500 0%, #f5576c 100%);
+            color: white;
+            border: none;
+            font-size: 1.5em;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            transition: transform 0.2s;
+        }
+        .refresh-btn:hover { transform: scale(1.1) rotate(90deg); }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🏛️ 大明·OpenClaw 帝国朝政系统</h1>
+            <p>"朕即国家，系统即朕"</p>
+        </header>
+        
+        <!-- 导航标签 -->
+        <div class="tabs">
+            <button class="tab active" onclick="switchTab('submit')">📤 上陈奏折</button>
+            <button class="tab" onclick="switchTab('review')">📋 批阅奏章</button>
+            <button class="tab" onclick="switchTab('stats')">📊 系统统计</button>
+        </div>
+        
+        <!-- 内容区域 -->
+        <div class="content">
+            <!-- 上陈奏折 -->
+            <div class="tab-content active" id="submitTab">
+                <h2 class="section-title">🏢 六部官员上陈奏折</h2>
+                
+                <div class="success-message" id="submitSuccess">
+                    ✅ 奏折已上呈，静候皇上御笔批红！
+                </div>
+                
+                <div class="dept-grid">
+                    <div class="dept-card" onclick="selectDepartment('司礼监')">
+                        <div class="dept-icon">🧕</div>
+                        <div class="dept-name">司礼监</div>
+                    </div>
+                    <div class="dept-card" onclick="selectDepartment('中书省')">
+                        <div class="dept-icon">📜</div>
+                        <div class="dept-name">中书省</div>
+                    </div>
+                    <div class="dept-card" onclick="selectDepartment('门下省')">
+                        <div class="dept-icon">⚖️</div>
+                        <div class="dept-name">门下省</div>
+                    </div>
+                    <div class="dept-card" onclick="selectDepartment('户部')">
+                        <div class="dept-icon">📊</div>
+                        <div class="dept-name">户部</div>
+                    </div>
+                    <div class="dept-card" onclick="selectDepartment('工部')">
+                        <div class="dept-icon">🔧</div>
+                        <div class="dept-name">工部</div>
+                    </div>
+                    <div class="dept-card" onclick="selectDepartment('礼部')">
+                        <div class="dept-icon">✍️</div>
+                        <div class="dept-name">礼部</div>
+                    </div>
+                    <div class="dept-card" onclick="selectDepartment('刑部')">
+                        <div class="dept-icon">🔍</div>
+                        <div class="dept-name">刑部</div>
+                    </div>
+                    <div class="dept-card" onclick="selectDepartment('兵部')">
+                        <div class="dept-icon">🛡️</div>
+                        <div class="dept-name">兵部</div>
+                    </div>
+                </div>
+                
+                <div id="memorialForm" style="display: none;">
+                    <div class="form-group">
+                        <label>🏷️ 奏折标题 *</label>
+                        <input type="text" id="title" placeholder="例如：50kW 风冷模块化机房报价单审批">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>📝 奏折摘要 *</label>
+                        <textarea id="summary" placeholder="简要说明奏折内容..."></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>⚡ 优先级 *</label>
+                        <div class="priority-select">
+                            <div class="priority-option urgent" onclick="selectPriority('urgent', this)">🔴 紧急</div>
+                            <div class="priority-option normal selected" onclick="selectPriority('normal', this)">🟡 普通</div>
+                            <div class="priority-option low" onclick="selectPriority('low', this)">🟢 低优</div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>⚙️ 执行计划 (任务步骤)</label>
+                        <div id="taskSteps">
+                            <div class="task-step-container">
+                                <input type="text" placeholder="任务 ID (如：T1)" class="task-id">
+                                <input type="text" placeholder="负责部门 (如：hubu)" class="task-dept">
+                                <textarea placeholder="任务描述 (如：检索价格数据库)" class="task-action"></textarea>
+                            </div>
+                        </div>
+                        <button type="button" class="btn-add-task" onclick="addTaskStep()">+ 添加任务步骤</button>
+                    </div>
+                    
+                    <button type="button" class="btn btn-submit" onclick="submitMemorial()">
+                        📤 上呈奏折
+                    </button>
+                </div>
+            </div>
+            
+            <!-- 批阅奏章 -->
+            <div class="tab-content" id="reviewTab">
+                <h2 class="section-title">📜 皇上御笔批红</h2>
+                
+                <div class="stats-grid" style="margin-top: 20px;">
+                    <div class="stat-card">
+                        <div class="stat-value" id="pendingCount">0</div>
+                        <div class="stat-label">待批奏折</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="approvedCount">0</div>
+                        <div class="stat-label">已准奏</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="rejectedCount">0</div>
+                        <div class="stat-label">已驳回</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="heldCount">0</div>
+                        <div class="stat-label">留中</div>
+                    </div>
+                </div>
+                
+                <div id="memorialsList">
+                    <!-- 动态加载 -->
+                </div>
+            </div>
+            
+            <!-- 系统统计 -->
+            <div class="tab-content" id="statsTab">
+                <h2 class="section-title">📊 东厂 / 辛者库 联合奏报</h2>
+                
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-value" id="statTokens">0</div>
+                        <div class="stat-label">💸 昨日 Token 消耗</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="statCost">$0</div>
+                        <div class="stat-label">💵 折合开支</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="statLatency">0s</div>
+                        <div class="stat-label">⏱️ 平均延迟</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="statRecoveries">0</div>
+                        <div class="stat-label">🛡️ 刑部自愈</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="statCleared">0MB</div>
+                        <div class="stat-label">🧹 辛者库清理</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="statCalls">0</div>
+                        <div class="stat-label">📞 API 调用</div>
+                    </div>
+                </div>
+                
+                <div style="text-align: center; color: #666; margin-top: 30px;">
+                    <p>📁 数据来源：state/dongchang_stats.json</p>
+                    <p style="margin-top: 10px;">🔄 点击右下角刷新按钮更新数据</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 刷新按钮 -->
+        <button class="refresh-btn" onclick="refreshData()" title="刷新数据">🔄</button>
+    </div>
+    
+    <script>
+        let selectedDept = null;
+        let selectedPriority = 'normal';
+        
+        // 切换标签
+        function switchTab(tabName) {
+            document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            
+            document.querySelector(`.tab[onclick="switchTab('${tabName}')"]`).classList.add('active');
+            document.getElementById(`${tabName}Tab`).classList.add('active');
+            
+            if (tabName === 'review') {
+                loadMemorials();
+            } else if (tabName === 'stats') {
+                loadStats();
+            }
+        }
+        
+        // 选择部门
+        function selectDepartment(dept) {
+            selectedDept = dept;
+            document.querySelectorAll('.dept-card').forEach(card => {
+                card.classList.remove('selected');
+                if (card.querySelector('.dept-name').textContent === dept) {
+                    card.classList.add('selected');
+                }
+            });
+            document.getElementById('memorialForm').style.display = 'block';
+            document.getElementById('memorialForm').scrollIntoView({ behavior: 'smooth' });
+        }
+        
+        // 选择优先级
+        function selectPriority(priority, element) {
+            selectedPriority = priority;
+            document.querySelectorAll('.priority-option').forEach(opt => opt.classList.remove('selected'));
+            element.classList.add('selected');
+        }
+        
+        // 添加任务步骤
+        function addTaskStep() {
+            const container = document.getElementById('taskSteps');
+            const stepDiv = document.createElement('div');
+            stepDiv.className = 'task-step-container';
+            stepDiv.innerHTML = `
+                <input type="text" placeholder="任务 ID (如：T2)" class="task-id">
+                <input type="text" placeholder="负责部门 (如：gongbu)" class="task-dept">
+                <textarea placeholder="任务描述" class="task-action"></textarea>
+                <button type="button" class="btn-remove" onclick="this.parentElement.remove()">删除</button>
+            `;
+            container.appendChild(stepDiv);
+        }
+        
+        // 提交奏折
+        function submitMemorial() {
+            const title = document.getElementById('title').value.trim();
+            const summary = document.getElementById('summary').value.trim();
+            
+            if (!selectedDept) {
+                alert('请选择部门');
+                return;
+            }
+            if (!title || !summary) {
+                alert('请填写标题和摘要');
+                return;
+            }
+            
+            // 收集任务步骤
+            const taskTree = [];
+            document.querySelectorAll('.task-step-container').forEach((step, index) => {
+                const taskId = step.querySelector('.task-id').value.trim() || `T${index + 1}`;
+                const dept = step.querySelector('.task-dept').value.trim();
+                const action = step.querySelector('.task-action').value.trim();
+                
+                if (dept && action) {
+                    taskTree.push({
+                        task_id: taskId,
+                        department: dept,
+                        action: action,
+                        depends_on: index > 0 ? [`T${index}`] : []
+                    });
+                }
+            });
+            
+            // 创建奏章对象
+            const memorial = {
+                id: `M_${Date.now()}`,
+                status: 'pending',
+                title: title,
+                source: selectedDept,
+                summary: summary,
+                priority: selectedPriority,
+                task_tree: taskTree,
+                timestamp: new Date().toISOString()
+            };
+            
+            // 保存到 localStorage
+            let memorials = JSON.parse(localStorage.getItem('memorials') || '[]');
+            memorials.push(memorial);
+            localStorage.setItem('memorials', JSON.stringify(memorials));
+            
+            // 显示成功消息
+            document.getElementById('submitSuccess').style.display = 'block';
+            setTimeout(() => {
+                document.getElementById('submitSuccess').style.display = 'none';
+            }, 3000);
+            
+            // 清空表单
+            document.getElementById('title').value = '';
+            document.getElementById('summary').value = '';
+            document.getElementById('taskSteps').innerHTML = `
+                <div class="task-step-container">
+                    <input type="text" placeholder="任务 ID (如：T1)" class="task-id">
+                    <input type="text" placeholder="负责部门 (如：hubu)" class="task-dept">
+                    <textarea placeholder="任务描述 (如：检索价格数据库)" class="task-action"></textarea>
+                </div>
+            `;
+            document.querySelectorAll('.dept-card').forEach(card => card.classList.remove('selected'));
+            document.getElementById('memorialForm').style.display = 'none';
+            
+            alert('✅ 奏折已上呈，静候皇上御笔批红！');
+        }
+        
+        // 加载奏折列表
+        function loadMemorials() {
+            const container = document.getElementById('memorialsList');
+            let memorials = JSON.parse(localStorage.getItem('memorials') || '[]');
+            
+            // 更新统计
+            document.getElementById('pendingCount').textContent = memorials.filter(m => m.status === 'pending').length;
+            document.getElementById('approvedCount').textContent = memorials.filter(m => m.status === 'approved').length;
+            document.getElementById('rejectedCount').textContent = memorials.filter(m => m.status === 'rejected').length;
+            document.getElementById('heldCount').textContent = memorials.filter(m => m.status === 'held').length;
+            
+            const pending = memorials.filter(m => m.status === 'pending');
+            
+            if (pending.length === 0) {
+                container.innerHTML = '<div class="empty-state"><p>🎉 天下太平，无积压奏折待批</p></div>';
+                return;
+            }
+            
+            container.innerHTML = pending.map((m, i) => {
+                const priorityIcon = m.priority === 'urgent' ? '🔴 紧急' : m.priority === 'normal' ? '🟡 普通' : '🟢 低优';
+                const taskTreeHtml = m.task_tree?.map(step => `
+                    <div class="task-step">
+                        <strong>${step.task_id}</strong> (${step.department})${step.depends_on?.length ? ` (依赖：${step.depends_on.join(', ')})` : ''}<br>
+                        ${step.action}
+                    </div>
+                `).join('') || '';
+                
+                return `
+                    <div class="memorial-card ${m.priority}">
+                        <div class="memorial-header">
+                            <div class="memorial-title">${i + 1}. ${m.title}</div>
+                            <span class="priority-badge ${m.priority}">${priorityIcon}</span>
+                        </div>
+                        <div class="memorial-info">
+                            🏛️ 来源：${m.source} | 
+                            📅 时间：${new Date(m.timestamp).toLocaleString('zh-CN')}
+                        </div>
+                        <div class="memorial-info">
+                            📝 ${m.summary}
+                        </div>
+                        ${taskTreeHtml ? `<div class="task-tree"><strong>⚙️ 执行计划:</strong>${taskTreeHtml}</div>` : ''}
+                        <div class="action-buttons">
+                            <button class="btn btn-approve btn-sm" onclick="approveMemorial('${m.id}')">✅ 准奏</button>
+                            <button class="btn btn-reject btn-sm" onclick="rejectMemorial('${m.id}')">❌ 驳回</button>
+                            <button class="btn btn-hold btn-sm" onclick="holdMemorial('${m.id}')">⏸️ 留中</button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+        
+        // 批准奏折
+        function approveMemorial(id) {
+            if (!confirm('✅ 确认准奏？')) return;
+            updateMemorialStatus(id, 'approved');
+        }
+        
+        // 驳回奏折
+        function rejectMemorial(id) {
+            const reason = prompt('❌ 请输入申斥理由：');
+            if (!reason) return;
+            updateMemorialStatus(id, 'rejected', reason);
+        }
+        
+        // 留中奏折
+        function holdMemorial(id) {
+            if (!confirm('⏸️  确认留中？')) return;
+            updateMemorialStatus(id, 'held');
+        }
+        
+        // 更新奏折状态
+        function updateMemorialStatus(id, status, reason = '') {
+            let memorials = JSON.parse(localStorage.getItem('memorials') || '[]');
+            const index = memorials.findIndex(m => m.id === id);
+            if (index !== -1) {
+                memorials[index].status = status;
+                if (reason) memorials[index].reject_reason = reason;
+                localStorage.setItem('memorials', JSON.stringify(memorials));
+                
+                const statusText = status === 'approved' ? '✅ 已准奏' : status === 'rejected' ? '❌ 已驳回' : '⏸️  已留中';
+                alert(`${statusText}！`);
+                loadMemorials();
+            }
+        }
+        
+        // 加载统计数据
+        function loadStats() {
+            // 尝试从文件加载 (如果有服务器)
+            // 这里使用模拟数据
+            const stats = {
+                yesterday_tokens: 345020,
+                estimated_cost: 0.45,
+                avg_latency: 4.2,
+                xingbu_recoveries: 1,
+                cleared_cache_mb: 12.5,
+                total_api_calls: 124
+            };
+            
+            document.getElementById('statTokens').textContent = stats.yesterday_tokens.toLocaleString();
+            document.getElementById('statCost').textContent = `$${stats.estimated_cost}`;
+            document.getElementById('statLatency').textContent = `${stats.avg_latency}s`;
+            document.getElementById('statRecoveries').textContent = stats.xingbu_recoveries;
+            document.getElementById('statCleared').textContent = `${stats.cleared_cache_mb}MB`;
+            document.getElementById('statCalls').textContent = stats.total_api_calls.toLocaleString();
+        }
+        
+        // 刷新数据
+        function refreshData() {
+            loadMemorials();
+            loadStats();
+            alert('🔄 数据已刷新！');
+        }
+        
+        // 页面加载时初始化
+        loadMemorials();
+    </script>
+
+    <div style="position: fixed; top: 20px; right: 20px; z-index: 1000;">
+        <a href="index.html" style="
+            display: inline-block;
+            padding: 12px 25px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: bold;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            transition: all 0.3s;
+        " onmouseover="this.style.transform='translateY(-3px)'; this.style.boxShadow='0 8px 20px rgba(0,0,0,0.4)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 5px 15px rgba(0,0,0,0.3)'">
+            🏛️ 返回导航门户
+        </a>
+    </div>
+
+    </body>
+</html>

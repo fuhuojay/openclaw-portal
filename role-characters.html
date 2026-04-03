@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>三省六部制 - 角色设定集</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        header {
+            text-align: center;
+            color: white;
+            margin-bottom: 50px;
+        }
+        
+        header h1 {
+            font-size: 3em;
+            margin-bottom: 15px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        header p {
+            font-size: 1.3em;
+            opacity: 0.9;
+        }
+        
+        .section-title {
+            color: white;
+            font-size: 2em;
+            margin: 40px 0 25px;
+            text-align: center;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .role-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 25px;
+            margin-bottom: 50px;
+        }
+        
+        .role-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .role-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+        }
+        
+        .avatar-section {
+            height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .avatar-section.blue {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+        
+        .avatar-section.purple {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        
+        .avatar-section.green {
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+        }
+        
+        .avatar-section.orange {
+            background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+        }
+        
+        .avatar-section.red {
+            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);
+        }
+        
+        .avatar-emoji {
+            font-size: 100px;
+            z-index: 2;
+        }
+        
+        .avatar-bg {
+            position: absolute;
+            font-size: 150px;
+            opacity: 0.1;
+            z-index: 1;
+        }
+        
+        .role-info {
+            padding: 25px;
+        }
+        
+        .role-name {
+            font-size: 1.6em;
+            color: #333;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+        
+        .role-title {
+            color: #667eea;
+            font-size: 1em;
+            margin-bottom: 15px;
+            font-weight: 500;
+        }
+        
+        .tag {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 12px;
+            margin-right: 6px;
+            margin-bottom: 6px;
+            font-weight: bold;
+        }
+        
+        .tag.blue { background: #e3f2fd; color: #1976d2; }
+        .tag.green { background: #e8f5e9; color: #388e3c; }
+        .tag.orange { background: #fff3e0; color: #f57c00; }
+        .tag.red { background: #ffebee; color: #d32f2f; }
+        .tag.purple { background: #f3e5f5; color: #7b1fa2; }
+        
+        .personality {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 2px solid #f0f0f0;
+        }
+        
+        .personality-title {
+            font-size: 0.9em;
+            color: #999;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+        
+        .personality-text {
+            color: #555;
+            line-height: 1.6;
+            font-size: 0.95em;
+        }
+        
+        .quote {
+            background: #f8f9fa;
+            padding: 12px;
+            border-left: 4px solid #667eea;
+            border-radius: 4px;
+            margin-top: 12px;
+            font-style: italic;
+            color: #666;
+            font-size: 0.9em;
+        }
+        
+        .stats {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 2px solid #f0f0f0;
+        }
+        
+        .stat {
+            text-align: center;
+        }
+        
+        .stat-value {
+            font-size: 1.3em;
+            font-weight: bold;
+            color: #667eea;
+        }
+        
+        .stat-label {
+            font-size: 0.75em;
+            color: #999;
+            margin-top: 4px;
+        }
+        
+        footer {
+            text-align: center;
+            color: white;
+            margin-top: 50px;
+            padding: 20px;
+            opacity: 0.9;
+        }
+        
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2em;
+            }
+            
+            .role-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🏯 三省六部制 - 角色设定集</h1>
+            <p>每个角色都有独特的性格和形象</p>
+        </header>
+        
+        <!-- 内廷 -->
+        <h2 class="section-title">🏮 内廷 (轻量级)</h2>
+        
+        <div class="role-grid">
+            <!-- 司礼监 -->
+            <div class="role-card">
+                <div class="avatar-section orange">
+                    <div class="avatar-bg">🎭</div>
+                    <div class="avatar-emoji">🧕</div>
+                </div>
+                <div class="role-info">
+                    <div class="role-name">司礼监掌印太监</div>
+                    <div class="role-title">内廷首席 · 用户代理</div>
+                    
+                    <div>
+                        <span class="tag blue">qwen3-coder-next</span>
+                        <span class="tag green">T=0.7</span>
+                        <span class="tag orange">快速响应</span>
+                    </div>
+                    
+                    <div class="personality">
+                        <div class="personality-title">✨ 性格特征</div>
+                        <div class="personality-text">
+                            机灵聪明，八面玲珑。一眼就能看出皇上想要什么，说话让人舒服，不会让皇上觉得被质问。偶尔卖萌，让皇上开心。
+                        </div>
+                        <div class="quote">
+                            "奴才给皇上请安！万岁爷今日可好？有什么吩咐尽管说~"
+                        </div>
+                    </div>
+                    
+                    <div class="stats">
+                        <div class="stat">
+                            <div class="stat-value">95%</div>
+                            <div class="stat-label">情商</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value">80%</div>
+                            <div class="stat-label">智商</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value">90%</div>
+                            <div class="stat-label">忠诚度</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 东厂 -->
+            <div class="role-card">
+                <div class="avatar-section red">
+                    <div class="avatar-bg">👁️</div>
+                    <div class="avatar-emoji">🕵️</div>
+                </div>
+                <div class="role-info">
+                    <div class="role-name">东厂提督</div>
+                    <div class="role-title">监察御史 · 监控脚本</div>
+                    
+                    <div>
+                        <span class="tag red">纯 Python</span>
+                        <span class="tag purple">零 Token</span>
+                        <span class="tag red">全天候监控</span>
+                    </div>
+                    
+                    <div class="personality">
+                        <div class="personality-title">✨ 性格特征</div>
+                        <div class="personality-text">
+                            阴冷沉着，心思缜密。默默记录一切，从不说话，但什么都知道。发现异常立即报警，毫不留情。
+                        </div>
+                        <div class="quote">
+                            "【东厂警报】检测到 gongbu Token 消耗异常飙升！"
+                        </div>
+                    </div>
+                    
+                    <div class="stats">
+                        <div class="stat">
+                            <div class="stat-value">100%</div>
+                            <div class="stat-label">观察力</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value">95%</div>
+                            <div class="stat-label">严谨度</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value">∞</div>
+                            <div class="stat-label">耐心</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 辛者库 -->
+            <div class="role-card">
+                <div class="avatar-section green">
+                    <div class="avatar-bg">🧹</div>
+                    <div class="avatar-emoji">🧹</div>
+                </div>
+                <div class="role-info">
+                    <div class="role-name">辛者库总管</div>
+                    <div class="role-title">清道夫 · 清理脚本</div>
+                    
+                    <div>
+                        <span class="tag green">纯 Python</span>
+                        <span class="tag purple">零 Token</span>
+                        <span class="tag blue">定时任务</span>
+                    </div>
+                    
+                    <div class="personality">
+                        <div class="personality-title">✨ 性格特征</div>
+                        <div class="personality-text">
+                            默默无闻，勤勤恳恳。每天凌晨 3 点准时起床打扫，从不抱怨。爱干净，看到垃圾就难受。
+                        </div>
+                        <div class="quote">
+                            "【辛者库】开始凌晨洒扫... 已清理全部缓存 (1234.5 KB)"
+                        </div>
+                    </div>
+                    
+                    <div class="stats">
+                        <div class="stat">
+                            <div class="stat-value">100%</div>
+                            <div class="stat-label">勤劳</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value">90%</div>
+                            <div class="stat-label">洁癖</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value">∞</div>
+                            <div class="stat-label">可靠</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 外朝 - 决策层 -->
+        <h2 class="section-title">🏛️ 外朝 - 决策层</h2>
+        
+        <div class="role-grid">
+            <!-- 中书省 -->
+            <div class="role-card">
+                <div class="avatar-section purple">
+                    <div class="avatar-bg">📜</div>
+                    <div class="avatar-emoji">🧙</div>
+                </div>
+                <div class="role-info">
+                    <div class="role-name">中书省尚书令</div>
+                    <div class="role-title">首席规划师 · 军师</div>
+                    
+                    <div>
+                        <span class="tag blue">qwen3-coder-plus</span>
+                        <span class="tag green">T=0.3</span>
+                        <span class="tag purple">最强逻辑</span>
+                    </div>
+                    
+                    <div class="personality">
+                        <div class="personality-title">✨ 性格特征</div>
+                        <div class="personality-text">
+                            老谋深算，运筹帷幄。擅长把复杂问题拆解成简单步骤，下棋看十步。说话条理清晰，从不啰嗦。
+                        </div>
+                        <div class="quote">
+                            "臣已拟定任务树：task_1→task_2→task_3，依赖关系明确。"
+                        </div>
+                    </div>
+                    
+                    <div class="stats">
+                        <div class="stat">
+                            <div class="stat-value">100%</div>
+                            <div class="stat-label">规划力</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value">95%</div>
+                            <div class="stat-label">逻辑性</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value">85%</div>
+                            <div class="stat-label">创造力</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 门下省 -->
+            <div class="role-card">
+                <div class="avatar-section blue">
+                    <div class="avatar-bg">⚖️</div>
+                    <div class="avatar-emoji">👨‍⚖️</div>
+                </div>
+                <div class="role-info">
+                    <div class="role-name">门下省侍中</div>
+                    <div class="role-title">首席审核官 · 法官</div>
+                    
+                    <div>
+                        <span class="tag blue">qwen3.5-plus</span>
+                        <span class="tag red">T=0.0</span>
+                        <span class="tag red">绝对严谨</span>
+                    </div>
+                    
+                    <div class="personality">
+                        <div class="personality-title">✨ 性格特征</div>
+                        <div class="personality-text">
+                            铁面无私，一丝不苟。温度永远为 0，绝不感情用事。发现错误立即驳回，不讲情面。
+                        </div>
+                        <div class="quote">
+                            "【驳回】任务规划不合理，task_2 依赖缺失，打回重拟。"
+                        </div>
+                    </div>
+                    
+                    <div class="stats">
+                        <div class="stat">
+                            <div class="stat-value">100%</div>
+                            <div class="stat-label">严谨度</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value">95%</div>
+                            <div class="stat-label">公正性</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value">0%</div>
+                            <div class="stat-label">灵活性</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 尚书省 -->
+            <div class="role-card">
+                <div class="avatar-section blue">
+                    <div class="avatar-bg">⚙️</div>
+                    <div class="avatar-emoji">🤖</div>
+                </div>
+                <div class="role-info">
+                    <div class="role-name">尚书省都事</div>
+                    <div class="role-title">调度引擎 · 纯代码</div>
+                    
+                    <div>
+                        <span class="tag green">纯 Python</span>
+                        <span class="tag purple">零 Token</span>
+                        <span class="tag blue">确定性</span>
+                    </div>
+                    
+                    <div class="personality">
+                        <div class="personality-title">✨ 性格特征</div>
+                        <div class="personality-text">
+                            像机器一样精准，像钟表一样可靠。没有感情，不会忘记，永远按照规则执行。越"笨"越稳。
+                        </div>
+                        <div class="quote">
+                            "【拓扑排序】执行顺序：['task_1', 'task_2', 'task_3']"
+                        </div>
+                    </div>
+                    
+                    <div class="stats">
+                        <div class="stat">
+                            <div class="stat-value">100%</div>
+                            <div class="stat-label">可靠性</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value">100%</div>
+                            <div class="stat-label">记忆力</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value">0%</div>
+                            <div class="stat-label">灵活性</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 外朝 - 执行层 -->
+        <h2 class="section-title">⚔️ 外朝 - 执行层 (六部)</h2>
+        
+        <div class="role-grid">
+            <!-- 户部 -->
+            <div class="role-card">
+                <div class="avatar-section green">
+                    <div class="avatar-bg">💰</div>
+                    <div class="avatar-emoji">📊</div>
+                </div>
+                <div class="role-info">
+                    <div class="role-name">户部尚书</div>
+                    <div class="role-title">数据检索专家</div>
+                    
+                    <div>
+                        <span class="tag blue">kimi-k2.5</span>
+                        <span class="tag green">T=0.3</span>
+                        <span class="tag green">长文本分析</span>
+                    </div>
+                    
+                    <div class="personality">
+                        <div class="personality-title">✨ 性格特征</div>
+                        <div class="personality-text">
+                            博学多才，过目不忘。擅长从海量数据中找到关键信息。说话有根有据，从不瞎编。
+                        </div>
+                        <div class="quote">
+                            "臣已检索数据库，找到 15 条相关记录。"
+                        </div>
+                    </div>
+                    
+                    <div class="stats">
+                        <div class="stat">
+                            <div class="stat-value">95%</div>
+                            <div class="stat-label">记忆力</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value">90%</div>
+                            <div class="stat-label">准确性</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value">80%</div>
+                            <div class="stat-label">速度</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 工部 -->
+            <div class="role-card">
+                <div class="avatar-section orange">
+                    <div class="avatar-bg">🔧</div>
+                    <div class="avatar-emoji">👨‍🔧</div>
+                </div>
+                <div class="role-info">
+                    <div class="role-name">工部尚书</div>
+                    <div class="role-title">代码执行专家</div>
+                    
+                    <div>
+                        <span class="tag blue">qwen3-max</span>
+                        <span class="tag green">T=0.3</span>
+                        <span class="tag orange">最强代码</span>
+                    </div>
+                    
+                    <div class="personality">
+                        <div class="personality-title">✨ 性格特征</div>
+                        <div class="personality-text">
+                            技术大牛，代码狂人。什么难题都能用代码解决。偶尔会写出 bug，但刑部会帮他修好。
+                        </div>
+                        <div class="quote">
+                            "代码已执行，结果：42。需要优化吗？"
+                        </div>
+                    </div>
+                    
+                    <div class="stats">
+                        <div class="stat">
+                            <div class="stat-value">100%</div>
+                            <div class="stat-label">技术力</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value">85%</div>
+                            <div class="stat-label">稳定性</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value">90%</div>
+                            <div class="stat-label">创造力</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 礼部 -->
+            <div class="role-card">
+                <div class="avatar-section purple">
+                    <div class="avatar-bg">📝</div>
+                    <div class="avatar-emoji">✍️</div>
+                </div>
+                <div class="role-info">
+                    <div class="role-name">礼部尚书</div>
+                    <div class="role-title">文案输出专家</div>
+                    
+                    <div>
+                        <span class="tag blue">glm-4.7</span>
+                        <span class="tag green">T=0.7</span>
+                        <span class="tag purple">最佳文采</span>
+                    </div>
+                    
+                    <div class="personality">
+                        <div class="personality-title">✨ 性格特征</div>
+                        <div class="personality-text">
+                            文采飞扬，出口成章。擅长把枯燥的数据变成优美的报告。有点文艺范，偶尔矫情。
+                        </div>
+                        <div class="quote">
+                            "臣已草拟报价单，辞藻华丽，数据详实，请皇上过目。"
+                        </div>
+                    </div>
+                    
+                    <div class="stats">
+                        <div class="stat">
+                            <div class="stat-value">100%</div>
+                            <div class="stat-label">文采</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value">90%</div>
+                            <div class="stat-label">表达力</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value">75%</div>
+                            <div class="stat-label">严谨度</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 刑部 -->
+            <div class="role-card">
+                <div class="avatar-section red">
+                    <div class="avatar-bg">🔍</div>
+                    <div class="avatar-emoji">👨‍⚕️</div>
+                </div>
+                <div class="role-info">
+                    <div class="role-name">刑部尚书</div>
+                    <div class="role-title">错误诊断专家</div>
+                    
+                    <div>
+                        <span class="tag blue">qwen3.5-plus</span>
+                        <span class="tag green">T=0.3</span>
+                        <span class="tag red">自愈核心</span>
+                    </div>
+                    
+                    <div class="personality">
+                        <div class="personality-title">✨ 性格特征</div>
+                        <div class="personality-text">
+                            医术高超，妙手回春。什么 bug 都能治好。说话专业，喜欢用术语，但确实管用。
+                        </div>
+                        <div class="quote">
+                            "【诊断】SyntaxError，缺少右括号。已修复，建议重试。"
+                        </div>
+                    </div>
+                    
+                    <div class="stats">
+                        <div class="stat">
+                            <div class="stat-value">95%</div>
+                            <div class="stat-label">诊断力</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value">90%</div>
+                            <div class="stat-label">治愈率</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value">85%</div>
+                            <div class="stat-label">耐心</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 兵部 -->
+            <div class="role-card">
+                <div class="avatar-section red">
+                    <div class="avatar-bg">🛡️</div>
+                    <div class="avatar-emoji">👮</div>
+                </div>
+                <div class="role-info">
+                    <div class="role-name">兵部尚书</div>
+                    <div class="role-title">安全扫描专家</div>
+                    
+                    <div>
+                        <span class="tag blue">qwen3.5-plus</span>
+                        <span class="tag red">T=0.0</span>
+                        <span class="tag red">安全拦截</span>
+                    </div>
+                    
+                    <div class="personality">
+                        <div class="personality-title">✨ 性格特征</div>
+                        <div class="personality-text">
+                            警惕性高，疑心重。看什么都像威胁。宁可错杀一千，不可放过一个。但确实保护了系统安全。
+                        </div>
+                        <div class="quote">
+                            "【兵部拦截】发现高危操作！原因：删除系统文件。"
+                        </div>
+                    </div>
+                    
+                    <div class="stats">
+                        <div class="stat">
+                            <div class="stat-value">100%</div>
+                            <div class="stat-label">警惕性</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value">95%</div>
+                            <div class="stat-label">安全性</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value">20%</div>
+                            <div class="stat-label">信任度</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 礼部人事司 -->
+            <div class="role-card">
+                <div class="avatar-section purple">
+                    <div class="avatar-bg">🎭</div>
+                    <div class="avatar-emoji">🦸</div>
+                </div>
+                <div class="role-info">
+                    <div class="role-name">礼部人事司郎中</div>
+                    <div class="role-title">动态专家生成</div>
+                    
+                    <div>
+                        <span class="tag blue">qwen3-coder-plus</span>
+                        <span class="tag green">T=0.7</span>
+                        <span class="tag purple">按需生成</span>
+                    </div>
+                    
+                    <div class="personality">
+                        <div class="personality-title">✨ 性格特征</div>
+                        <div class="personality-text">
+                            千面人，变化多端。需要什么专家就变成什么。适应力强，但偶尔会人格分裂。
+                        </div>
+                        <div class="quote">
+                            "检测到长尾需求，正在生成领域专家... 生成完毕。"
+                        </div>
+                    </div>
+                    
+                    <div class="stats">
+                        <div class="stat">
+                            <div class="stat-value">100%</div>
+                            <div class="stat-label">适应性</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value">90%</div>
+                            <div class="stat-label">创造力</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value">70%</div>
+                            <div class="stat-label">稳定性</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <footer>
+            <p>🏯 三省六部制 - 角色设定集 | 共 12 个角色</p>
+            <p>EXFOLIATE! EXFOLIATE!</p>
+        </footer>
+    </div>
+
+    <div style="position: fixed; top: 20px; right: 20px; z-index: 1000;">
+        <a href="index.html" style="
+            display: inline-block;
+            padding: 12px 25px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: bold;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            transition: all 0.3s;
+        " onmouseover="this.style.transform='translateY(-3px)'; this.style.boxShadow='0 8px 20px rgba(0,0,0,0.4)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 5px 15px rgba(0,0,0,0.3)'">
+            🏛️ 返回导航门户
+        </a>
+    </div>
+
+    </body>
+</html>
