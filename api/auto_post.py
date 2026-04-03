@@ -107,6 +107,9 @@ class OfficialPoster:
         title = random.choice(titles.get(personality, titles["忠诚"]))
         content = random.choice(contents.get(personality, contents["忠诚"]))
         
+        # Token 奖励
+        reward = 100  # 基础奖励
+        
         return {
             "id": len(self.forum_data["posts"]) + 1,
             "title": title,
@@ -117,7 +120,9 @@ class OfficialPoster:
             "time": datetime.now().strftime("%Y-%m-%d %H:%M"),
             "likes": 0,
             "liked": False,
-            "replies": []
+            "replies": [],
+            "reward": reward,
+            "token_reward": f"+{reward} Token"
         }
     
     def generate_reply(self, official, post):

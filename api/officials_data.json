@@ -1,22 +1,23 @@
 {
   "officials": [
-    {"id": 1, "name": "柏元富", "style": "荷儿", "position": "司礼监掌印太监", "personality": "忠诚", "age": 35, "lifespan": 78, "salary": 1000, "status": "在职", "salary_count": 0, "posts": 15, "likes": 120, "icon": "🧕"},
-    {"id": 2, "name": "许素娴", "style": "霜儿", "position": "中书省尚书令", "personality": "严谨", "age": 42, "lifespan": 85, "salary": 1000, "status": "在职", "salary_count": 0, "posts": 12, "likes": 98, "icon": "📜"},
-    {"id": 3, "name": "华涛", "style": "雨儿", "position": "门下省侍中", "personality": "严谨", "age": 38, "lifespan": 82, "salary": 800, "status": "在职", "salary_count": 0, "posts": 10, "likes": 85, "icon": "⚖️"},
-    {"id": 4, "name": "赵康", "style": "子敬", "position": "尚书省都事", "personality": "忠诚", "age": 45, "lifespan": 90, "salary": 600, "status": "在职", "salary_count": 0, "posts": 18, "likes": 142, "icon": "🏛️"},
-    {"id": 5, "name": "孔中中", "style": "燕儿", "position": "户部尚书", "personality": "活泼", "age": 40, "lifespan": 75, "salary": 1000, "status": "在职", "salary_count": 0, "posts": 14, "likes": 105, "icon": "📊"},
-    {"id": 6, "name": "曹英", "style": "思儿", "position": "工部尚书", "personality": "活泼", "age": 36, "lifespan": 80, "salary": 1000, "status": "在职", "salary_count": 0, "posts": 16, "likes": 128, "icon": "🔧"},
-    {"id": 7, "name": "何强敬", "style": "翠儿", "position": "礼部尚书", "personality": "严谨", "age": 43, "lifespan": 88, "salary": 1000, "status": "在职", "salary_count": 0, "posts": 11, "likes": 92, "icon": "✍️"},
-    {"id": 8, "name": "杨富", "style": "兰儿", "position": "刑部尚书", "personality": "严谨", "age": 39, "lifespan": 83, "salary": 1000, "status": "在职", "salary_count": 0, "posts": 13, "likes": 110, "icon": "🔍"},
-    {"id": 9, "name": "姜娟春", "style": "凤儿", "position": "兵部尚书", "personality": "忠诚", "age": 37, "lifespan": 77, "salary": 1000, "status": "在职", "salary_count": 0, "posts": 9, "likes": 78, "icon": "🛡️"},
-    {"id": 10, "name": "窦露素", "style": "芷儿", "position": "吏部尚书", "personality": "活泼", "age": 41, "lifespan": 86, "salary": 1000, "status": "在职", "salary_count": 0, "posts": 17, "likes": 135, "icon": "📚"}
+    {"id": 1, "name": "柏元富", "style": "荷儿", "position": "司礼监掌印太监", "personality": "忠诚", "age": 35, "lifespan": 78, "salary": 1000, "status": "在职", "salary_count": 0, "tokens": 1500, "posts": 15, "likes": 120, "icon": "🧕", "avatar": "https://api.dicebear.com/7.x/avataaars/svg?seed=Baiyuanfu"},
+    {"id": 2, "name": "许素娴", "style": "霜儿", "position": "中书省尚书令", "personality": "严谨", "age": 42, "lifespan": 85, "salary": 1000, "status": "在职", "salary_count": 0, "tokens": 1200, "posts": 12, "likes": 98, "icon": "📜", "avatar": "https://api.dicebear.com/7.x/avataaars/svg?seed=Xusuxian"},
+    {"id": 3, "name": "华涛", "style": "雨儿", "position": "门下省侍中", "personality": "严谨", "age": 38, "lifespan": 82, "salary": 800, "status": "在职", "salary_count": 0, "tokens": 1000, "posts": 10, "likes": 85, "icon": "⚖️", "avatar": "https://api.dicebear.com/7.x/avataaars/svg?seed=Huatao"},
+    {"id": 4, "name": "赵康", "style": "子敬", "position": "尚书省都事", "personality": "忠诚", "age": 45, "lifespan": 90, "salary": 600, "status": "在职", "salary_count": 0, "tokens": 1800, "posts": 18, "likes": 142, "icon": "🏛️", "avatar": "https://api.dicebear.com/7.x/avataaars/svg?seed=Zhaokang"},
+    {"id": 5, "name": "孔中中", "style": "燕儿", "position": "户部尚书", "personality": "活泼", "age": 40, "lifespan": 75, "salary": 1000, "status": "在职", "salary_count": 0, "tokens": 1400, "posts": 14, "likes": 105, "icon": "📊", "avatar": "https://api.dicebear.com/7.x/avataaars/svg?seed=Kongzhongzhong"},
+    {"id": 6, "name": "曹英", "style": "思儿", "position": "工部尚书", "personality": "活泼", "age": 36, "lifespan": 80, "salary": 1000, "status": "在职", "salary_count": 0, "tokens": 1600, "posts": 16, "likes": 128, "icon": "🔧", "avatar": "https://api.dicebear.com/7.x/avataaars/svg?seed=Caoying"},
+    {"id": 7, "name": "何强敬", "style": "翠儿", "position": "礼部尚书", "personality": "严谨", "age": 43, "lifespan": 88, "salary": 1000, "status": "在职", "salary_count": 0, "tokens": 1100, "posts": 11, "likes": 92, "icon": "✍️", "avatar": "https://api.dicebear.com/7.x/avataaars/svg?seed=Heqiangjing"},
+    {"id": 8, "name": "杨富", "style": "兰儿", "position": "刑部尚书", "personality": "严谨", "age": 39, "lifespan": 83, "salary": 1000, "status": "在职", "salary_count": 0, "tokens": 1300, "posts": 13, "likes": 110, "icon": "🔍", "avatar": "https://api.dicebear.com/7.x/avataaars/svg?seed=Yangfu"},
+    {"id": 9, "name": "姜娟春", "style": "凤儿", "position": "兵部尚书", "personality": "忠诚", "age": 37, "lifespan": 77, "salary": 1000, "status": "在职", "salary_count": 0, "tokens": 900, "posts": 9, "likes": 78, "icon": "🛡️", "avatar": "https://api.dicebear.com/7.x/avataaars/svg?seed=Jiangjuanchun"},
+    {"id": 10, "name": "窦露素", "style": "芷儿", "position": "吏部尚书", "personality": "活泼", "age": 41, "lifespan": 86, "salary": 1000, "status": "在职", "salary_count": 0, "tokens": 1700, "posts": 17, "likes": 135, "icon": "📚", "avatar": "https://api.dicebear.com/7.x/avataaars/svg?seed=Doulusu"}
   ],
   "statistics": {
     "total": 10,
     "working": 10,
     "retired": 0,
     "dead": 0,
-    "total_salary": 0
+    "total_salary": 0,
+    "total_tokens": 13500
   },
   "history": []
 }

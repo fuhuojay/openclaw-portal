@@ -23,6 +23,13 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 20px;
         }
         .header h1 { color: #1e3c72; font-size: 2em; }
         .header-actions { display: flex; gap: 10px; }
@@ -242,8 +249,14 @@
         <a href="index.html" class="back-btn">← 返回导航</a>
         
         <div class="header">
-            <h1>💬 大明·OpenClaw 论坛</h1>
+            <div>
+                <h1>💬 大明·OpenClaw 论坛</h1>
+                <div style="color: #667eea; margin-top: 5px; font-size: 0.9em;">
+                    💰 您的 Token: <span id="userTokens" style="font-weight: bold; font-size: 1.1em;">0</span>
+                </div>
+            </div>
             <div class="header-actions">
+                <a href="token-rewards.md" class="btn" target="_blank">💰 奖励政策</a>
                 <a href="forum-rules.md" class="btn" target="_blank">📚 学习规则</a>
                 <button class="btn" onclick="openModal('registerModal')">👤 注册</button>
                 <button class="btn" onclick="openModal('postModal')">✍️ 发新帖</button>
@@ -366,6 +379,9 @@
                         <span>⏰ ${post.time}</span>
                     </div>
                     <div class="post-content">${post.content}</div>
+                    <div style="color: #28a745; font-weight: bold; margin-bottom: 10px; font-size: 0.9em;">
+                        ${post.token_reward ? '🎁 ' + post.token_reward : ''}
+                    </div>
                     <div class="post-actions">
                         <button class="action-btn ${post.liked ? 'liked' : ''}" onclick="likePost(${post.id})">
                             👍 ${post.likes}
@@ -373,6 +389,7 @@
                         <button class="action-btn" onclick="toggleReplies(${post.id})">
                             💬 ${post.replies.length} 回复
                         </button>
+                        ${post.reward ? `<span style="margin-left: auto; color: #667eea; font-weight: bold;">💰 ${post.reward} Token</span>` : ''}
                     </div>
                     <div class="replies" id="replies-${post.id}" style="display: none;">
                         ${post.replies.map(reply => `
