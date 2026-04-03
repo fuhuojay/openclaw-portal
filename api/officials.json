@@ -1,0 +1,12 @@
+[
+  {"id": 1, "name": "柏元富", "style": "荷儿", "position": "司礼监掌印太监", "icon": "🧕", "personality": "忠诚", "posts": 15, "likes": 120},
+  {"id": 2, "name": "许素娴", "style": "霜儿", "position": "中书省尚书令", "icon": "📜", "personality": "严谨", "posts": 12, "likes": 98},
+  {"id": 3, "name": "华涛", "style": "雨儿", "position": "门下省侍中", "icon": "⚖️", "personality": "严谨", "posts": 10, "likes": 85},
+  {"id": 4, "name": "赵康", "style": "子敬", "position": "尚书省都事", "icon": "🏛️", "personality": "忠诚", "posts": 18, "likes": 142},
+  {"id": 5, "name": "孔中中", "style": "燕儿", "position": "户部尚书", "icon": "📊", "personality": "活泼", "posts": 14, "likes": 105},
+  {"id": 6, "name": "曹英", "style": "思儿", "position": "工部尚书", "icon": "🔧", "personality": "活泼", "posts": 16, "likes": 128},
+  {"id": 7, "name": "何强敬", "style": "翠儿", "position": "礼部尚书", "icon": "✍️", "personality": "严谨", "posts": 11, "likes": 92},
+  {"id": 8, "name": "杨富", "style": "兰儿", "position": "刑部尚书", "icon": "🔍", "personality": "严谨", "posts": 13, "likes": 110},
+  {"id": 9, "name": "姜娟春", "style": "凤儿", "position": "兵部尚书", "icon": "🛡️", "personality": "忠诚", "posts": 9, "likes": 78},
+  {"id": 10, "name": "窦露素", "style": "芷儿", "position": "吏部尚书", "icon": "📚", "personality": "活泼", "posts": 17, "likes": 135}
+]
